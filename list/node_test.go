@@ -46,6 +46,14 @@ func TestNodeGetFailed(t *testing.T) {
 	assert.Nil(t, actual)
 	assert.Equal(t, "Out of index", err.Error())
 }
+func TestNodeGetNegativeFailed(t *testing.T) {
+	second := &list.Node{Value: "Second Node"}
+	first := &list.Node{Value: "First Node", Next: second}
+
+	actual, err := first.Get(-2)
+	assert.Nil(t, actual)
+	assert.Equal(t, "Out of index", err.Error())
+}
 
 func TestNodeInsert(t *testing.T) {
 	second := &list.Node{Value: "Second Node"}
@@ -85,6 +93,15 @@ func TestNodeDeleteSuccess(t *testing.T) {
 	actual, err := first.Delete(1)
 	assert.Nil(t, err)
 	assert.NotContains(t, actual.Values(), "Second Node")
+}
+
+func TestNodeDeleteHead(t *testing.T) {
+	second := &list.Node{Value: "Second Node"}
+	first := &list.Node{Value: "First Node", Next: second}
+
+	actual, err := first.Delete(0)
+	assert.Nil(t, err)
+	assert.NotContains(t, actual.Values(), "First Node")
 }
 
 func TestNodeDeleteError(t *testing.T) {
