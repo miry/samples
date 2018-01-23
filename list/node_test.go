@@ -56,3 +56,24 @@ func TestNodeInsert(t *testing.T) {
 
 	assert.Equal(t, []string{"First Node", "New Second", "Second Node"}, first.Values())
 }
+
+func TestNodeInsertFirst(t *testing.T) {
+	second := &list.Node{Value: "Second Node"}
+	first := &list.Node{Value: "First Node", Next: second}
+
+	newHead := &list.Node{Value: "New First"}
+	actual, _ := first.Insert(0, newHead)
+
+	assert.Equal(t, []string{"New First", "First Node", "Second Node"}, actual.Values())
+}
+
+func TestNodeInsertFailed(t *testing.T) {
+	second := &list.Node{Value: "Second Node"}
+	first := &list.Node{Value: "First Node", Next: second}
+
+	oops := &list.Node{Value: "Should not be in the list"}
+	actual, err := first.Insert(6, oops)
+	assert.NotNil(t, actual)
+	assert.Equal(t, "Out of index", err.Error())
+	assert.NotContains(t, actual.Values(), "Should not be in the list")
+}
