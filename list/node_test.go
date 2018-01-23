@@ -77,3 +77,21 @@ func TestNodeInsertFailed(t *testing.T) {
 	assert.Equal(t, "Out of index", err.Error())
 	assert.NotContains(t, actual.Values(), "Should not be in the list")
 }
+
+func TestNodeDeleteSuccess(t *testing.T) {
+	second := &list.Node{Value: "Second Node"}
+	first := &list.Node{Value: "First Node", Next: second}
+
+	actual, err := first.Delete(1)
+	assert.Nil(t, err)
+	assert.NotContains(t, actual.Values(), "Second Node")
+}
+
+func TestNodeDeleteError(t *testing.T) {
+	second := &list.Node{Value: "Second Node"}
+	first := &list.Node{Value: "First Node", Next: second}
+
+	actual, err := first.Delete(5)
+	assert.NotNil(t, actual)
+	assert.Equal(t, "Out of index", err.Error())
+}
