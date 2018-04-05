@@ -12,8 +12,8 @@ class Stack
     @items.pop
   end
 
-  def empty?
-    true
+  def empty? : Bool
+    size == 0
   end
 
   def size
