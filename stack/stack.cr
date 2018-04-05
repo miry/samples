@@ -1,11 +1,15 @@
 class Stack
   def initialize
+    @items = [] of String
   end
 
   def push(item)
+    @items << item
   end
 
   def pop
+    return nil if @items.size == 0
+    @items.pop
   end
 
   def empty?
@@ -13,6 +17,6 @@ class Stack
   end
 
   def size
-    0
+    @items.size
   end
 end
