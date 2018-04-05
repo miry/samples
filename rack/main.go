@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/miry/gosample/rack/app"
-	"github.com/miry/gosample/rack/handlers"
-	"github.com/miry/gosample/rack/mid"
+	"github.com/miry/samples/rack/app"
+	"github.com/miry/samples/rack/handlers"
+	"github.com/miry/samples/rack/mid"
 )
 
 func main() {

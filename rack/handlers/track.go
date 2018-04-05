@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/miry/gosample/rack/mid"
+	"github.com/miry/samples/rack/mid"
 )
 
 type response struct {

@@ -3,7 +3,7 @@ package list_test
 import (
 	"testing"
 
-	"github.com/miry/gosample/list"
+	"github.com/miry/samples/list"
 	"github.com/stretchr/testify/assert"
 )
 
