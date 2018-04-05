@@ -9,20 +9,18 @@ class StackLinkedList
     if @head.nil?
       @head = node
     else
-      @head.as(Node).append(node)
+      node.next = @head
+      @head = node
     end
     @size += 1
   end
 
   def pop : String?
     return nil if @head.nil? || empty?
-    node = @head.as(Node).pop
-    if node.nil?
-      @head = nil
-      return nil
-    end
+    node = @head.as(Node)
     @size -= 1
-    @head = nil if @size == 0
+    @head = node.next
+    node.next = nil
     node.value
   end
 

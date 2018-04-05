@@ -15,5 +15,5 @@ Benchmark.ips do |x|
 end
 
 # crystal stack/bench.cr --release
-# array   2.42M (412.99ns) (±16.29%)          fastest
-#  list   79.9  ( 12.51ms) (±15.10%) 30303.45× slower
+# array  25.79k ( 38.78µs) (±16.47%)       fastest
+#  list 798.61  (  1.25ms) (± 4.80%) 32.29× slower
