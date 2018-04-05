@@ -2,7 +2,7 @@ require "benchmark"
 require "./stack"
 require "./stack_linked_list"
 
-size = 10000
+size = 1000000
 r = Random.new
 values = Array(String).new(size) { |i| r.rand(size).to_s }
 
@@ -15,5 +15,5 @@ Benchmark.ips do |x|
 end
 
 # crystal stack/bench.cr --release
-# array  25.79k ( 38.78µs) (±16.47%)       fastest
-#  list 798.61  (  1.25ms) (± 4.80%) 32.29× slower
+# array 251.01  (  3.98ms) (±15.44%)       fastest
+#  list  20.28  ( 49.31ms) (±62.87%) 12.38× slower
