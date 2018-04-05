@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/miry/gosample/queue"
+	"github.com/miry/samples/queue"
 	"github.com/stretchr/testify/assert"
 )
 

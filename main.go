@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/miry/gosample/list"
+	"github.com/miry/samples/list"
 )
 
 func main() {

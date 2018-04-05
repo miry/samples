@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/miry/gosample/rack/app"
+	"github.com/miry/samples/rack/app"
 )
 
 type ReqFunc func(*Request) error
