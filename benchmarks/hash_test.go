@@ -6,7 +6,7 @@ import (
 )
 
 func BenchmarkAccessStructure(b *testing.B) {
-	const size int = int(100000000)
+	const size int = int(10000000000)
 
 	var indexes = make([]int, size, size)
 	var arr = make([]int, size, size)
@@ -22,14 +22,14 @@ func BenchmarkAccessStructure(b *testing.B) {
 	b.ResetTimer()
 
 	b.Run("Array", func(b *testing.B) {
-		for i := 0; i < size; i++ {
+		for i := 0; i < b.N; i++ {
 			indx := indexes[i]
 			_ = arr[indx]
 		}
 	})
 
 	b.Run("Hash", func(b *testing.B) {
-		for i := 0; i < size; i++ {
+		for i := 0; i < b.N; i++ {
 			indx := indexes[i]
 			_ = hash[indx]
 		}
