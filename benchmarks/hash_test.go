@@ -6,7 +6,7 @@ import (
 )
 
 func BenchmarkAccessStructure(b *testing.B) {
-	const size int = int(10000000000)
+	const size int = int(100)
 
 	var indexes = make([]int, size, size)
 	var arr = make([]int, size, size)
