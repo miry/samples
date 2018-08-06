@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+./bin/build
+
+current_branch=`git rev-parse --abbrev-ref HEAD`
+current_version=`git rev-parse HEAD`
+current_tag="$current_version"
+
+docker_image_base="miry/recipes"
+docker_image="$docker_image_base:$current_tag"
+staging_name="$current_branch-miry-recipes"
+
+# Check access to Heroku
+heroku status
+
+# Deploy app
+heroku apps:info -a "$staging_name" || heroku create "$staging_name" -s container
+
+heroku container:push web
+heroku container:release web
+
+curl "https://${staging_name}.herokuapp.com/version"
