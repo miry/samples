@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+current_version=`git rev-parse HEAD`
+current_tag="$current_version"
+
+docker_image_base="miry/recipes"
+docker_image="$docker_image_base:$current_tag"
+
+docker build -t "$docker_image" .

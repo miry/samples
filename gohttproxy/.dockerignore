@@ -1,0 +1,6 @@
+bin/
+!bin/generate-version
+Brewfile
+*.md
+pkg/conf/vsn_generated.go
+/vendor/
