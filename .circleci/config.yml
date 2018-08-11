@@ -17,6 +17,8 @@ jobs:
     working_directory: ~/samples/distribusion
     docker:
       - image: circleci/ruby:2.6.0-preview2
+        environment:
+          RUBYOPT: "--enable-frozen-string-literal"
     steps:
       - checkout:
           path: ~/samples

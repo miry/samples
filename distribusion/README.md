@@ -36,12 +36,22 @@ Content-Type: application/zip
 - 422
 - 500
 
+USAGE
+=====
+
+To run localy application.
+
+```
+$ bin/local
+```
+
+Check logs in the `log/distribusion.log` and `STDOUT`.
 
 TODO
 ====
 
-- [ ] Setup ruby application structure
-- [ ] Setup logger
+- [x] Setup ruby application structure
+- [x] Setup logger
 - [ ] Load Sentinel records
 - [ ] Load Sniffers records
 - [ ] Load Loopholes records
