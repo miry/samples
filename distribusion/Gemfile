@@ -6,6 +6,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 ruby '2.6.0'
 
+# Fix: https://github.com/awesome-print/awesome_print/pull/345
 gem 'awesome_print', require: false, github: 'miry/awesome_print', branch: 'ruby-2.6'
 gem 'ougai', require: false
 
