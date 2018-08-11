@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  golang:
     docker:
       - image: circleci/golang:1.9.2
     environment:
@@ -13,3 +13,24 @@ jobs:
       - run: go test ./... -v 2>&1 | go-junit-report > $TEST_RESULTS/report.xml
       - store_test_results:
           path: /tmp/test-results
+  distribusion:
+    working_directory: ~/samples/distribusion
+    docker:
+      - image: circleci/ruby:2.6.0-preview2
+    steps:
+      - checkout:
+          path: ~/samples
+      - restore_cache:
+          key: dependency-cache-{{ checksum "Gemfile.lock" }}
+      - run: bundle install --path vendor/bundle
+      - save_cache:
+          key: dependency-cache-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run: bundle exec rubocop
+
+workflows:
+  version: 2
+  distribusion:
+    jobs:
+      - distribusion
