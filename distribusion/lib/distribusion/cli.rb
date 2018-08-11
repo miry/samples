@@ -28,10 +28,12 @@ module Distribusion
     end
 
     def self.run
+      options = DEFAULT_OPTIONS.merge(parsed_options)
       new(options).run
     end
 
-    def self.options
+    # rubocop:disable Metrics/MethodLength
+    def self.parsed_options
       result = {}
 
       parser = OptionParser.new do |opts|
@@ -46,12 +48,13 @@ module Distribusion
         end
       end
       parser.parse!
-      DEFAULT_OPTIONS.merge(result)
+      result
     rescue OptionParser::InvalidOption, OptionParser::InvalidArgument => e
-      puts e.message
-      puts parser.banner
+      puts [e.message, parser.banner]
       exit 1
     end
+    private_class_method :parsed_options
+    # rubocop:enable Metrics/MethodLength
 
     private
 
