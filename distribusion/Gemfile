@@ -11,5 +11,6 @@ gem 'awesome_print', require: false, github: 'miry/awesome_print', branch: 'ruby
 gem 'ougai', require: false
 
 gem 'minitest', require: false
+gem 'rake', require: false
 
 gem 'rubocop', require: false

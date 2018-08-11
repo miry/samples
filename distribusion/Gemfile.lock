@@ -19,6 +19,7 @@ GEM
       ast (~> 2.4.0)
     powerpack (0.1.2)
     rainbow (3.0.0)
+    rake (12.3.1)
     rubocop (0.58.2)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -37,6 +38,7 @@ DEPENDENCIES
   awesome_print!
   minitest
   ougai
+  rake
   rubocop
 
 RUBY VERSION

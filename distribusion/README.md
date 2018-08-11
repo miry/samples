@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/miry/samples/tree/distribusion.svg?style=svg)](https://circleci.com/gh/miry/samples/tree/distribusion)
+
 Implement library to parse data from the service and upload in unified format.
 
 ## `GET /routes`
@@ -46,6 +48,13 @@ $ bin/local
 ```
 
 Check logs in the `log/distribusion.log` and `STDOUT`.
+
+TEST
+====
+
+```shell
+$ rake test
+```
 
 TODO
 ====
