@@ -62,8 +62,11 @@ TODO
 - [x] Setup ruby application structure
 - [x] Setup logger
 - [ ] Load Sentinel records
+- [ ] Parse Sentinel records
 - [ ] Load Sniffers records
+- [ ] Parse Sentinel records
 - [ ] Load Loopholes records
+- [ ] Parse Loopholes records
 - [ ] Upload Sentinel records
 - [ ] Upload Sniffers records
 - [ ] Upload Loopholes records

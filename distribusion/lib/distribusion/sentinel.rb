@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # :nodoc:
-class Distribusion
+module Distribusion
   # :nodoc:
   class Sentinel
     attr_accessor :route_id, :node, :index, :time

@@ -9,6 +9,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.0)
+    down (4.5.0)
     jaro_winkler (1.5.1)
     minitest (5.11.3)
     oj (3.6.5)
@@ -36,6 +37,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print!
+  down
   minitest
   ougai
   rake
