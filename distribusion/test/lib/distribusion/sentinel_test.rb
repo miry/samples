@@ -11,7 +11,7 @@ class SentinelTest < Minitest::Test
   end
 
   def test_that_sential_has_route_id
-    assert_equal '1', @sentinel.route_id
+    assert_equal 1, @sentinel.route_id
   end
 
   def test_that_sential_has_node
@@ -19,7 +19,7 @@ class SentinelTest < Minitest::Test
   end
 
   def test_that_sential_has_index
-    assert_equal '0', @sentinel.index
+    assert_equal 0, @sentinel.index
   end
 
   def test_that_sentinel_has_iso_time

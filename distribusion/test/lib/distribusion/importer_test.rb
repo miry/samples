@@ -17,7 +17,7 @@ class ImporterTest < Minitest::Test
       sentinels = @importer.import
       assert_equal 7, sentinels.size
       assert_equal 'gamma', sentinels[5].node
-      assert_equal '3', sentinels[6].route_id
+      assert_equal 3, sentinels[6].route_id
     end
   end
 
