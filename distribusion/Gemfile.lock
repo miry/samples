@@ -5,6 +5,13 @@ GIT
   specs:
     awesome_print (1.8.0)
 
+GIT
+  remote: https://github.com/miry/rubyzip
+  revision: b128e0db92e49485a659f029e895b5d2045ba84c
+  branch: enable-frozen-builds
+  specs:
+    rubyzip (1.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -42,6 +49,7 @@ DEPENDENCIES
   ougai
   rake
   rubocop
+  rubyzip!
 
 RUBY VERSION
    ruby 2.6.0p-1

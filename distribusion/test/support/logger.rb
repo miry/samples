@@ -2,7 +2,7 @@
 
 require 'ougai'
 
-def setup_logger(level: Logger::DEBUG, logpath: './log/test.log')
+def setup_logger(level: Logger::ERROR, logpath: './log/test.log')
   logger = Ougai::Logger.new(STDOUT)
   logger.formatter = Ougai::Formatters::Readable.new
   logger.level = level

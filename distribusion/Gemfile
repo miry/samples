@@ -11,6 +11,9 @@ gem 'awesome_print', require: false, github: 'miry/awesome_print', branch: 'ruby
 gem 'down', require: false
 gem 'ougai', require: false
 
+# Fix: https://github.com/rubyzip/rubyzip/pull/374
+gem 'rubyzip', require: false, github: 'miry/rubyzip', branch: 'enable-frozen-builds'
+
 gem 'minitest', require: false
 gem 'rake', require: false
 

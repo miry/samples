@@ -1,12 +1,22 @@
 # frozen_string_literal: true
 
 require 'down'
+require 'zip'
+require 'csv'
 
 module Distribusion
   # Abstract class to load sources from service to local storage.
   class Importer
     BASE_URL = 'https://challenge.distribusion.com/the_one/routes'
     MAX_FILE_SIZE = 5 * 1024 * 1024
+    TMP_FOLDER = 'tmp/importer/'
+    CSV_OPTIONS = {
+      encoding: 'bom|utf-8',
+      col_sep: ', ',
+      row_sep: "\n",
+      quote_char: '"',
+      headers: :first_row
+    }.freeze
 
     attr_reader :logger
 
@@ -17,16 +27,36 @@ module Distribusion
     end
 
     def import
-      download
+      sentinels_routes = load
+      CSV.parse(sentinels_routes, CSV_OPTIONS) do |route|
+        logger.debug route
+      end
     end
 
     private
+
+    def load
+      archive = download
+      unzip archive
+    end
 
     def download
       logger.debug 'Downloading', url: url
       result = Down.download(url, max_size: MAX_FILE_SIZE)
       logger.debug 'Downloaded success', result.content_type
+      result
+    end
 
+    def unzip(archive)
+      logger.debug "Unpack #{archive.path}"
+      result = ''
+      Zip::File.open(archive.path) do |zipfile|
+        zipfile.glob('*/*.csv').each do |entry|
+          logger.debug "Extracting #{entry.name}"
+          result += entry.get_input_stream.read
+          logger.debug result
+        end
+      end
       result
     end
 
