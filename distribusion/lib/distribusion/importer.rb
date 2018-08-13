@@ -15,7 +15,8 @@ module Distribusion
       col_sep: ', ',
       row_sep: "\n",
       quote_char: '"',
-      headers: :first_row
+      headers: :first_row,
+      header_converters: :symbol,
     }.freeze
 
     attr_reader :logger
@@ -28,16 +29,17 @@ module Distribusion
 
     def import
       sentinels_routes = load
+      result = []
       CSV.parse(sentinels_routes, CSV_OPTIONS) do |route|
-        logger.debug route
+        result << Sentinel.new(route.to_hash)
       end
+      result
     end
 
     private
 
     def load
-      archive = download
-      unzip archive
+      unzip download
     end
 
     def download
