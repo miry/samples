@@ -22,7 +22,8 @@ class SentinelTest < Minitest::Test
     assert_equal '0', @sentinel.index
   end
 
-  def test_that_sential_has_time
-    assert_equal '2030-12-31T22:00:01+09:00', @sentinel.time
+  def test_that_sentinel_has_iso_time
+    # https://en.wikipedia.org/wiki/ISO_8601 2018-08-13T17:36:50+00:00, 2018-08-13T17:36:50Z, 20180813T173650Z
+    assert_equal '2030-12-31T13:00:01Z', @sentinel.time
   end
 end

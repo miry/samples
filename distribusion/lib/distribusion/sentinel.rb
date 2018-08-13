@@ -10,7 +10,7 @@ module Distribusion
       @route_id = route_id
       @node = node
       @index = index
-      @time = time
+      @time = Time.parse(time).utc.iso8601
     end
   end
 end
