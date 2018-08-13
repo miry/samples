@@ -16,7 +16,7 @@ module Distribusion
       row_sep: "\n",
       quote_char: '"',
       headers: :first_row,
-      header_converters: :symbol,
+      header_converters: :symbol
     }.freeze
 
     attr_reader :logger
