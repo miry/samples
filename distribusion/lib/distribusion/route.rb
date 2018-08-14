@@ -24,6 +24,7 @@ module Distribusion
 
       result = []
       routes.keys.each do |route_id|
+        # Expecting that records has indexes connected to smae route uniq and growing by 1
         nodes = routes[route_id].sort_by(&:index)
         start_node = nodes[0]
         end_node = nodes[-1]
