@@ -3,6 +3,7 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - bin/*
+    - vendor/bundle/**/*
 
 Metrics/LineLength:
   Max: 110

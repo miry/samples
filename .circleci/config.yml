@@ -29,7 +29,7 @@ jobs:
           key: dependency-cache-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-      - run: bundle exec rubocop
+      - run: bundle exec rubocop -c .rubocop.yml
       - run: bundle exec rake test
 
 workflows:
