@@ -6,18 +6,24 @@ class RouteTest < Minitest::Test
   include Distribusion
 
   def setup
-    @route = Route.new(start_node: 'alpha', end_node: 'delta', start_time: '', end_time: '')
+    @route = Route.new(source: :sentinels,
+                       start_node: 'alpha',
+                       end_node: 'delta',
+                       start_time: '',
+                       end_time: '')
   end
 
   def test_build_routes_from_sentinels
     routes = Distribusion::Route.from_sentinels sentinels
     first_route = routes.first
+    last_route = routes.last
 
-    assert_equal 3, routes.size
+    assert_equal 2, routes.size
     assert_equal 'alpha', first_route.start_node
     assert_equal 'gamma', first_route.end_node
-    assert_equal '2030-12-31T13:00:01Z', first_route.start_time
-    assert_equal '2030-12-31T13:00:03Z', first_route.end_time
+    assert_equal '2030-12-31T13:00:01', first_route.start_time
+    assert_equal '2030-12-31T13:00:03', first_route.end_time
+    refute_equal last_route.start_node, last_route.end_node
   end
 
   private

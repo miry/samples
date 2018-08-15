@@ -23,6 +23,8 @@ Content-Type: application/zip
 
 ## `POST /routes`
 
+Except only query params
+
 ### Params
 
 - `passphrase` - string.
@@ -34,9 +36,9 @@ Content-Type: application/zip
 
 ### Response
 
-- 201
-- 422
-- 500
+- 201 - very lucky to create
+- 401 - if missing passphrase
+- 503 - some field is not correct
 
 USAGE
 =====

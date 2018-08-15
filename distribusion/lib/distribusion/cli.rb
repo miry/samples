@@ -24,7 +24,11 @@ module Distribusion
 
     def run
       logger.info('Loading sentinels...')
-      Distribusion::Importer.new(logger: @logger, passphrase: @passphrase, source: :sentinels).import
+      driver = Distribusion::Driver.new(logger: @logger, passphrase: @passphrase)
+      sentinels = driver.import_sentinels
+      routes = Distribusion::Route.from_sentinels sentinels
+      logger.debug routes.inspect
+      driver.submit routes
     end
 
     def self.run

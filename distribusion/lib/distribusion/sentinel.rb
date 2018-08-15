@@ -10,7 +10,8 @@ module Distribusion
       @route_id = route_id.to_i
       @node = node
       @index = index.to_i
-      @time = Time.parse(time).utc.iso8601
+      # Not valid iso https://en.wikipedia.org/wiki/ISO_8601
+      @time = Time.parse(time).utc.iso8601[0...-1]
     end
   end
 end
