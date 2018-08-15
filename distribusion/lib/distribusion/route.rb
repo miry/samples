@@ -43,6 +43,14 @@ module Distribusion
     # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/MethodLength
 
+    def self.from_sniffers(_sniffers)
+      []
+    end
+
+    def self.from_loopholes(_loopholes)
+      []
+    end
+
     def to_hash
       {
         source: @source,

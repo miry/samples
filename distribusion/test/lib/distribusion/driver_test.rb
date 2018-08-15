@@ -24,6 +24,20 @@ class DriverTest < Minitest::Test
     end
   end
 
+  def test_importer_sniffer_parse_csv
+    @importer.stub :load, sniffers_routes_csv do
+      records = @importer.import_sniffers
+      assert_equal 0, records.size
+    end
+  end
+
+  def test_importer_loopholes_parse_csv
+    @importer.stub :load, loopholes_routes_csv do
+      records = @importer.import_loopholes
+      assert_equal 0, records.size
+    end
+  end
+
   private
 
   def sentinels_routes_csv
@@ -36,6 +50,18 @@ class DriverTest < Minitest::Test
       "2", "beta", "1", "2030-12-31T18:00:03+05:00"
       "2", "gamma", "2", "2030-12-31T16:00:04+03:00"
       "3", "zeta", "0", "2030-12-31T22:00:02+09:00"
+    CONTENT
+  end
+
+  def sniffers_routes_csv
+    <<~CONTENT
+
+    CONTENT
+  end
+
+  def loopholes_routes_csv
+    <<~CONTENT
+
     CONTENT
   end
 end

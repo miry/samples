@@ -13,20 +13,26 @@ module Distribusion
       passphrase: '',
       log_level: Logger::INFO
     }.freeze
+    SOURCES = %w[sentinels sniffers loopholes].freeze
 
     attr_reader :logger
 
-    def initialize(log_level: Logger::DEBUG, passphrase:)
+    def initialize(log_level: Logger::DEBUG, passphrase:, sources: 'all')
       @logger = setup_logger(log_level)
       @passphrase = passphrase
       @logger.debug 'Options', log_level: log_level, passphrase: passphrase
       @driver = Distribusion::Driver.new(logger: @logger, passphrase: @passphrase)
+      @sources = if sources == 'all'
+                   SOURCES
+                 else
+                   sources.split ','
+                 end
     end
 
     def run
-      process_sentinels
-      process_sniffers
-      process_loopholes
+      process_sentinels if @sources.include?('sentinels')
+      process_sniffers if @sources.include?('sniffers')
+      process_loopholes if @sources.include?('loopholes')
     end
 
     def self.run
@@ -43,6 +49,10 @@ module Distribusion
 
         opts.on('-p', '--passphrase PASSWORD', 'Password to access services') do |v|
           result[:passphrase] = v
+        end
+
+        opts.on('-s', '--sources SOURCE', 'Specific sources comma seprated. Default: all') do |v|
+          result[:sources] = v
         end
 
         opts.on('-v', '--verbose', 'Debug') do |_v|
