@@ -32,13 +32,14 @@ module Distribusion
     def import_sentinels
       sentinels_routes = load(:sentinels)
       result = []
-      CSV.parse(sentinels_routes, CSV_OPTIONS) do |route|
+      CSV.parse(sentinels_routes[sentinels_routes.keys.first], CSV_OPTIONS) do |route|
         result << Sentinel.new(route.to_hash)
       end
       result
     end
 
     def import_sniffers
+      load(:sniffers)
       []
     end
 
@@ -66,13 +67,14 @@ module Distribusion
     end
 
     def unzip(archive)
-      logger.debug "Unpack #{archive.path}"
-      result = ''
+      logger.debug "Unpacking #{archive.path}"
+      result = {}
       Zip::File.open(archive.path) do |zipfile|
         zipfile.glob('*/*.csv').each do |entry|
           logger.debug "Extracting #{entry.name}"
-          result += entry.get_input_stream.read
-          logger.debug result
+          result[entry.name] ||= ''
+          result[entry.name] += entry.get_input_stream.read
+          logger.debug result[entry.name]
         end
       end
       result

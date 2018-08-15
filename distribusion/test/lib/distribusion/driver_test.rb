@@ -15,7 +15,7 @@ class DriverTest < Minitest::Test
   end
 
   def test_importer_sentinels_parse_csv
-    @importer.stub :load, sentinels_routes_csv do
+    @importer.stub(:load, { routes: sentinels_routes_csv }) do
       sentinels = @importer.import_sentinels
       assert_equal 7, sentinels.size
       assert_equal 'gamma', sentinels[5].node
