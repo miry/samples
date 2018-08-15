@@ -21,6 +21,7 @@ module Distribusion
       @logger = setup_logger(log_level)
       @passphrase = passphrase
       @logger.debug 'Options', log_level: log_level, passphrase: passphrase
+      Distribusion::Route.logger = @logger
       @driver = Distribusion::Driver.new(logger: @logger, passphrase: @passphrase)
       @sources = if sources == 'all'
                    SOURCES

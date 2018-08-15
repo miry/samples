@@ -37,7 +37,7 @@ module Distribusion
       CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
         result << Sentinel.new(route.to_hash)
       end
-      {routes: result}
+      { routes: result }
     end
 
     def import_sniffers
@@ -81,8 +81,8 @@ module Distribusion
     def unzip(archive)
       result = {}
       Zip::File.open(archive.path) do |zipfile|
-        zipfile.glob('*/*.csv').each do |entry|
-          name = File.basename entry.name, '.*'
+        zipfile.glob('*/*.{csv,json}').each do |entry|
+          name = File.basename(entry.name, '.*').to_sym
           result[name] ||= ''
           result[name] += entry.get_input_stream.read
           logger.debug "Extracting #{entry.name}", content: result[name]

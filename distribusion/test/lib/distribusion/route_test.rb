@@ -14,7 +14,7 @@ class RouteTest < Minitest::Test
   end
 
   def test_build_routes_from_sentinels
-    routes = Distribusion::Route.from_sentinels sentinels
+    routes = Distribusion::Route.from_sentinels routes: sentinels
     first_route = routes.first
     last_route = routes.last
 

@@ -41,12 +41,22 @@ module Distribusion
     end
     # rubocop:enable Metrics/MethodLength
 
-    def self.from_sniffers(_sniffers)
+    def self.from_sniffers(node_times:, routes:, sequences:)
+      logger.debug 'Need to implement', node_times: node_times, routes: routes, sequences: sequences
       []
     end
 
-    def self.from_loopholes(_loopholes)
+    def self.from_loopholes(node_pairs:, routes:)
+      logger.debug 'Need to implement', node_pairs: node_pairs, routes: routes
       []
+    end
+
+    def self.logger=(logger=Logger.new)
+      @logger = logger
+    end
+
+    def self.logger
+      @logger
     end
 
     def to_hash
