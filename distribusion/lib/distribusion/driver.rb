@@ -3,6 +3,8 @@
 require 'down'
 require 'zip'
 require 'csv'
+require 'json'
+
 require 'net/http'
 
 module Distribusion
@@ -30,21 +32,33 @@ module Distribusion
     end
 
     def import_sentinels
-      sentinels_routes = load(:sentinels)
+      sentinels_info = load(:sentinels)
       result = []
-      CSV.parse(sentinels_routes[sentinels_routes.keys.first], CSV_OPTIONS) do |route|
+      CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
         result << Sentinel.new(route.to_hash)
       end
       result
     end
 
     def import_sniffers
-      load(:sniffers)
-      []
+      sniffer_info = load(:sniffers)
+      result = {}
+      sniffer_info.each do |name, content|
+        result[name] = []
+        CSV.parse(content, CSV_OPTIONS) do |row|
+          result[name] << row.to_hash
+        end
+      end
+      result
     end
 
     def import_loopholes
-      []
+      loophole_info = load(:loopholes)
+      result = {}
+      loophole_info.each do |name, content|
+        result[name] = JSON.parse(content, symbolize_names: true)[name]
+      end
+      result
     end
 
     def submit(records)
@@ -61,18 +75,17 @@ module Distribusion
 
     def download(source)
       logger.debug 'Downloading', url: url(source)
-      result = Down.download(url(source), max_size: MAX_FILE_SIZE)
-      logger.debug 'Downloaded success', result.content_type
-      result
+      Down.download(url(source), max_size: MAX_FILE_SIZE)
     end
 
     def unzip(archive)
       result = {}
       Zip::File.open(archive.path) do |zipfile|
         zipfile.glob('*/*.csv').each do |entry|
-          result[entry.name] ||= ''
-          result[entry.name] += entry.get_input_stream.read
-          logger.debug "Extracting #{entry.name}", content: result[entry.name]
+          name = File.basename entry.name, '.*'
+          result[name] ||= ''
+          result[name] += entry.get_input_stream.read
+          logger.debug "Extracting #{entry.name}", content: result[name]
         end
       end
       result
