@@ -37,7 +37,7 @@ module Distribusion
       CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
         result << Sentinel.new(route.to_hash)
       end
-      result
+      {routes: result}
     end
 
     def import_sniffers

@@ -15,17 +15,17 @@ module Distribusion
     end
 
     # rubocop:disable Metrics/MethodLength Metrics/AbcSize
-    def self.from_sentinels(sentinels)
-      routes = {}
-      sentinels.each do |sentinel|
-        routes[sentinel.route_id] ||= []
-        routes[sentinel.route_id] << sentinel
+    def self.from_sentinels(routes:)
+      combined_routes = {}
+      routes.each do |sentinel|
+        combined_routes[sentinel.route_id] ||= []
+        combined_routes[sentinel.route_id] << sentinel
       end
 
       result = []
-      routes.keys.each do |route_id|
+      combined_routes.keys.each do |route_id|
         # Expecting that records has indexes connected to smae route uniq and growing by 1
-        nodes = routes[route_id].sort_by(&:index)
+        nodes = combined_routes[route_id].sort_by(&:index)
         next if nodes.size == 1
         start_node = nodes[0]
         end_node = nodes[-1]
