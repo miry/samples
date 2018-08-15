@@ -8,5 +8,4 @@ Metrics/LineLength:
   Max: 110
 
 Metrics/AbcSize:
-  Exclude:
-    - test/lib/distribusion/*.rb
+  Enabled: false

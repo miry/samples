@@ -15,7 +15,6 @@ module Distribusion
     end
 
     # rubocop:disable Metrics/MethodLength Metrics/AbcSize
-    # rubocop:disable Metrics/AbcSize
     def self.from_sentinels(sentinels)
       routes = {}
       sentinels.each do |sentinel|
@@ -40,7 +39,6 @@ module Distribusion
       end
       result
     end
-    # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/MethodLength
 
     def self.from_sniffers(_sniffers)

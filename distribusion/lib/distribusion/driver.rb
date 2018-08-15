@@ -67,14 +67,12 @@ module Distribusion
     end
 
     def unzip(archive)
-      logger.debug "Unpacking #{archive.path}"
       result = {}
       Zip::File.open(archive.path) do |zipfile|
         zipfile.glob('*/*.csv').each do |entry|
-          logger.debug "Extracting #{entry.name}"
           result[entry.name] ||= ''
           result[entry.name] += entry.get_input_stream.read
-          logger.debug result[entry.name]
+          logger.debug "Extracting #{entry.name}", content: result[entry.name]
         end
       end
       result
