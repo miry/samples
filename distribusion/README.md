@@ -46,7 +46,7 @@ USAGE
 To run localy application.
 
 ```
-$ bin/local
+$ bin/local -p <passphrase> -v
 ```
 
 Check logs in the `log/distribusion.log` and `STDOUT`.
@@ -54,8 +54,10 @@ Check logs in the `log/distribusion.log` and `STDOUT`.
 TEST
 ====
 
+Use minitest framework
+
 ```shell
-$ rake test
+$ rake
 ```
 
 TODO
@@ -63,18 +65,12 @@ TODO
 
 - [x] Setup ruby application structure
 - [x] Setup logger
-- [ ] Load Sentinel records
-- [ ] Parse Sentinel records
+- [x] Load Sentinel records
+- [x] Parse Sentinel records
 - [ ] Load Sniffers records
 - [ ] Parse Sentinel records
 - [ ] Load Loopholes records
 - [ ] Parse Loopholes records
-- [ ] Upload Sentinel records
+- [x] Upload Sentinel records
 - [ ] Upload Sniffers records
 - [ ] Upload Loopholes records
-
-
-Activities
-==========
-
-11 Aug 13:00:  Started
