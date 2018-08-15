@@ -46,7 +46,10 @@ USAGE
 To run localy application.
 
 ```
-$ bin/local -p <passphrase> -v
+$ bin/local -p <passphrase> # Just run sync
+$ bin/local -p <passphrase> -s loopholes,sniffers # Run only for 2 sources
+$ bin/local -p <passphrase> -s all -v # Show debug information and sync all sources
+$ bin/local -p <passphrase> [-s <sources>] [-v]
 ```
 
 Check logs in the `log/distribusion.log` and `STDOUT`.
