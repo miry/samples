@@ -62,6 +62,7 @@ module Distribusion
     end
 
     def submit(records)
+      logger.info "Submit #{records.size}"
       records.each do |record|
         post record
       end
