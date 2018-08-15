@@ -46,6 +46,7 @@ module Distribusion
       []
     end
 
+    # rubocop:disable Metrics/MethodLength
     def self.from_loopholes(node_pairs:, routes:)
       indexed_node_pairs = {}
       node_pairs.each do |node_pair|
@@ -57,9 +58,10 @@ module Distribusion
         next unless indexed_node_pairs.key? route[:node_pair_id]
         node_pair = indexed_node_pairs[route[:node_pair_id]]
         combined_routes[route[:route_id]] ||= []
-        attributes = route.merge({start_node: node_pair[:start_node], end_node: node_pair[:end_node]})
-
-        combined_routes[route[:route_id]] << Distribusion::Loophole.new( attributes )
+        attributes = route.merge(start_node: node_pair[:start_node], end_node: node_pair[:end_node])
+        attributes.delete(:route_id)
+        attributes.delete(:node_pair_id)
+        combined_routes[route[:route_id]] << Distribusion::Loophole.new(attributes)
       end
 
       result = []
@@ -78,6 +80,7 @@ module Distribusion
       end
       result
     end
+    # rubocop:enable Metrics/MethodLength
 
     def self.logger=(logger = Logger.new)
       @logger = logger

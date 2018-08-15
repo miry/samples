@@ -67,10 +67,10 @@ TODO
 - [x] Setup logger
 - [x] Load Sentinel records
 - [x] Parse Sentinel records
-- [ ] Load Sniffers records
-- [ ] Parse Sentinel records
-- [ ] Load Loopholes records
-- [ ] Parse Loopholes records
+- [x] Load Sniffers records
+- [ ] Parse Sniffers records
+- [x] Load Loopholes records
+- [x] Parse Loopholes records
 - [x] Upload Sentinel records
 - [ ] Upload Sniffers records
-- [ ] Upload Loopholes records
+- [x] Upload Loopholes records

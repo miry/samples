@@ -56,6 +56,32 @@ class RouteTest < Minitest::Test
   end
 
   # rubocop:disable Metrics/MethodLength
+  def sniffers_info
+    {
+      node_times: [
+        { node_time_id: '1', start_node: 'lambda', end_node: 'tau', duration_in_milliseconds: '1000' },
+        { node_time_id: '2', start_node: 'tau', end_node: 'psi', duration_in_milliseconds: '1000' },
+        { node_time_id: '3', start_node: 'psi', end_node: 'omega', duration_in_milliseconds: '1000' },
+        { node_time_id: '4', start_node: 'lambda', end_node: 'psi', duration_in_milliseconds: '1000' }
+      ],
+      routes: [
+        { route_id: '1', time: '2030-12-31T13:00:06', time_zone: "UTC\xC2\xB100:00" },
+        { route_id: '2', time: '2030-12-31T13:00:07', time_zone: "UTC\xC2\xB100:00" },
+        { route_id: '3', time: '2030-12-31T13:00:00', time_zone: "UTC\xC2\xB100:00" }
+      ],
+      sequences: [
+        { route_id: '1', node_time_id: '1' },
+        { route_id: '1', node_time_id: '2' },
+        { route_id: '1', node_time_id: '3' },
+        { route_id: '2', node_time_id: '4' },
+        { route_id: '2', node_time_id: '3' },
+        { route_id: '3', node_time_id: '9' }
+      ]
+    }
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
   def loopholes_info
     {
       node_pairs: [

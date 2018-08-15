@@ -81,6 +81,7 @@ module Distribusion
     def process_sniffers
       logger.info('Process sniffers...')
       sniffers = @driver.import_sniffers
+      p sniffers
       routes = Distribusion::Route.from_sniffers sniffers
       @driver.submit routes
     end
