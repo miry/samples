@@ -10,6 +10,8 @@ class DriverTest < Minitest::Test
 
   def test_importer_has_method_import
     assert_includes @importer.methods, :import_sentinels
+    assert_includes @importer.methods, :import_sniffers
+    assert_includes @importer.methods, :import_loopholes
   end
 
   def test_importer_sentinels_parse_csv

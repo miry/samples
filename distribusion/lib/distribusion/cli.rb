@@ -20,15 +20,13 @@ module Distribusion
       @logger = setup_logger(log_level)
       @passphrase = passphrase
       @logger.debug 'Options', log_level: log_level, passphrase: passphrase
+      @driver = Distribusion::Driver.new(logger: @logger, passphrase: @passphrase)
     end
 
     def run
-      logger.info('Loading sentinels...')
-      driver = Distribusion::Driver.new(logger: @logger, passphrase: @passphrase)
-      sentinels = driver.import_sentinels
-      routes = Distribusion::Route.from_sentinels sentinels
-      logger.debug routes.inspect
-      driver.submit routes
+      process_sentinels
+      process_sniffers
+      process_loopholes
     end
 
     def self.run
@@ -61,6 +59,27 @@ module Distribusion
     # rubocop:enable Metrics/MethodLength
 
     private
+
+    def process_sentinels
+      logger.info('Process sentinels...')
+      sentinels = @driver.import_sentinels
+      routes = Distribusion::Route.from_sentinels sentinels
+      @driver.submit routes
+    end
+
+    def process_sniffers
+      logger.info('Process sniffers...')
+      sniffers = @driver.import_sniffers
+      routes = Distribusion::Route.from_sniffers sniffers
+      @driver.submit routes
+    end
+
+    def process_loopholes
+      logger.info('Process loopholes...')
+      loopholes = @driver.import_loopholes
+      routes = Distribusion::Route.from_loopholes loopholes
+      @driver.submit routes
+    end
 
     def setup_logger(level)
       logger = Ougai::Logger.new(STDOUT)

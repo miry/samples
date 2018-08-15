@@ -38,6 +38,14 @@ module Distribusion
       result
     end
 
+    def import_sniffers
+      []
+    end
+
+    def import_loopholes
+      []
+    end
+
     def submit(records)
       records.each do |record|
         post record
