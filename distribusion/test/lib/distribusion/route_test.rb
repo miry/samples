@@ -28,7 +28,20 @@ class RouteTest < Minitest::Test
     refute_equal last_route.start_node, last_route.end_node
   end
 
-  def test_build_routes_from_loopholse
+  def test_build_routes_from_sniffers
+    routes = Distribusion::Route.from_sniffers sniffers_info
+    first_route = routes.first
+    last_route = routes.last
+
+    assert_equal 2, routes.size
+    assert_equal 'lambda', first_route.start_node
+    assert_equal 'omega', first_route.end_node
+    assert_equal '2030-12-31T13:00:06', first_route.start_time
+    assert_equal '2030-12-31T13:00:09', first_route.end_time
+    refute_equal last_route.start_node, last_route.end_node
+  end
+
+  def test_build_routes_from_loopholes
     routes = Distribusion::Route.from_loopholes loopholes_info
     first_route = routes.first
     last_route = routes.last
@@ -65,9 +78,9 @@ class RouteTest < Minitest::Test
         { node_time_id: '4', start_node: 'lambda', end_node: 'psi', duration_in_milliseconds: '1000' }
       ],
       routes: [
-        { route_id: '1', time: '2030-12-31T13:00:06', time_zone: "UTC\xC2\xB100:00" },
-        { route_id: '2', time: '2030-12-31T13:00:07', time_zone: "UTC\xC2\xB100:00" },
-        { route_id: '3', time: '2030-12-31T13:00:00', time_zone: "UTC\xC2\xB100:00" }
+        { route_id: '1', time: '2030-12-31T13:00:06', time_zone: 'UTC±00:00' },
+        { route_id: '2', time: '2030-12-31T13:00:07', time_zone: 'UTC±00:00' },
+        { route_id: '3', time: '2030-12-31T13:00:00', time_zone: 'UTC±00:00' }
       ],
       sequences: [
         { route_id: '1', node_time_id: '1' },

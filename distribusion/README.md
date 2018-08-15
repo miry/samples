@@ -68,9 +68,9 @@ TODO
 - [x] Load Sentinel records
 - [x] Parse Sentinel records
 - [x] Load Sniffers records
-- [ ] Parse Sniffers records
+- [x] Parse Sniffers records
 - [x] Load Loopholes records
 - [x] Parse Loopholes records
 - [x] Upload Sentinel records
-- [ ] Upload Sniffers records
+- [x] Upload Sniffers records
 - [x] Upload Loopholes records

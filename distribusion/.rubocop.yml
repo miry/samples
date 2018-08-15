@@ -10,3 +10,7 @@ Metrics/LineLength:
 
 Metrics/AbcSize:
   Enabled: false
+
+Metrics/ClassLength:
+  Exclude:
+    - lib/distribusion/route.rb
