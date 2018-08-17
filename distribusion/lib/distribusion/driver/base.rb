@@ -4,6 +4,20 @@ module Distribusion
   class Driver
     # Abstract class to load sources from service to local storage.
     class Base
+      BASE_URL = 'https://challenge.distribusion.com/the_one/routes'
+      BASE_URI = URI.parse(BASE_URL)
+
+      MAX_FILE_SIZE = 5 * 1024 * 1024
+      TMP_FOLDER = 'tmp/importer/'
+      CSV_OPTIONS = {
+        encoding: 'bom|utf-8',
+        col_sep: ', ',
+        row_sep: "\n",
+        quote_char: '"',
+        headers: :first_row,
+        header_converters: :symbol
+      }.freeze
+
       def initialize(passphrase:, source:)
         @passphrase = passphrase
         @source = source
@@ -101,6 +115,16 @@ module Distribusion
           result.use_ssl = true
           result
         end
+      end
+
+      protected
+
+      def indexing_by(list, key)
+        result = {}
+        list.each do |item|
+          result[item[key]] = item
+        end
+        result
       end
     end
   end

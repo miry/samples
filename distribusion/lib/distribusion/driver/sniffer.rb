@@ -4,7 +4,7 @@ require_relative 'base'
 
 module Distribusion
   class Driver
-    # Driver to process sentinel response
+    # Driver to process sniffers response
     class Sniffer < Distribusion::Driver::Base
       def initialize(passphrase:)
         super source: :sniffers, passphrase: passphrase
@@ -48,14 +48,6 @@ module Distribusion
           start_time: start_node.time.utc.iso8601[0...-1],
           end_time: (start_node.time + duration).iso8601[0...-1]
         )
-      end
-
-      def indexing_by(list, key)
-        result = {}
-        list.each do |item|
-          result[item[key]] = item
-        end
-        result
       end
 
       def combine_routes(node_times, routes, sequences)

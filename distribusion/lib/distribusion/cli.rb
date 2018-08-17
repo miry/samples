@@ -25,7 +25,7 @@ module Distribusion
       Distribusion::Route.logger = @logger
       Distribusion::Driver::Base.logger = @logger
 
-      @driver = Distribusion::Driver.new(logger: @logger, passphrase: passphrase)
+      @driver = Distribusion::Driver.new(passphrase: passphrase)
       @sources = if sources == 'all'
                    SOURCES
                  else
@@ -36,7 +36,7 @@ module Distribusion
     def run
       @driver.process_sentinels if @sources.include?('sentinels')
       @driver.process_sniffers if @sources.include?('sniffers')
-      process_loopholes if @sources.include?('loopholes')
+      @driver.process_loopholes if @sources.include?('loopholes')
     end
 
     def self.run
