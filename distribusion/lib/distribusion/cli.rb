@@ -35,7 +35,7 @@ module Distribusion
 
     def run
       @driver.process_sentinels if @sources.include?('sentinels')
-      process_sniffers if @sources.include?('sniffers')
+      @driver.process_sniffers if @sources.include?('sniffers')
       process_loopholes if @sources.include?('loopholes')
     end
 
@@ -73,13 +73,6 @@ module Distribusion
     # rubocop:enable Metrics/MethodLength
 
     private
-
-    def process_sniffers
-      logger.info('Process sniffers...')
-      sniffers = @driver.import_sniffers
-      routes = Distribusion::Route.from_sniffers sniffers
-      @driver.submit routes
-    end
 
     def process_loopholes
       logger.info('Process loopholes...')

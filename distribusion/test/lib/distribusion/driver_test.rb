@@ -8,7 +8,6 @@ class DriverTest < Minitest::Test
   end
 
   def test_importer_has_method_import
-    assert_includes @importer.methods, :import_sniffers
     assert_includes @importer.methods, :import_loopholes
   end
 

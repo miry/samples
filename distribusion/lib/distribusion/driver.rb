@@ -38,16 +38,8 @@ module Distribusion
       ::Distribusion::Driver::Sentinel.new(passphrase: @passphrase).process
     end
 
-    def import_sniffers
-      sniffer_info = load(:sniffers)
-      result = {}
-      sniffer_info.each do |name, content|
-        result[name] = []
-        CSV.parse(content, CSV_OPTIONS) do |row|
-          result[name] << row.to_hash
-        end
-      end
-      result
+    def process_sniffers
+      ::Distribusion::Driver::Sniffer.new(passphrase: @passphrase).process
     end
 
     def import_loopholes
