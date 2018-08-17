@@ -7,6 +7,8 @@ require 'json'
 
 require 'net/http'
 
+require_relative 'driver/sentinel'
+
 module Distribusion
   # Abstract class to load sources from service to local storage.
   class Driver
@@ -35,7 +37,7 @@ module Distribusion
       sentinels_info = load(:sentinels)
       result = []
       CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
-        result << Sentinel.new(route.to_hash)
+        result << ::Distribusion::Sentinel.new(route.to_hash)
       end
       { routes: result }
     end
