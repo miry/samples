@@ -60,8 +60,10 @@ TEST
 Use minitest framework
 
 ```shell
-$ rake
+$ rake test
 ```
+
+Coverage https://67-118627778-gh.circle-artifacts.com/0/home/circleci/samples/distribusion/coverage/index.html#_AllFiles
 
 TODO
 ====

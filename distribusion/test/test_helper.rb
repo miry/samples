@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'simplecov' # These two lines must go first
+SimpleCov.minimum_coverage 91
 SimpleCov.start
 
 require 'minitest/autorun'
