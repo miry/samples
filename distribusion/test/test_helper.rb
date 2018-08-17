@@ -9,7 +9,6 @@ require 'minitest/pride'
 require 'minitest/mock'
 
 require 'support/logger'
-require 'support/fixtures'
 
 require 'distribusion'
 
