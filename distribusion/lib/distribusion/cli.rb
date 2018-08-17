@@ -22,7 +22,6 @@ module Distribusion
 
       @logger.debug 'Options', log_level: log_level, passphrase: passphrase
 
-      Distribusion::Route.logger = @logger
       Distribusion::Driver::Base.logger = @logger
 
       @driver = Distribusion::Driver.new(passphrase: passphrase)

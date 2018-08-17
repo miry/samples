@@ -33,6 +33,9 @@ jobs:
       - run: bundle exec rake test
       - run: bundle exec ruby --enable-frozen-string-literal ./bin/local -v -s all -p $DISTRIBUSION_PASSPHRASE | sed s/"${DISTRIBUSION_PASSPHRASE}"/xxx/g
 
+      - store_artifacts:
+          path: coverage
+
 workflows:
   version: 2
   distribusion:

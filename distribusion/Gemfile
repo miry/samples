@@ -16,5 +16,6 @@ gem 'rubyzip', require: false, github: 'miry/rubyzip', branch: 'enable-frozen-bu
 
 gem 'minitest', require: false
 gem 'rake', require: false
+gem 'simplecov', require: false
 
 gem 'rubocop', require: false
