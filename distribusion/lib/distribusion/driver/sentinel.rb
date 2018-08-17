@@ -11,11 +11,13 @@ module Distribusion
       end
 
       def parse(sentinels_info)
-        result = []
+        data = []
+        return { routes: data } if sentinels_info.nil? || sentinels_info.empty?
+
         CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
-          result << ::Distribusion::Sentinel.new(route.to_hash)
+          data << ::Distribusion::Sentinel.new(route.to_hash)
         end
-        { routes: result }
+        { routes: data }
       end
     end
   end

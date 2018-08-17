@@ -8,7 +8,17 @@ class DriverSentinelTest < Minitest::Test
     @driver = Distribusion::Driver::Sentinel.new(passphrase: 'test')
   end
 
-  def test_importer_sentinels_parse_csv
+  def test_importer_sentinels_parse_empty
+    sentinels = @driver.parse({})[:routes]
+    assert_equal 0, sentinels.size
+  end
+
+  def test_importer_sentinels_parse_nil
+    sentinels = @driver.parse(nil)[:routes]
+    assert_equal 0, sentinels.size
+  end
+
+  def test_importer_sentinels_parse_sample
     sentinels = @driver.parse(routes: sentinels_routes_csv)[:routes]
     assert_equal 7, sentinels.size
     assert_equal 'gamma', sentinels[5].node
