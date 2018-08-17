@@ -1,18 +1,5 @@
 # frozen_string_literal: true
 
-def sentinels_routes_csv
-  <<~CONTENT
-    "route_id", "node", "index", "time"
-    "1", "alpha", "0", "2030-12-31T22:00:01+09:00"
-    "1", "beta", "1", "2030-12-31T18:00:02+05:00"
-    "1", "gamma", "2", "2030-12-31T16:00:03+03:00"
-    "2", "delta", "0", "2030-12-31T22:00:02+09:00"
-    "2", "beta", "1", "2030-12-31T18:00:03+05:00"
-    "2", "gamma", "2", "2030-12-31T16:00:04+03:00"
-    "3", "zeta", "0", "2030-12-31T22:00:02+09:00"
-  CONTENT
-end
-
 def sniffers_node_times_csv
   <<~CONTENT
     "node_time_id", "start_node", "end_node", "duration_in_milliseconds"

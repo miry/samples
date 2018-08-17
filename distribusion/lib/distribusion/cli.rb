@@ -19,10 +19,13 @@ module Distribusion
 
     def initialize(log_level: Logger::DEBUG, passphrase:, sources: 'all')
       @logger = setup_logger(log_level)
-      @passphrase = passphrase
+
       @logger.debug 'Options', log_level: log_level, passphrase: passphrase
+
       Distribusion::Route.logger = @logger
-      @driver = Distribusion::Driver.new(logger: @logger, passphrase: @passphrase)
+      Distribusion::Driver::Base.logger = @logger
+
+      @driver = Distribusion::Driver.new(logger: @logger, passphrase: passphrase)
       @sources = if sources == 'all'
                    SOURCES
                  else
@@ -31,7 +34,7 @@ module Distribusion
     end
 
     def run
-      process_sentinels if @sources.include?('sentinels')
+      @driver.process_sentinels if @sources.include?('sentinels')
       process_sniffers if @sources.include?('sniffers')
       process_loopholes if @sources.include?('loopholes')
     end
@@ -70,13 +73,6 @@ module Distribusion
     # rubocop:enable Metrics/MethodLength
 
     private
-
-    def process_sentinels
-      logger.info('Process sentinels...')
-      sentinels = @driver.import_sentinels
-      routes = Distribusion::Route.from_sentinels sentinels
-      @driver.submit routes
-    end
 
     def process_sniffers
       logger.info('Process sniffers...')

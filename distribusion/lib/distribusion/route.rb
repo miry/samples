@@ -15,33 +15,6 @@ module Distribusion
     end
 
     # rubocop:disable Metrics/MethodLength
-    def self.from_sentinels(routes:)
-      combined_routes = {}
-      routes.each do |sentinel|
-        combined_routes[sentinel.route_id] ||= []
-        combined_routes[sentinel.route_id] << sentinel
-      end
-
-      result = []
-      combined_routes.keys.each do |route_id|
-        # Expecting that records has indexes connected to smae route uniq and growing by 1
-        nodes = combined_routes[route_id].sort_by(&:index)
-        next if nodes.size == 1
-        start_node = nodes[0]
-        end_node = nodes[-1]
-        result << new(
-          source: :sentinels,
-          start_node: start_node.node,
-          end_node: end_node.node,
-          start_time: start_node.time,
-          end_time: end_node.time
-        )
-      end
-      result
-    end
-    # rubocop:enable Metrics/MethodLength
-
-    # rubocop:disable Metrics/MethodLength
     def self.from_sniffers(node_times:, routes:, sequences:)
       indexed_node_times = {}
       node_times.each do |node_time|

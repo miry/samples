@@ -33,13 +33,8 @@ module Distribusion
       @logger = logger
     end
 
-    def import_sentinels
-      sentinels_info = load(:sentinels)
-      result = []
-      CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
-        result << ::Distribusion::Sentinel.new(route.to_hash)
-      end
-      { routes: result }
+    def process_sentinels
+      ::Distribusion::Driver::Sentinel.new(passphrase: @passphrase).process
     end
 
     def import_sniffers
