@@ -12,19 +12,6 @@ class DriverTest < Minitest::Test
     assert_includes @importer.methods, :import_loopholes
   end
 
-  def test_importer_sniffer_parse_csv
-    response = {
-      'node_times': sniffers_node_times_csv,
-      'routes': sniffers_routes_csv,
-      'sequences': sniffers_sequences_csv
-    }
-    @importer.stub :load, response do
-      records = @importer.import_sniffers
-      assert_equal %i[node_times routes sequences], records.keys
-      assert_equal 3, records.size
-    end
-  end
-
   def test_importer_loopholes_parse_csv
     response = {
       'node_pairs': loopholes_node_pairs_json,

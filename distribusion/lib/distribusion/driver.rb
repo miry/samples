@@ -8,6 +8,7 @@ require 'json'
 require 'net/http'
 
 require_relative 'driver/sentinel'
+require_relative 'driver/sniffer'
 
 module Distribusion
   # Abstract class to load sources from service to local storage.

@@ -14,3 +14,4 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Exclude:
     - lib/distribusion/route.rb
+    - test/**/*_test.rb

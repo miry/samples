@@ -35,7 +35,7 @@ module Distribusion
       end
 
       def parse(_data)
-        []
+        {}
       end
 
       def submit(records)
