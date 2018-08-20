@@ -114,5 +114,5 @@ def allow?(board:,value:,row:,col:)
 end
 
 def possible_cell(board: board,row: row, col: col)
-  FULL.dup
+  FULL - get_row(board, row) - get_col(board, col) - get_block(board, [row/3,col/3])
 end
