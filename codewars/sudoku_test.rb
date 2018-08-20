@@ -18,49 +18,42 @@ class SudokuTest < Minitest::Test
 
   def test_get_block
     assert_equal [0, 6, 0, 8, 0, 3, 0, 2, 0], get_block(puzzle, [1,1])
+    assert_equal [0, 0, 0, 0, 0, 0, 0, 6, 0], get_block(puzzle, [0,2])
   end
 
   def test_clone
-    assert_equal puzzle_clone, clone(puzzle)
+    actual = clone(puzzle)
+    assert_equal [5, 3, [1, 2, 4], [2, 6], 7, [2, 4, 6, 8], [1, 4, 8, 9], [1, 2, 4, 9], [2, 4, 8]], actual[0]
+    assert_equal [[1, 3, 9], 6, [1, 3, 4, 5, 7, 9], [3, 5, 7], [3, 5], 7, 2, 8, 4], actual[6]
+  end
+
+  def test_clone_of_clone
+    actual = clone clone(puzzle)
+    assert_equal [[1, 3, 9], 6, [1, 3, 5, 9], [3, 5], 3, 7, 2, 8, 4], actual[6]
   end
 
   def test_possible_cell
     assert_equal [1, 2, 4], possible_cell(board: puzzle,row: 0, col: 2)
+    assert_equal 0, puzzle[6][8]
+    assert_equal 4, possible_cell(board: puzzle,row: 6, col: 8)
   end
 
-  def test_allow_field_in_empty
-    assert_equal true, allow?(board: puzzle, value: 1, row: 0, col: 2)
-    assert_equal false, allow?(board: puzzle, value: 7, row: 0, col: 3)
-    assert_equal false, allow?(board: puzzle, value: 6, row: 0, col: 8)
-  end
-
-  def test_fill_board_valid_rows
-    sol =  fill_board(puzzle)
-    print sol
-  end
-
-  def test_fill_board_valid_cols
-    skip
-    sol =  fill_board(puzzle)
-    print sol
-
-    9.times do |col|
-      assert_equal true, valid_col?(sol, col), "column #{col} is not valid"
-    end
+  def test_possible_cell_of_cloned
+    cloned = clone(puzzle)
+    assert_equal [1, 2, 4], possible_cell(board: cloned, row: 0, col: 2)
+    assert_equal 0, puzzle[6][8]
+    assert_equal 4, cloned[6][8]
   end
 
   def test_check_puzzle_1
-    skip
     assert_equal(sudoku(puzzle), solution)
   end
 
   def test_check_puzzle_2
-    skip
     assert_equal(sudoku(puzzle2), solution2)
   end
 
   def test_check_puzzle_3
-    skip
     assert_equal(sudoku(puzzle3), solution3)
   end
 
