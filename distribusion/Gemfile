@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+ruby '2.6.0'
+
+# Fix: https://github.com/awesome-print/awesome_print/pull/345
+gem 'awesome_print', require: false, github: 'miry/awesome_print', branch: 'ruby-2.6'
+gem 'down', require: false
+gem 'ougai', require: false
+
+# Fix: https://github.com/rubyzip/rubyzip/pull/374
+gem 'rubyzip', require: false, github: 'miry/rubyzip', branch: 'enable-frozen-builds'
+
+gem 'minitest', require: false
+gem 'rake', require: false
+gem 'simplecov', require: false
+
+gem 'rubocop', require: false
