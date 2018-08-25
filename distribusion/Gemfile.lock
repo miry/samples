@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/miry/awesome_print
-  revision: 8118ef911a111a3f0294255d81fbf663e3a24aaf
+  revision: e5b9647dc411dcb7fe5665ea3c5533700b141509
   branch: ruby-2.6
   specs:
     awesome_print (1.8.0)
 
 GIT
   remote: https://github.com/miry/rubyzip
-  revision: b128e0db92e49485a659f029e895b5d2045ba84c
+  revision: 269922167ed5a98f2918f2f275a140a8f26a9b88
   branch: enable-frozen-builds
   specs:
     rubyzip (1.2.1)
@@ -21,7 +21,7 @@ GEM
     jaro_winkler (1.5.1)
     json (2.1.0)
     minitest (5.11.3)
-    oj (3.6.5)
+    oj (3.6.6)
     ougai (1.7.0)
       oj (~> 3.4)
     parallel (1.12.1)
