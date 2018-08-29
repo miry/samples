@@ -43,7 +43,7 @@ func TestNewInputFromReaderCase1(t *testing.T) {
 
 func TestGravityEmptyField(t *testing.T) {
 	subject := &gravity_tumbler.Input{}
-	assert.Equal(t, [][]byte{}, subject.Gravity())
+	assert.Equal(t, [][]byte{}, subject.Gravity().Fields)
 }
 
 func TestGravityPunktField(t *testing.T) {
