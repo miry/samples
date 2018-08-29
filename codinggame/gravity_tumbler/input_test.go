@@ -35,6 +35,10 @@ func TestNewInputFromReaderCase1(t *testing.T) {
 	assert.Equal(t, 5, subject.Height)
 	assert.Equal(t, 1, subject.Count)
 	assert.Equal(t, []byte("................."), subject.Fields[0])
+	assert.Equal(t, []byte("................."), subject.Fields[1])
+	assert.Equal(t, []byte("...##...###..#..."), subject.Fields[2])
+	assert.Equal(t, []byte(".####..#####.###."), subject.Fields[3])
+	assert.Equal(t, []byte("#################"), subject.Fields[4])
 }
 
 func TestGravityEmptyField(t *testing.T) {
@@ -103,16 +107,16 @@ func TestGravityPunktField(t *testing.T) {
 			},
 		},
 
-		// map[string][][]byte{
-		// 	"in": [][]byte{
-		// 		[]byte("#"),
-		// 		[]byte("."),
-		// 	},
-		// 	"out": [][]byte{
-		// 		[]byte("."),
-		// 		[]byte("#"),
-		// 	},
-		// },
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte("#"),
+				[]byte("."),
+			},
+			"out": [][]byte{
+				[]byte("."),
+				[]byte("#"),
+			},
+		},
 
 		map[string][][]byte{
 			"in": [][]byte{
@@ -145,8 +149,20 @@ func TestGravityPunktField(t *testing.T) {
 		subject.Fields = row["in"]
 		subject.Height = len(row["in"])
 		subject.Width = len(row["in"][0])
-		assert.Equal(t, row["out"], subject.Gravity())
+		assert.Equal(t, row["out"], subject.Gravity().Fields)
 	}
+}
+
+func TestRotateCase1(t *testing.T) {
+	tmpfile := mockStdin("input1")
+	defer tmpfile.Close()
+
+	subject, err := gravity_tumbler.NewInputFromReader(tmpfile)
+	assert.Nil(t, err)
+	actual := subject.Rotate()
+	assert.Equal(t, []byte("....#"), actual.Fields[0])
+	assert.Equal(t, []byte("...##"), actual.Fields[15])
+	assert.Equal(t, []byte("....#"), actual.Fields[16])
 }
 
 func mockStdin(fixture string) *os.File {
