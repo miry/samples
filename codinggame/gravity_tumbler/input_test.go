@@ -191,11 +191,10 @@ func TestRunCase2(t *testing.T) {
 	assert.NotNil(t, actual)
 	assert.Len(t, actual.Fields, 5)
 	assert.Equal(t, []byte("................."), actual.Fields[0])
-	// assert.Equal(t, []byte("................#"), actual.Fields[1])
-	// assert.Equal(t, []byte("...............##"), actual.Fields[2])
-	// assert.Equal(t, []byte("................."), actual.Fields[2])
-	// assert.Equal(t, []byte("................."), actual.Fields[3])
-	// assert.Equal(t, []byte("#################"), actual.Fields[4])
+	assert.Equal(t, []byte("................."), actual.Fields[1])
+	assert.Equal(t, []byte("...........######"), actual.Fields[2])
+	assert.Equal(t, []byte(".....############"), actual.Fields[3])
+	assert.Equal(t, []byte("#################"), actual.Fields[4])
 }
 
 func mockStdin(fixture string) *os.File {
