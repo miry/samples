@@ -165,6 +165,39 @@ func TestRotateCase1(t *testing.T) {
 	assert.Equal(t, []byte("....#"), actual.Fields[16])
 }
 
+func TestRunCase1(t *testing.T) {
+	tmpfile := mockStdin("input1")
+	defer tmpfile.Close()
+
+	subject, err := gravity_tumbler.NewInputFromReader(tmpfile)
+	assert.Nil(t, err)
+	assert.NotNil(t, subject)
+	actual := subject.Run()
+	assert.Len(t, actual.Fields, 17)
+	assert.Equal(t, []byte("....#"), actual.Fields[0])
+	assert.Equal(t, []byte("...##"), actual.Fields[5])
+	assert.Equal(t, []byte("..###"), actual.Fields[15])
+	assert.Equal(t, []byte("..###"), actual.Fields[16])
+}
+
+func TestRunCase2(t *testing.T) {
+	tmpfile := mockStdin("input2")
+	defer tmpfile.Close()
+
+	subject, err := gravity_tumbler.NewInputFromReader(tmpfile)
+	assert.Nil(t, err)
+	assert.NotNil(t, subject)
+	actual := subject.Run()
+	assert.NotNil(t, actual)
+	assert.Len(t, actual.Fields, 5)
+	assert.Equal(t, []byte("................."), actual.Fields[0])
+	// assert.Equal(t, []byte("................#"), actual.Fields[1])
+	// assert.Equal(t, []byte("...............##"), actual.Fields[2])
+	// assert.Equal(t, []byte("................."), actual.Fields[2])
+	// assert.Equal(t, []byte("................."), actual.Fields[3])
+	// assert.Equal(t, []byte("#################"), actual.Fields[4])
+}
+
 func mockStdin(fixture string) *os.File {
 	if fixture == "" {
 		return createTmpFile()

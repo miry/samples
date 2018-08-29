@@ -34,6 +34,21 @@ func NewInputFromReader(r *os.File) (*Input, error) {
 	return &result, nil
 }
 
+func (i *Input) Run() *Input {
+	table := i
+	for k := 0; k < i.Count; k++ {
+		table = table.Rotate()
+		table = table.Gravity()
+	}
+	return table
+}
+
+func (i *Input) Print() {
+	for k := 0; k < i.Height; k++ {
+		fmt.Println(string(i.Fields[k]))
+	}
+}
+
 func (i *Input) Gravity() *Input {
 	result := make([][]byte, i.Height)
 
