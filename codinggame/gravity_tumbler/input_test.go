@@ -42,15 +42,111 @@ func TestGravityEmptyField(t *testing.T) {
 	assert.Equal(t, [][]byte{}, subject.Gravity())
 }
 
-func TestGravityOnePUnktField(t *testing.T) {
-	subject := &gravity_tumbler.Input{
-		Height: 1,
-		Width:  1,
-		Fields: [][]byte{
-			[]byte("."),
+func TestGravityPunktField(t *testing.T) {
+
+	tables := []map[string][][]byte{
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte("."),
+				[]byte("."),
+			},
+			"out": [][]byte{
+				[]byte("."),
+				[]byte("."),
+			},
+		},
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte(".."),
+			},
+			"out": [][]byte{
+				[]byte(".."),
+			},
+		},
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte(".#"),
+			},
+			"out": [][]byte{
+				[]byte(".#"),
+			},
+		},
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte("##"),
+			},
+			"out": [][]byte{
+				[]byte("##"),
+			},
+		},
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte("#."),
+			},
+			"out": [][]byte{
+				[]byte("#."),
+			},
+		},
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte("."),
+				[]byte("#"),
+			},
+			"out": [][]byte{
+				[]byte("."),
+				[]byte("#"),
+			},
+		},
+
+		// map[string][][]byte{
+		// 	"in": [][]byte{
+		// 		[]byte("#"),
+		// 		[]byte("."),
+		// 	},
+		// 	"out": [][]byte{
+		// 		[]byte("."),
+		// 		[]byte("#"),
+		// 	},
+		// },
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte(".."),
+				[]byte(".."),
+			},
+			"out": [][]byte{
+				[]byte(".."),
+				[]byte(".."),
+			},
+		},
+
+		map[string][][]byte{
+			"in": [][]byte{
+				[]byte(".."),
+				[]byte("#."),
+			},
+			"out": [][]byte{
+				[]byte(".."),
+				[]byte("#."),
+			},
 		},
 	}
-	assert.Equal(t, [][]byte{[]byte(".")}, subject.Gravity())
+
+	subject := &gravity_tumbler.Input{
+		Height: 1,
+	}
+
+	for _, row := range tables {
+		subject.Fields = row["in"]
+		subject.Height = len(row["in"])
+		subject.Width = len(row["in"][0])
+		assert.Equal(t, row["out"], subject.Gravity())
+	}
 }
 
 func mockStdin(fixture string) *os.File {
