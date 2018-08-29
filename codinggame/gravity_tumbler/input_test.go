@@ -37,6 +37,22 @@ func TestNewInputFromReaderCase1(t *testing.T) {
 	assert.Equal(t, []byte("................."), subject.Fields[0])
 }
 
+func TestGravityEmptyField(t *testing.T) {
+	subject := &gravity_tumbler.Input{}
+	assert.Equal(t, [][]byte{}, subject.Gravity())
+}
+
+func TestGravityOnePUnktField(t *testing.T) {
+	subject := &gravity_tumbler.Input{
+		Height: 1,
+		Width:  1,
+		Fields: [][]byte{
+			[]byte("."),
+		},
+	}
+	assert.Equal(t, [][]byte{[]byte(".")}, subject.Gravity())
+}
+
 func mockStdin(fixture string) *os.File {
 	if fixture == "" {
 		return createTmpFile()

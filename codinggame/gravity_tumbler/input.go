@@ -33,3 +33,13 @@ func NewInputFromReader(r *os.File) (*Input, error) {
 
 	return &result, nil
 }
+
+func (i *Input) Gravity() [][]byte {
+	result := make([][]byte, i.Height)
+
+	for i, row := range i.Fields {
+		result[i] = row
+	}
+
+	return result
+}
