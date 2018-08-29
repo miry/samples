@@ -21,7 +21,7 @@ func TestNewInputFromReader(t *testing.T) {
 	assert.Equal(t, 1, subject.Width)
 	assert.Equal(t, 1, subject.Height)
 	assert.Equal(t, 1, subject.Count)
-	assert.Equal(t, ".", subject.Fields[0])
+	assert.Equal(t, []byte("."), subject.Fields[0])
 }
 
 func TestNewInputFromReaderCase1(t *testing.T) {
@@ -34,7 +34,7 @@ func TestNewInputFromReaderCase1(t *testing.T) {
 	assert.Equal(t, 17, subject.Width)
 	assert.Equal(t, 5, subject.Height)
 	assert.Equal(t, 1, subject.Count)
-	assert.Equal(t, ".................", subject.Fields[0])
+	assert.Equal(t, []byte("................."), subject.Fields[0])
 }
 
 func mockStdin(fixture string) *os.File {

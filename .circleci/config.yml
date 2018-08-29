@@ -41,3 +41,4 @@ workflows:
   distribusion:
     jobs:
       - distribusion
+      - golang

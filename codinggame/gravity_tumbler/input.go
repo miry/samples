@@ -10,7 +10,7 @@ type Input struct {
 	Width  int
 	Height int
 	Count  int
-	Fields []string
+	Fields [][]byte
 }
 
 func NewInputFromReader(r *os.File) (*Input, error) {
@@ -25,10 +25,10 @@ func NewInputFromReader(r *os.File) (*Input, error) {
 	scanner.Scan()
 	fmt.Sscan(scanner.Text(), &result.Count)
 
-	result.Fields = make([]string, result.Height, result.Height)
+	result.Fields = make([][]byte, result.Height, result.Height)
 	for i := 0; i < result.Height; i++ {
 		scanner.Scan()
-		result.Fields[i] = scanner.Text()
+		result.Fields[i] = scanner.Bytes()
 	}
 
 	return &result, nil
