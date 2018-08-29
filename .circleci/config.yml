@@ -1,8 +1,9 @@
 version: 2
 jobs:
   golang:
+    working_directory: /go/src/github.com/miry/samples/
     docker:
-      - image: circleci/golang:1.9.2
+      - image: circleci/golang:1.11.0
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
@@ -10,6 +11,8 @@ jobs:
       - run: mkdir -p $TEST_RESULTS
       - run: go get -u github.com/jstemmer/go-junit-report
       - run: go get -v -t -d ./...
+      - run: go test ./... -v
+      - run: go test ./codinggame/gravity_tumbler/... -v
       - run: go test ./... -v 2>&1 | go-junit-report > $TEST_RESULTS/report.xml
       - store_test_results:
           path: /tmp/test-results
