@@ -1,16 +1,22 @@
 version: 2
 jobs:
   golang:
+    working_directory: /go/src/github.com/miry/samples/
     docker:
-      - image: circleci/golang:1.9.2
+      - image: circleci/golang:1.11.0
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
       - checkout
-      - run: mkdir -p $TEST_RESULTS
+      - run: mkdir -p $TEST_RESULTS/{benchmarks,btree,codinggame,gohttproxy,list,queue}
       - run: go get -u github.com/jstemmer/go-junit-report
       - run: go get -v -t -d ./...
-      - run: go test ./... -v 2>&1 | go-junit-report > $TEST_RESULTS/report.xml
+      - run: go test ./benchmarks/... -v |& go-junit-report > $TEST_RESULTS/benchmarks/report.xml
+      - run: go test ./btree/... -v |& go-junit-report > $TEST_RESULTS/btree/report.xml
+      - run: go test ./codinggame/... -v |& go-junit-report > $TEST_RESULTS/codinggame/report.xml
+      - run: go test ./gohttproxy/... -v |& go-junit-report > $TEST_RESULTS/gohttproxy/report.xml
+      - run: go test ./list/... -v |& go-junit-report > $TEST_RESULTS/list/report.xml
+      - run: go test ./queue/... -v |& go-junit-report > $TEST_RESULTS/queue/report.xml
       - store_test_results:
           path: /tmp/test-results
   distribusion:
@@ -41,3 +47,6 @@ workflows:
   distribusion:
     jobs:
       - distribusion
+  tests:
+    jobs:
+      - golang
