@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -15,6 +16,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	ctx = context.WithValue(ctx, int(42), int64(100))
 	log.Println(ctx, "Started")
 	defer log.Println(ctx, "Ended")
 
