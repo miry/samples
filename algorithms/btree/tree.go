@@ -10,6 +10,10 @@ type Tree struct {
 	Value int
 }
 
+func (t *Tree) Size() int {
+	return len(t.Values())
+}
+
 func (t *Tree) Equal(s *Tree) bool {
 	return reflect.DeepEqual(t.Values(), s.Values())
 }
