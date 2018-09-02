@@ -11,12 +11,10 @@ jobs:
       - run: mkdir -p $TEST_RESULTS/{benchmarks,btree,codinggame,gohttproxy,list,queue}
       - run: go get -u github.com/jstemmer/go-junit-report
       - run: go get -v -t -d ./...
-      - run: go test ./benchmarks/... -v |& go-junit-report > $TEST_RESULTS/benchmarks/report.xml
-      - run: go test ./btree/... -v |& go-junit-report > $TEST_RESULTS/btree/report.xml
+      - run: go test ./algorithms/... -v |& go-junit-report > $TEST_RESULTS/algorithms/report.xml
       - run: go test ./codinggame/... -v |& go-junit-report > $TEST_RESULTS/codinggame/report.xml
       - run: go test ./gohttproxy/... -v |& go-junit-report > $TEST_RESULTS/gohttproxy/report.xml
-      - run: go test ./list/... -v |& go-junit-report > $TEST_RESULTS/list/report.xml
-      - run: go test ./queue/... -v |& go-junit-report > $TEST_RESULTS/queue/report.xml
+      - run: go test ./justforfunc/... -v |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
       - store_test_results:
           path: /tmp/test-results
   distribusion:
