@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/miry/rubyzip
-  revision: 269922167ed5a98f2918f2f275a140a8f26a9b88
+  revision: 18ea47a76d062885593e0fac20129b3138837daf
   branch: enable-frozen-builds
   specs:
     rubyzip (1.2.1)
@@ -21,7 +21,7 @@ GEM
     jaro_winkler (1.5.1)
     json (2.1.0)
     minitest (5.11.3)
-    oj (3.6.6)
+    oj (3.6.7)
     ougai (1.7.0)
       oj (~> 3.4)
     parallel (1.12.1)
@@ -63,4 +63,4 @@ RUBY VERSION
    ruby 2.6.0p-1
 
 BUNDLED WITH
-   1.16.3
+   1.16.4

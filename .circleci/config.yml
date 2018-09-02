@@ -8,7 +8,7 @@ jobs:
       TEST_RESULTS: /tmp/test-results
     steps:
       - checkout
-      - run: mkdir -p $TEST_RESULTS/{benchmarks,btree,codinggame,gohttproxy,list,queue}
+      - run: mkdir -p $TEST_RESULTS/{algorithms,btree,codinggame,gohttproxy,justforfunc}
       - run: go get -u github.com/jstemmer/go-junit-report
       - run: go get -v -t -d ./...
       - run: go test ./algorithms/... -v |& go-junit-report > $TEST_RESULTS/algorithms/report.xml
