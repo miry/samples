@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/miry/samples/list"
+	"github.com/miry/samples/algorithms/list"
 )
 
 func main() {
