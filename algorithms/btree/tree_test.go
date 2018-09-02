@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/miry/samples/btree"
+	"github.com/miry/samples/algorithms/btree"
 )
 
 func TestTree(t *testing.T) {
