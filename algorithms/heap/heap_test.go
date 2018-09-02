@@ -1,7 +1,6 @@
 package heap_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -55,18 +54,18 @@ func TestHeapDeleteMax(t *testing.T) {
 	for _, i := range []int{83, 122, 255} {
 		assert.NoError(t, heap.Insert(i))
 	}
-	fmt.Println("-----------")
 	assert.Equal(t, 255, *heap.DeleteMax())
 	assert.Equal(t, 2, heap.Size())
 }
 
 func TestHeapSort(t *testing.T) {
 	heap := heap.NewHeap()
-	for _, i := range []int{83, 122, 255, 38, 1, 32} {
+	subject := []int{83, 122, 255, 38, 1, 32}
+	for _, i := range subject {
 		assert.NoError(t, heap.Insert(i))
 	}
-	actual := make([]int, 6, 6)
-	for i := 0; i < 6; i++ {
+	actual := make([]int, len(subject), len(subject))
+	for i := 0; i < len(subject); i++ {
 		actual[i] = *heap.DeleteMax()
 	}
 	assert.Equal(t, []int{255, 122, 83, 38, 32, 1}, actual)

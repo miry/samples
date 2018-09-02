@@ -58,11 +58,9 @@ func (h *heap) Print() {
 //      51 34
 //            31 24 15 22
 func (h *heap) swim(k int) {
-	h.Print()
 	for k > 1 && h.less(k/2, k) {
 		h.exch(k, k/2)
 		k = k / 2
-		h.Print()
 	}
 }
 
@@ -71,7 +69,6 @@ func (h *heap) swim(k int) {
 //      51 34
 //            31 24 15 22
 func (h *heap) sink(k int) {
-	h.Print()
 	var child int
 	for k*2 <= h.count {
 		child = k * 2
@@ -83,7 +80,6 @@ func (h *heap) sink(k int) {
 		}
 		h.exch(k, child)
 		k = child
-		h.Print()
 	}
 }
 
