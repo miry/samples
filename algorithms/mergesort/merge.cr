@@ -6,16 +6,10 @@ class Merge
 
   def self.merge(arr, lo, mid, hi)
     aux = arr[lo..hi]
-    # p "------------"
-    # p [lo, mid, hi]
-    # p aux
-    # p arr
     i = 0
     j = mid - lo + 1
     n = hi - lo
     lo.upto(hi) do |k|
-      # p ".............."
-      # p [i,j,k]
       if i > mid - lo
         arr[k] = aux[j]
         j += 1
