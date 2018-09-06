@@ -111,14 +111,14 @@ func sample2() *btree.Tree {
 				Count: 1,
 			},
 			Value: 3,
-			Count: 2,
+			Count: 5,
 		},
 		Right: &btree.Tree{
 			Value: 13,
 			Count: 1,
 		},
 		Value: 8,
-		Count: 4,
+		Count: 7,
 	}
 	return head
 }
