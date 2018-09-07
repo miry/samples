@@ -25,7 +25,7 @@ func main() {
 		if err := recover(); err != nil {
 			app.Logger.
 				Fatal().
-				Msgf("Excpetion: %s", err)
+				Msgf("Exception: %s", err)
 		}
 	}()
 
