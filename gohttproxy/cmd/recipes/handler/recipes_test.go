@@ -21,7 +21,7 @@ func TestEmptyRecipeResponse(t *testing.T) {
 func TestRecipeResponseOneItem(t *testing.T) {
 
 	recipes := []*mod.Recipe{
-		&mod.Recipe{
+		{
 			Content: []byte(`{"key": "value"}`),
 		},
 	}
@@ -35,9 +35,9 @@ func TestRecipeResponseOneItem(t *testing.T) {
 func TestRecipeResponseItems(t *testing.T) {
 
 	recipes := []*mod.Recipe{
-		&mod.Recipe{Content: []byte(`{"key1": "foo"}`)},
-		&mod.Recipe{Content: []byte(`{"key2": "bar"}`)},
-		&mod.Recipe{Content: []byte(`{"key3": "quux"}`)},
+		{Content: []byte(`{"key1": "foo"}`)},
+		{Content: []byte(`{"key2": "bar"}`)},
+		{Content: []byte(`{"key3": "quux"}`)},
 	}
 
 	actual, err := handler.BuildRecipesJsonResponse(recipes)
