@@ -49,92 +49,92 @@ func TestGravityEmptyField(t *testing.T) {
 func TestGravityPunktField(t *testing.T) {
 
 	tables := []map[string][][]byte{
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte("."),
 				[]byte("."),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte("."),
 				[]byte("."),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte(".."),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte(".."),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte(".#"),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte(".#"),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte("##"),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte("##"),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte("#."),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte("#."),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte("."),
 				[]byte("#"),
 			},
-			"out": [][]byte{
-				[]byte("."),
-				[]byte("#"),
-			},
-		},
-
-		map[string][][]byte{
-			"in": [][]byte{
-				[]byte("#"),
-				[]byte("."),
-			},
-			"out": [][]byte{
+			"out": {
 				[]byte("."),
 				[]byte("#"),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
+				[]byte("#"),
+				[]byte("."),
+			},
+			"out": {
+				[]byte("."),
+				[]byte("#"),
+			},
+		},
+
+		{
+			"in": {
 				[]byte(".."),
 				[]byte(".."),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte(".."),
 				[]byte(".."),
 			},
 		},
 
-		map[string][][]byte{
-			"in": [][]byte{
+		{
+			"in": {
 				[]byte(".."),
 				[]byte("#."),
 			},
-			"out": [][]byte{
+			"out": {
 				[]byte(".."),
 				[]byte("#."),
 			},

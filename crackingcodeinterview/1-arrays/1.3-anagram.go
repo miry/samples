@@ -53,10 +53,10 @@ func isAnagramArray(a, b string) bool {
 
 func main() {
 	anagramTests := map[[2]string]bool{
-		[2]string{"heart", "earth"}:   true,
-		[2]string{"checklen", "oops"}: false,
-		[2]string{"heart", "bartch"}:  false,
-		[2]string{"", ""}:             true,
+		{"heart", "earth"}:   true,
+		{"checklen", "oops"}: false,
+		{"heart", "bartch"}:  false,
+		{"", ""}:             true,
 	}
 
 	for in, expected := range anagramTests {
