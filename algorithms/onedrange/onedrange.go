@@ -4,14 +4,17 @@ import (
 	"github.com/miry/samples/algorithms/btree"
 )
 
+// Tree is a basic binary search tree
 type Tree struct {
 	*btree.Tree
 }
 
+// Rank returns how many nodes less than max value.
 func (t *Tree) Rank(max int) int {
 	return rank(t.Tree, max)
 }
 
+// Size returns how many nodes between range
 func (t *Tree) Size(lo, hi int) int {
 	result := rank(t.Tree, hi) - rank(t.Tree, lo)
 	if contains(t.Tree, hi) {
