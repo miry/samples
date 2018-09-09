@@ -151,6 +151,51 @@ class SudokuTest < Minitest::Test
     assert_equal(sudoku(puzzle_hard), solution_hard)
   end
 
+  def test_check_puzzle_hard_step_1
+    puts 'Original: '
+    print_board puzzle_hard
+    step1 = clone(puzzle_hard)
+    puts 'Step 1: '
+    print_board step1
+
+    assert_equal([[3, 5, 7, 9], [4, 5, 7, 9], 6, 1, [2, 3, 4], [3, 4, 7], [2, 7, 9], [2, 5, 7, 9], 8], step1[0])
+    assert_equal([[5, 7], 8, [1, 4, 5], [2, 6, 7], 9, [4, 6, 7], [1, 2, 6, 7], 3, [1, 2, 5, 7]], step1[1])
+    assert_equal([[3, 5, 7, 9], [5, 7, 9], 8, 4, [1, 3], [3, 7, 9], [1, 2, 3, 7, 9], [1, 2, 7, 9], 6], step1[6])
+  end
+
+  def test_check_puzzle_hard_step_2
+    step1 = clone(puzzle_hard)
+    puts 'Step 1: '
+    print_board step1
+    step2 = clone(step1)
+    puts 'Step 2: '
+    print_board step2
+
+    assert_equal([[3, 5, 7, 9], [5, 7, 9], 8, 4, 1, [3, 7, 9], [1, 2, 3, 7, 9], [1, 2, 7, 9], 6], step2[6])
+  end
+
+  def test_check_puzzle_hard_step_3
+    step1 = clone(puzzle_hard)
+    step2 = clone(step1)
+    puts 'Step 2: '
+    print_board step2
+    step3 = clone(step2)
+    puts 'Step 3: '
+    print_board step3
+
+    assert_equal([[3, 5, 7, 9], [5, 7, 9], 8, 4, 1, [3, 7, 9], [2, 3, 7, 9], [2, 7, 9], 6], step3[6])
+  end
+
+  def test_check_puzzle_hard_step_4
+    step1 = clone(puzzle_hard)
+    step2 = clone(step1)
+    step3 = clone(step2)
+
+    assert_raises NoChangesException do
+      clone(step3)
+    end
+  end
+
   private
 
   def puzzle

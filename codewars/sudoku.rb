@@ -46,17 +46,25 @@ def clone(board)
       result[row][col] = case board[row][col]
                          when 0
                            r = possible_cell(board: board, row: row, col: col, current: FULL)
-                           found = true unless r == 0
+                           unless r == 0
+                             found = true
+                             puts "Guessed #{row}:#{col} #{board[row][col]} => #{r}"
+                           end
                            r
                          when Array
                            r = possible_cell(board: board, row: row, col: col, current: board[row][col])
                            if r.is_a?(Array)
                              diff = board[row][col] - r
                              puts "[#{row},#{col}]: #{board[row][col]} => #{r} : Diff: #{diff}"
-                             found = true unless diff.empty?
+                             unless diff.empty?
+                               puts "Guessed #{row}:#{col} #{board[row][col]} => #{r}"
+                               found = true
+                             end
                            else
+                             puts "Guessed #{row}:#{col} #{board[row][col]} => #{r}"
                              found = true
                            end
+
                            r
                          else
                            board[row][col]
@@ -184,7 +192,6 @@ end
 
 def is_uniq(val:, board:, row:, col:)
   current = board[row][col]
-  puts "Val: #{val} current: #{current}"
   # return true unless current == 0 || current.is_a?(Array)
   return false if (val < 1) || (val > 9)
 
