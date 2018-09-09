@@ -184,7 +184,8 @@ end
 
 def is_uniq(val:, board:, row:, col:)
   current = board[row][col]
-  return true unless current == 0 || current.is_a?(Array)
+  puts "Val: #{val} current: #{current}"
+  # return true unless current == 0 || current.is_a?(Array)
   return false if (val < 1) || (val > 9)
 
   result = get_block_possible(board, [row / 3, col / 3])
@@ -192,7 +193,17 @@ def is_uniq(val:, board:, row:, col:)
   j = col % 3
   result[i][j] = -1
   result = result.flatten.uniq
-  return false if result.include?(0)
+  return true if !result.include?(0) && !result.include?(val)
 
-  !result.include?(val)
+  result = get_row_possible(board, row)
+  result[col] = -1
+  result = result.flatten.uniq
+  return true if !result.include?(0) && !result.include?(val)
+
+  result = get_col_possible(board, col)
+  result[row] = -1
+  result = result.flatten.uniq
+  return true if !result.include?(0) && !result.include?(val)
+
+  false
 end
