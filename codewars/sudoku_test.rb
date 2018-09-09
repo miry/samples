@@ -52,7 +52,8 @@ class SudokuTest < Minitest::Test
 
   def test_clone_of_clone
     actual = clone clone(puzzle)
-    assert_equal [[1, 3, 9], 6, [1, 3, 5, 9], [3, 5], 3, 7, 2, 8, 4], actual[6]
+    print_board actual
+    assert_equal [9, 6, [1, 3, 5, 9], [3, 5], 3, 7, 2, 8, 4], actual[6]
   end
 
   def test_possible_cell
@@ -83,8 +84,10 @@ class SudokuTest < Minitest::Test
         board[i][j] = [5, 7, 9]
       end
     end
-    board[0][0] = 3 # uniq 3 in the cell
+    board[0][0] = 3
     assert_equal true, is_uniq(board: board, val: 3, row: 0, col: 0)
+    assert_equal false, is_uniq(board: board, val: 0, row: 0, col: 0)
+    assert_equal false, is_uniq(board: board, val: 10, row: 0, col: 0)
   end
 
   def test_is_uniq_by_block
@@ -94,11 +97,41 @@ class SudokuTest < Minitest::Test
         board[i][j] = [5, 7, 9]
       end
     end
-    board[0][0] = [3, 5, 7, 9] # uniq 3 in the cell
-    assert_equal false, is_uniq(board: board, val: 0, row: 0, col: 0)
-    assert_equal false, is_uniq(board: board, val: 10, row: 0, col: 0)
+    board[0][0] = [3, 5, 7, 9]
     assert_equal false, is_uniq(board: board, val: 5, row: 0, col: 0)
     assert_equal true, is_uniq(board: board, val: 3, row: 0, col: 0)
+  end
+
+  def test_is_uniq_by_row
+    board = puzzle_hard
+    9.times do |i|
+      board[0][i] = [5, 7, 9]
+    end
+    3.times do |i|
+      3.times do |j|
+        board[i][j] = [5, 7, 9]
+      end
+    end
+    board[0][0] = [3, 5, 7, 9]
+    assert_equal false, is_uniq(board: board, val: 5, row: 0, col: 0)
+    assert_equal true, is_uniq(board: board, val: 3, row: 0, col: 0)
+  end
+
+  def test_is_uniq_by_col
+    board = puzzle_hard
+    9.times do |i|
+      board[i][0] = [3, 5, 7, 9]
+      board[0][i] = [3, 5, 7, 9]
+    end
+    3.times do |i|
+      2.times do |j|
+        board[i + 1][j] = [3, 4, 7, 9]
+      end
+    end
+    board[0][0] = [4, 5, 7, 9]
+
+    assert_equal false, is_uniq(board: board, val: 5, row: 0, col: 0)
+    assert_equal true, is_uniq(board: board, val: 4, row: 0, col: 0)
   end
 
   def test_check_puzzle_1
