@@ -147,13 +147,20 @@ class SudokuTest < Minitest::Test
   end
 
   def test_check_puzzle_hard
-    skip
-    assert_equal(sudoku(puzzle_hard), solution_hard)
+    puts 'SOLUTION:'
+    print_board solution_hard
+    actual = sudoku(puzzle_hard)
+    puts 'ACTUAL:'
+    print_board actual
+
+    assert_equal(actual, solution_hard)
   end
 
   def test_check_puzzle_hard_step_1
     puts 'Original: '
     print_board puzzle_hard
+    puts 'Solution:'
+    print_board solution_hard
     step1 = clone(puzzle_hard)
     puts 'Step 1: '
     print_board step1
@@ -170,7 +177,12 @@ class SudokuTest < Minitest::Test
     step2 = clone(step1)
     puts 'Step 2: '
     print_board step2
+    puts 'original:'
+    print_board puzzle_hard
+    puts 'Solution:'
+    print_board solution_hard
 
+    assert_equal([[5, 7], 8, [1, 4, 5], [2, 6, 7], 9, [4, 6, 7], [1, 2, 6, 7], 3, [1, 2, 5, 7]], step2[1])
     assert_equal([[3, 5, 7, 9], [5, 7, 9], 8, 4, 1, [3, 7, 9], [1, 2, 3, 7, 9], [1, 2, 7, 9], 6], step2[6])
   end
 
@@ -183,6 +195,7 @@ class SudokuTest < Minitest::Test
     puts 'Step 3: '
     print_board step3
 
+    assert_equal([[5, 7], 8, [1, 4, 5], [2, 6, 7], 9, [4, 6, 7], [1, 2, 6, 7], 3, [1, 2, 5, 7]], step3[1])
     assert_equal([[3, 5, 7, 9], [5, 7, 9], 8, 4, 1, [3, 7, 9], [2, 3, 7, 9], [2, 7, 9], 6], step3[6])
   end
 
@@ -193,6 +206,39 @@ class SudokuTest < Minitest::Test
 
     assert_raises NoChangesException do
       clone(step3)
+    end
+  end
+
+  def test_get_min_possibilities
+    step1 = clone(puzzle_hard)
+    step2 = clone(step1)
+    step3 = clone(step2)
+    cell = get_min_possibilities(board: step3)
+    print_board step3
+    assert_equal({ row: 1, col: 0, cell: [5, 7] }, cell)
+  end
+
+  def test_next_possible_step4
+    step1 = clone(puzzle_hard)
+    step2 = clone(step1)
+    step3 = clone(step2)
+    cell = get_min_possibilities(board: step3)
+    step3[cell[:row]][cell[:col]] = cell[:cell][0]
+    assert_equal([5, 8, [1, 4, 5], [2, 6, 7], 9, [4, 6, 7], [1, 2, 6, 7], 3, [1, 2, 5, 7]], step3[1])
+
+    puts 'Step 3*: '
+    print_board step3
+    step4 = clone(step3)
+    puts 'Step 4*: '
+    print_board step4
+
+    assert_equal([5, 8, [1, 4], [2, 6, 7], 9, [4, 6, 7], [1, 2, 6, 7], 3, [1, 2, 7]], step4[1])
+    assert_equal([[3, 7, 9], [5, 7, 9], 8, 4, 1, [3, 7, 9], [2, 3, 7, 9], [2, 7, 9], 6], step4[6])
+  end
+
+  def test_invalid_grid
+    assert_raises InvalidGridException do
+      sudoku puzzle_invalid_grid
     end
   end
 
@@ -312,15 +358,29 @@ class SudokuTest < Minitest::Test
 
   def solution_hard
     [
-      [8, 5, 9, 7, 6, 1, 4, 2, 3],
-      [4, 2, 6, 8, 5, 3, 7, 9, 1],
-      [7, 1, 3, 9, 2, 4, 8, 5, 6],
-      [9, 6, 1, 5, 3, 7, 2, 8, 4],
-      [2, 8, 7, 4, 1, 9, 6, 3, 5],
-      [3, 4, 5, 2, 8, 6, 1, 7, 9],
-      [5, 3, 4, 6, 7, 8, 9, 1, 2],
-      [6, 7, 2, 1, 9, 5, 3, 4, 8],
-      [1, 9, 8, 3, 4, 2, 5, 6, 7]
+      [3, 4, 6, 1, 2, 7, 9, 5, 8],
+      [7, 8, 5, 6, 9, 4, 1, 3, 2],
+      [2, 1, 9, 3, 8, 5, 4, 6, 7],
+      [4, 6, 2, 5, 3, 1, 8, 7, 9],
+      [9, 3, 1, 2, 7, 8, 6, 4, 5],
+      [8, 5, 7, 9, 4, 6, 2, 1, 3],
+      [5, 9, 8, 4, 1, 3, 7, 2, 6],
+      [6, 2, 4, 7, 5, 9, 3, 8, 1],
+      [1, 7, 3, 8, 6, 2, 5, 9, 4]
+    ]
+  end
+
+  def puzzle_invalid_grid
+    [
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
   end
 end
