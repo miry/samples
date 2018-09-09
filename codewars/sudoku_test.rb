@@ -242,6 +242,10 @@ class SudokuTest < Minitest::Test
     end
   end
 
+  def test_fix_type_error
+    sudoku puzzle_type_error
+  end
+
   private
 
   def puzzle
@@ -382,5 +386,18 @@ class SudokuTest < Minitest::Test
       [1, 2, 3, 4, 5, 6, 7, 8, 9],
       [1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
+  end
+  def puzzle_type_error
+    [
+      [7, 0, 0, 0, 0, 0, 0, 0, 3],
+       [0, 0, 3, 1, 0, 5, 7, 0, 0],
+        [0, 2, 0, 0, 9, 0, 0, 8, 0],
+         [0, 8, 0, 3, 0, 1, 0, 6, 0],
+          [0, 0, 1, 0, 0, 0, 8, 0, 0],
+           [0, 7, 0, 9, 0, 8, 0, 4, 0],
+            [0, 3, 0, 0, 4, 0, 0, 7, 0],
+             [0, 0, 7, 5, 0, 2, 9, 0, 0],
+              [9, 0, 0, 0, 0, 0, 0, 0, 5]
+            ]
   end
 end
