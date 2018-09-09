@@ -237,13 +237,33 @@ class SudokuTest < Minitest::Test
   end
 
   def test_invalid_grid
-    assert_raises InvalidGridException do
+    assert_raises NotValidException do
       sudoku puzzle_invalid_grid
+    end
+    assert_raises InvalidGridException do
+      sudoku puzzle_invalid_grid_letter
     end
   end
 
   def test_fix_type_error
     sudoku puzzle_type_error
+  end
+
+  def test_single_solution
+    assert_equal(solution_single_solution1, sudoku(solution_single_solution1))
+
+    actual = sudoku(puzzle_single_solution1)
+    puts "Actual"
+    print_board actual
+    puts "Solution"
+    print_board solution_single_solution1
+    assert_equal(solution_single_solution1, actual)
+    # result = puzzle_single_solution1
+    # 3.times do |i|
+    #   puts "#{i}:"
+    #   result = clone(result)
+    #   print_board result
+    # end
   end
 
   private
@@ -387,6 +407,21 @@ class SudokuTest < Minitest::Test
       [1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
   end
+
+  def puzzle_invalid_grid_letter
+    [
+      [1, 2, 3, 4, 5, 6, 7, 8, "a"],
+     [4, 0, 6, 7, 8, 9, 1, 2, 3],
+      [7, 8, 9, 1, 2, 3, 4, 5, 6],
+       [2, 3, 4, 5, 6, 7, 8, 9, 1],
+        [5, 6, 7, 8, 9, 1, 2, 3, 4],
+        [8, 9, 1, 2, 3, 4, 5, 6, 7],
+        [3, 4, 5, 6, 7, 8, 9, 1, 2],
+         [6, 7, 8, 9, 1, 2, 3, 4, 5],
+        [9, 1, 2, 3, 4, 5, 6, 7, 8]
+      ]
+  end
+
   def puzzle_type_error
     [
       [7, 0, 0, 0, 0, 0, 0, 0, 3],
@@ -399,5 +434,23 @@ class SudokuTest < Minitest::Test
              [0, 0, 7, 5, 0, 2, 9, 0, 0],
               [9, 0, 0, 0, 0, 0, 0, 0, 5]
             ]
+  end
+
+  def puzzle_single_solution1
+    [[7, 0, 0, 0, 0, 0, 0, 0, 3], [0, 0, 3, 1, 0, 5, 7, 0, 0], [0, 2, 0, 0, 9, 0, 0, 8, 0], [0, 8, 0, 3, 0, 1, 0, 6, 0], [0, 0, 1, 0, 0, 0, 8, 0, 0], [0, 7, 0, 9, 0, 8, 0, 4, 0], [0, 3, 0, 0, 4, 0, 0, 7, 0], [0, 0, 7, 5, 0, 2, 9, 0, 0], [9, 0, 0, 0, 0, 0, 0, 0, 5]]
+  end
+
+  def solution_single_solution1
+    [
+      [7, 5, 9, 2, 8, 4, 6, 1, 3],
+    [8, 4, 3, 1, 6, 5, 7, 9, 2],
+    [1, 2, 6, 7, 9, 3, 5, 8, 4],
+    [5, 8, 4, 3, 7, 1, 2, 6, 9],
+     [3, 9, 1, 4, 2, 6, 8, 5, 7],
+     [6, 7, 2, 9, 5, 8, 3, 4, 1],
+     [2, 3, 5, 8, 4, 9, 1, 7, 6],
+     [4, 6, 7, 5, 1, 2, 9, 3, 8],
+     [9, 1, 8, 6, 3, 7, 4, 2, 5]
+    ]
   end
 end
