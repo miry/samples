@@ -27,6 +27,7 @@ def fill_board(board)
   result
 rescue NoChangesException => e
   cell = get_min_possibilities(board: result)
+  return e.board if cell.nil?
   cell[:cell].each do |c|
     e.board[cell[:row]][cell[:col]] = c
     begin
@@ -220,4 +221,5 @@ def get_min_possibilities(board:)
       end
     end
   end
+  nil
 end
