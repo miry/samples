@@ -258,12 +258,14 @@ class SudokuTest < Minitest::Test
     puts "Solution"
     print_board solution_single_solution1
     assert_equal(solution_single_solution1, actual)
-    # result = puzzle_single_solution1
-    # 3.times do |i|
-    #   puts "#{i}:"
-    #   result = clone(result)
-    #   print_board result
-    # end
+
+    actual = sudoku(puzzle_random1)
+    puts "Original"
+    print_board puzzle_random1
+    puts "Actual"
+    print_board actual
+    assert_equal true, valid?(actual)
+    assert_equal([], actual)
   end
 
   private
@@ -452,5 +454,9 @@ class SudokuTest < Minitest::Test
      [4, 6, 7, 5, 1, 2, 9, 3, 8],
      [9, 1, 8, 6, 3, 7, 4, 2, 5]
     ]
+  end
+
+  def puzzle_random1
+    [[3, 0, 0, 0, 0, 5, 0, 0, 8], [0, 0, 1, 0, 6, 0, 5, 0, 0], [4, 2, 0, 1, 0, 0, 0, 0, 7], [0, 0, 3, 0, 8, 0, 0, 5, 0], [7, 0, 2, 0, 0, 0, 0, 0, 1], [0, 4, 0, 0, 2, 0, 7, 0, 0], [6, 0, 0, 0, 0, 3, 0, 7, 5], [0, 0, 7, 0, 4, 0, 3, 0, 0], [9, 0, 0, 5, 0, 0, 0, 0, 4]]
   end
 end
