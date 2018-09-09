@@ -20,6 +20,9 @@ class SudokuTest < Minitest::Test
   def test_get_block
     assert_equal [0, 6, 0, 8, 0, 3, 0, 2, 0], get_block(puzzle, [1, 1])
     assert_equal [0, 0, 0, 0, 0, 0, 0, 6, 0], get_block(puzzle, [0, 2])
+    board = puzzle
+    board[0][8] = [1, 2, 3]
+    assert_equal [0, 0, 0, 0, 0, 0, 6, 0], get_block(board, [0, 2])
   end
 
   def test_clone
@@ -34,6 +37,7 @@ class SudokuTest < Minitest::Test
   end
 
   def test_possible_cell
+    print_board puzzle
     assert_equal [1, 2, 4], possible_cell(board: puzzle, row: 0, col: 2)
     assert_equal 0, puzzle[6][8]
     assert_equal 4, possible_cell(board: puzzle, row: 6, col: 8)
@@ -53,6 +57,31 @@ class SudokuTest < Minitest::Test
     assert_equal 1, possible_cell(board: cloned, row: 0, col: 2, current: [1])
   end
 
+  def test_is_uniq_single
+    board = puzzle_hard
+    3.times do |i|
+      3.times do |j|
+        board[i][j] = [5, 7, 9]
+      end
+    end
+    board[0][0] = 3 # uniq 3 in the cell
+    assert_equal true, is_uniq(board: board, val: 3, row: 0, col: 0)
+  end
+
+  def test_is_uniq_by_block
+    board = puzzle_hard
+    3.times do |i|
+      3.times do |j|
+        board[i][j] = [5, 7, 9]
+      end
+    end
+    board[0][0] = [3, 5, 7, 9] # uniq 3 in the cell
+    assert_equal false, is_uniq(board: board, val: 0, row: 0, col: 0)
+    assert_equal false, is_uniq(board: board, val: 10, row: 0, col: 0)
+    assert_equal false, is_uniq(board: board, val: 5, row: 0, col: 0)
+    assert_equal true, is_uniq(board: board, val: 3, row: 0, col: 0)
+  end
+
   def test_check_puzzle_1
     assert_equal(sudoku(puzzle), solution)
   end
@@ -66,6 +95,7 @@ class SudokuTest < Minitest::Test
   end
 
   def test_check_puzzle_hard
+    skip
     assert_equal(sudoku(puzzle_hard), solution_hard)
   end
 

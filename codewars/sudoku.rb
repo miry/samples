@@ -26,7 +26,7 @@ def fill_board(board)
 
     i += 1
     raise 'Looping' if i == 1000
-    break if i > 2
+    # break if i > 2
   end
   result
 rescue NoChangesException => e
@@ -142,6 +142,10 @@ def get_col(board, i)
 end
 
 def get_block(board, coord)
+  get_block_possible(board, coord).flatten(1).reject { |i| i.is_a? Array }.flatten
+end
+
+def get_block_possible(board, coord)
   first_row = coord[0] * 3
   last_row = first_row + 2
 
@@ -150,16 +154,31 @@ def get_block(board, coord)
   first_col = coord[1] * 3
   last_col = first_col + 2
 
-  rows.map { |r| r[first_col..last_col].reject { |i| i.is_a? Array } }.flatten
-end
-
-def get_dups_per_block_in_line(_board, _coord)
-  []
+  result = rows.map { |r| r[first_col..last_col] }
+  result
 end
 
 def possible_cell(board:, row:, col:, current: 0)
   existing = current == 0 ? FULL : current
   result = existing - get_row(board, row) - get_col(board, col) - get_block(board, [row / 3, col / 3])
   return result.first if result.size == 1
+  result.each do |val|
+    return val if is_uniq(val: val, board: board, row: row, col: col)
+  end
   result
+end
+
+def is_uniq(val:, board:, row:, col:)
+  current = board[row][col]
+  return true unless current == 0 || current.is_a?(Array)
+  return false if (val < 1) || (val > 9)
+
+  result = get_block_possible(board, [row / 3, col / 3])
+  i = row % 3
+  j = col % 3
+  result[i][j] = -1
+  result = result.flatten.uniq
+  return false if result.include?(0)
+
+  !result.include?(val)
 end
