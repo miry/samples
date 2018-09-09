@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class InvalidGridException < RuntimeError; end
+class NotValidException < RuntimeError; end
 class NoChangesException < RuntimeError
   attr_reader :board
   def initialize(board, msg = 'No changes')
@@ -11,29 +12,34 @@ end
 
 FULL = [1, 2, 3, 4, 5, 6, 7, 8, 9].freeze
 
+def sudoku_solver(board)
+  sudoku(board)
+end
+
 def sudoku(board)
-  raise InvalidGridException if board.size > 9
+  check_grid?(board)
   fill_board(board)
 end
 
 def fill_board(board)
-  result = clone board
+  result = board
   i = 1
   until valid?(result)
     result = clone result
     i += 1
-    raise 'Looping' if i == 1000
+    if i == 1000
+      raise 'Looping'
+    end
   end
   result
 rescue NoChangesException => e
-  cell = get_min_possibilities(board: result)
-  return e.board if cell.nil?
+  cell = get_min_possibilities(board: e.board)
+  raise NotValidException if cell.nil?
   cell[:cell].each do |c|
     e.board[cell[:row]][cell[:col]] = c
     begin
       return fill_board(e.board)
-    rescue NoChangesException
-      next
+    rescue NoChangesException, NotValidException
     end
   end
   raise
@@ -83,6 +89,16 @@ end
 
 def unused(numbers)
   FULL - numbers.sort
+end
+
+def check_grid?(board)
+  raise InvalidGridException if board.size > 9
+  board.each do |row|
+    raise InvalidGridException if row.size > 9
+    row.each do |cell|
+      (cell.is_a?(Numeric) && cell >= 0 && cell <=9) || (raise InvalidGridException)
+    end
+  end
 end
 
 def valid?(board)
