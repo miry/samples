@@ -17,6 +17,12 @@ jobs:
       - run: go test ./justforfunc/... -v |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
       - store_test_results:
           path: /tmp/test-results
+  ruby:
+    docker:
+      - image: circleci/ruby:2.6.0-preview2
+    steps:
+      - checkout
+      - run: ruby -I. -I./codewars  codewars/sudoku_test.rb
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
@@ -48,3 +54,4 @@ workflows:
   tests:
     jobs:
       - golang
+      - ruby
