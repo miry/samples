@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+class InvalidGridException < RuntimeError; end
 class NoChangesException < RuntimeError
   attr_reader :board
   def initialize(board, msg = 'No changes')
@@ -11,8 +12,7 @@ end
 FULL = [1, 2, 3, 4, 5, 6, 7, 8, 9].freeze
 
 def sudoku(board)
-  puts 'Original: '
-  print_board(board)
+  raise InvalidGridException if board.size > 9
   fill_board(board)
 end
 
@@ -21,20 +21,21 @@ def fill_board(board)
   i = 1
   until valid?(result)
     result = clone result
-    puts "\n#{i}: "
-    print_board(result)
-
     i += 1
     raise 'Looping' if i == 1000
-    # break if i > 2
   end
   result
 rescue NoChangesException => e
-  puts '=== NO CHANGES :'
-  puts '=== ORGINAL :'
-  print_board(result)
-  puts '=== RESULT :'
-  print_board(e.board)
+  cell = get_min_possibilities(board: result)
+  cell[:cell].each do |c|
+    e.board[cell[:row]][cell[:col]] = c
+    begin
+      return fill_board(e.board)
+    rescue NoChangesException
+      next
+    end
+  end
+  raise
 end
 
 def clone(board)
@@ -46,25 +47,16 @@ def clone(board)
       result[row][col] = case board[row][col]
                          when 0
                            r = possible_cell(board: board, row: row, col: col, current: FULL)
-                           unless r == 0
-                             found = true
-                             puts "Guessed #{row}:#{col} #{board[row][col]} => #{r}"
-                           end
+                           found = true unless r == 0
                            r
                          when Array
                            r = possible_cell(board: board, row: row, col: col, current: board[row][col])
                            if r.is_a?(Array)
                              diff = board[row][col] - r
-                             puts "[#{row},#{col}]: #{board[row][col]} => #{r} : Diff: #{diff}"
-                             unless diff.empty?
-                               puts "Guessed #{row}:#{col} #{board[row][col]} => #{r}"
-                               found = true
-                             end
+                             found = true unless diff.empty?
                            else
-                             puts "Guessed #{row}:#{col} #{board[row][col]} => #{r}"
                              found = true
                            end
-
                            r
                          else
                            board[row][col]
@@ -213,4 +205,19 @@ def is_uniq(val:, board:, row:, col:)
   return true if !result.include?(0) && !result.include?(val)
 
   false
+end
+
+def get_min_possibilities(board:)
+  raise InvalidGridException if board.nil?
+  board.each_with_index do |row, i|
+    row.each_with_index do |cell, j|
+      if cell.is_a?(Array) && cell.size < 3
+        return {
+          row: i,
+          col: j,
+          cell: cell
+        }
+      end
+    end
+  end
 end
