@@ -132,13 +132,27 @@ def print_board(board)
 end
 
 def get_row(board, i)
-  board[i].reject { |i| i.is_a? Array }
+  get_row_possible(board, i).reject { |i| i.is_a? Array }
+end
+
+def get_row_possible(board, i)
+  result = Array.new 9
+  9.times do |r|
+    result[r] = board[i][r]
+  end
+  result
 end
 
 def get_col(board, i)
+  get_col_possible(board, i).reject { |i| i.is_a? Array }
+end
+
+def get_col_possible(board, i)
   result = Array.new 9
-  9.times { |r| result[r] = board[r][i] }
-  result.reject { |i| i.is_a? Array }
+  9.times do |r|
+    result[r] = board[r][i]
+  end
+  result
 end
 
 def get_block(board, coord)

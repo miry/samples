@@ -11,10 +11,29 @@ class SudokuTest < Minitest::Test
 
   def test_get_col
     assert_equal [3, 0, 9, 0, 0, 0, 6, 0, 0], get_col(puzzle, 1)
+    board = puzzle
+    board[1][1] = [1, 2, 3]
+    assert_equal [3, 9, 0, 0, 0, 6, 0, 0], get_col(board, 1)
+  end
+
+  def test_get_col_possible
+    assert_equal [3, 0, 9, 0, 0, 0, 6, 0, 0], get_col_possible(puzzle, 1)
+    board = puzzle
+    board[1][1] = [1, 2, 3]
+    assert_equal [3, [1, 2, 3], 9, 0, 0, 0, 6, 0, 0], get_col_possible(board, 1)
   end
 
   def test_get_row
     assert_equal [6, 0, 0, 1, 9, 5, 0, 0, 0], get_row(puzzle, 1)
+    board = puzzle
+    board[1][8] = [1, 2, 3]
+    assert_equal [6, 0, 0, 1, 9, 5, 0, 0], get_row(board, 1)
+  end
+
+  def test_get_row_possible
+    board = puzzle
+    board[1][8] = [1, 2, 3]
+    assert_equal [6, 0, 0, 1, 9, 5, 0, 0, [1, 2, 3]], get_row_possible(board, 1)
   end
 
   def test_get_block
