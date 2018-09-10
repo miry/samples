@@ -10,15 +10,15 @@ import (
 
 func TestReverseBits(t *testing.T) {
 	tests := []map[string]uint8{
-		map[string]uint8{
+		{
 			"in":  0xAB,
 			"out": 0xD5,
 		},
-		map[string]uint8{
+		{
 			"in":  0xFF,
 			"out": 0xFF,
 		},
-		map[string]uint8{
+		{
 			"in":  0x00,
 			"out": 0x00,
 		},

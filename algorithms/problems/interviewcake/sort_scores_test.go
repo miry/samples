@@ -10,29 +10,29 @@ import (
 
 func TestSortScores(t *testing.T) {
 	tests := []map[string][]int{
-		map[string][]int{
-			"in":  []int{},
-			"out": []int{},
+		{
+			"in":  {},
+			"out": {},
 		},
-		map[string][]int{
-			"in":  []int{1, 2},
-			"out": []int{1, 2},
+		{
+			"in":  {1, 2},
+			"out": {1, 2},
 		},
-		map[string][]int{
-			"in":  []int{2, 1},
-			"out": []int{1, 2},
+		{
+			"in":  {2, 1},
+			"out": {1, 2},
 		},
-		map[string][]int{
-			"in":  []int{10, 7, 5, 8, 11, 9},
-			"out": []int{5, 7, 8, 9, 10, 11},
+		{
+			"in":  {10, 7, 5, 8, 11, 9},
+			"out": {5, 7, 8, 9, 10, 11},
 		},
-		map[string][]int{
-			"in":  []int{10, 7, 5, 8, 11, 1, 2},
-			"out": []int{1, 2, 5, 7, 8, 10, 11},
+		{
+			"in":  {10, 7, 5, 8, 11, 1, 2},
+			"out": {1, 2, 5, 7, 8, 10, 11},
 		},
-		map[string][]int{
-			"in":  []int{10, 7, 45, 8, 11, 20, 30},
-			"out": []int{7, 8, 10, 11, 20, 30, 45},
+		{
+			"in":  {10, 7, 45, 8, 11, 20, 30},
+			"out": {7, 8, 10, 11, 20, 30, 45},
 		},
 	}
 
