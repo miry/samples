@@ -21,7 +21,7 @@ get_max_profit(stock_prices)
 No "shorting"—you need to buy before you can sell. Also, you can't buy and sell in the same time step—at least 1 minute has to pass.
 **/
 
-package problems
+package interviewcake
 
 func GetMaxProfitBruteForce(prices []int) int { // Time complexity: O(n^2)
 	n := len(prices)
