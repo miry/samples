@@ -10,13 +10,13 @@ import (
 
 func TestKMinElement(t *testing.T) {
 	tests := []map[string][]int{
-		map[string][]int{
-			"in":  []int{1, 2, 3, 4, 5, 6, 7},
-			"out": []int{1, 2, 3},
+		{
+			"in":  {1, 2, 3, 4, 5, 6, 7},
+			"out": {1, 2, 3},
 		},
-		map[string][]int{
-			"in":  []int{4, 1, 5, 2, 3, 0, 10},
-			"out": []int{0, 1, 2},
+		{
+			"in":  {4, 1, 5, 2, 3, 0, 10},
+			"out": {0, 1, 2},
 		},
 	}
 

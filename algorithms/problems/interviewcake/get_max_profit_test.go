@@ -10,29 +10,29 @@ import (
 
 func TestGetMaxProfit(t *testing.T) {
 	tests := []map[string][]int{
-		map[string][]int{
-			"in":  []int{},
-			"out": []int{0},
+		{
+			"in":  {},
+			"out": {0},
 		},
-		map[string][]int{
-			"in":  []int{1, 2},
-			"out": []int{1},
+		{
+			"in":  {1, 2},
+			"out": {1},
 		},
-		map[string][]int{
-			"in":  []int{2, 1},
-			"out": []int{0},
+		{
+			"in":  {2, 1},
+			"out": {0},
 		},
-		map[string][]int{
-			"in":  []int{10, 7, 5, 8, 11, 9},
-			"out": []int{6},
+		{
+			"in":  {10, 7, 5, 8, 11, 9},
+			"out": {6},
 		},
-		map[string][]int{
-			"in":  []int{10, 7, 5, 8, 11, 1, 2},
-			"out": []int{6},
+		{
+			"in":  {10, 7, 5, 8, 11, 1, 2},
+			"out": {6},
 		},
-		map[string][]int{
-			"in":  []int{10, 7, 45, 8, 11, 20, 30},
-			"out": []int{38},
+		{
+			"in":  {10, 7, 45, 8, 11, 20, 30},
+			"out": {38},
 		},
 	}
 
