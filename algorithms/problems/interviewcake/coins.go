@@ -21,16 +21,20 @@ Example: for amount=4 (4¢) and denominations=[1,2,3] (11¢, 22¢ and 33¢), you
 2¢, 2¢
 */
 func Coins(a int, denominations []int) [][]int {
-	if len(denominations) == 0 {
+	if len(denominations) == 0 || a < 0 {
 		return nil
 	}
+
+	result := [][]int{}
 	if a == 0 {
-		return [][]int{}
+		return result
 	}
 
 	found := false
-	var variations, result [][]int
-	var diff int
+	var (
+		variations [][]int
+		diff       int
+	)
 
 	for i, n := range denominations {
 		diff = a - n
@@ -38,6 +42,7 @@ func Coins(a int, denominations []int) [][]int {
 			continue
 		}
 		found = true
+
 		variations = Coins(diff, denominations[i:])
 		if variations == nil {
 			continue
@@ -56,6 +61,5 @@ func Coins(a int, denominations []int) [][]int {
 	if !found {
 		return nil
 	}
-
 	return result
 }
