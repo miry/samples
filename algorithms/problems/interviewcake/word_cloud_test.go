@@ -11,9 +11,16 @@ import (
 func TestCloudify(t *testing.T) {
 	ins := []string{
 		"After beating the eggs 2, Dana read the next step: Add milk and eggs, then add flour and sugar.",
+		"We came, we saw, we conquered...then we ate Bill's (Mille-Feuille) cake.The bill came to five dollars.",
 	}
 
 	outs := []problems.WordStats{
+		map[string]int{
+			"AFTER":   1,
+			"BEATING": 1,
+			"ADD":     2,
+			"AND":     2,
+		},
 		map[string]int{
 			"AFTER":   1,
 			"BEATING": 1,
