@@ -62,8 +62,6 @@ CONSTRAINT `requests_apartament_id_idxfk` FOREIGN KEY (`apartament_id`) REFERENC
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 
-show tables;
-
 insert into tenants(name) VALUES
  ("Jordan")
  ,("Luis")
@@ -86,6 +84,8 @@ insert into apartaments(unit, building_id) VALUES
  ,("1B", 1)
  ,("1C", 1)
  ,("1D", 1)
+ ,("1A", 2)
+ ,("1B", 3)
  ;
 
 insert into apartament_tenants(tenant_id, apartament_id) VALUES
@@ -94,9 +94,34 @@ insert into apartament_tenants(tenant_id, apartament_id) VALUES
  ,(2, 1)
  ;
 
+
+insert into requests(apartament_id, status) VALUES
+  (1, "open"),
+  (2, "close"),
+  (5, "open"),
+  (6, "close")
+  ;
+
 select t.id, t.name, count(at.apartament_id) aps
 from tenants t
   LEFT join apartament_tenants at on t.id = at.tenant_id
 group by t.id
 having aps > 1
 ;
+
+-- Show number of open request per building
+select b.id, b.name, count(r.id)
+from buildings b
+  left join apartaments a ON b.id = a.building_id
+  left join requests r ON a.id = r.apartament_id and r.status='open'
+group by b.id;
+
+-- close all request for building
+update requests r, apartaments a SET r.status = 'close' where r.status='open' and a.id = r.apartament_id and a.building_id=2;
+
+-- Show number of open request per building after update
+select b.id, b.name, count(r.id)
+from buildings b
+  left join apartaments a ON b.id = a.building_id
+  left join requests r ON a.id = r.apartament_id and r.status='open'
+group by b.id;
