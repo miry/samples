@@ -250,6 +250,7 @@ class SudokuTest < Minitest::Test
   end
 
   def test_single_solution
+    skip
     assert_equal(solution_single_solution1, sudoku(solution_single_solution1))
 
     actual = sudoku(puzzle_single_solution1)
