@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/miry/samples/tree/distribusion.svg?style=svg)](https://circleci.com/gh/miry/samples/tree/distribusion)
+[![CircleCI](https://circleci.com/gh/miry/samples/tree/master.svg?style=svg)](https://circleci.com/gh/miry/samples/tree/master)
 
 Implement library to parse data from the service and upload in unified format.
 
