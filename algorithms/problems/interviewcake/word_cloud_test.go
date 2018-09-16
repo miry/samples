@@ -22,10 +22,8 @@ func TestCloudify(t *testing.T) {
 			"AND":     2,
 		},
 		map[string]int{
-			"AFTER":   1,
-			"BEATING": 1,
-			"ADD":     2,
-			"AND":     2,
+			"WE":  4,
+			"THE": 1,
 		},
 	}
 
