@@ -20,7 +20,7 @@ func benchmarkAccessStructure(b *testing.B, size int) {
 	var arr = make([]int, size, size)
 	var hash = make(map[int]int)
 
-	rand.Seed(42)
+	rand.Seed(int64(size % 42))
 	for i := 0; i < size; i++ {
 		indexes[i] = rand.Intn(size)
 		arr[i] = i
