@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+cat > pkg/conf/vsn_generated.go <<EOD
+package conf
+const GitHash = "$(git rev-parse HEAD)"
+const GitBranch = "$(git rev-parse --abbrev-ref HEAD)"
+const BuildDate = "$(date)"
+const BuildUnixTime = $(date "+%s")
+const BuildHost = "$(hostname)"
+const RepoRoot = "$(pwd)"
+EOD

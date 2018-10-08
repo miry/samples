@@ -1,0 +1,9 @@
+- [x] Init HTTP server
+- [x] Deploy
+- [x] Monitoring
+- [ ] Error handler integration
+- [x] Recipe response
+- [x] Pagination
+- [x] Use Case 1 - all recipes
+- [x] Use Case 2 - recipes by id
+- [ ] Benchmark
