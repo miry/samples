@@ -4,7 +4,7 @@ import (
 	"html"
 	"net/http"
 
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/app"
+	"github.com/miry/samples/hellofresh/cmd/recipes/app"
 )
 
 type middlewareFunc func(w http.ResponseWriter, r *http.Request)

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/app"
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/conf"
+	"github.com/miry/samples/hellofresh/cmd/recipes/app"
+	"github.com/miry/samples/hellofresh/pkg/conf"
 )
 
 type VersionHandler struct {

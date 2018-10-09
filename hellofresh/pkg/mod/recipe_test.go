@@ -3,7 +3,7 @@ package mod_test
 import (
 	"testing"
 
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/mod"
+	"github.com/miry/samples/hellofresh/pkg/mod"
 	"github.com/stretchr/testify/assert"
 )
 
