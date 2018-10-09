@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Merge 2 arrays
 func Merge(a, b []int, nA, nB int) ([]int, error) {
 	n := len(a)
 	if nA < 0 || nB < 0 || nA+nB > n {
