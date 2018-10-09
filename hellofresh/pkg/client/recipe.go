@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/mod"
+	"github.com/miry/samples/hellofresh/pkg/mod"
 )
 
 type RecipeClient struct {

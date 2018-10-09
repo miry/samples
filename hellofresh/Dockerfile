@@ -8,7 +8,7 @@ RUN apk add --update --no-cache \
             musl-dev \
  && go get -u github.com/golang/dep/cmd/dep
 
-WORKDIR /go/src/github.com/hellofreshdevtests/miry-scm-test
+WORKDIR /go/src/github.com/miry/samples/hellofresh
 
 COPY . .
 

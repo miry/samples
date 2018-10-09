@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/client"
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/service"
+	"github.com/miry/samples/hellofresh/pkg/client"
+	"github.com/miry/samples/hellofresh/pkg/service"
 	"github.com/stretchr/testify/assert"
 )
 

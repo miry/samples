@@ -8,9 +8,9 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/app"
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/mod"
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/service"
+	"github.com/miry/samples/hellofresh/cmd/recipes/app"
+	"github.com/miry/samples/hellofresh/pkg/mod"
+	"github.com/miry/samples/hellofresh/pkg/service"
 )
 
 type RecipesHandler struct {

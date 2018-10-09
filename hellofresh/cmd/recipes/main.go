@@ -6,9 +6,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/app"
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/handler"
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/mid"
+	"github.com/miry/samples/hellofresh/cmd/recipes/app"
+	"github.com/miry/samples/hellofresh/cmd/recipes/handler"
+	"github.com/miry/samples/hellofresh/cmd/recipes/mid"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

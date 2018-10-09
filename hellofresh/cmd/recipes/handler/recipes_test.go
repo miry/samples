@@ -3,8 +3,8 @@ package handler_test
 import (
 	"testing"
 
-	"github.com/hellofreshdevtests/miry-scm-test/cmd/recipes/handler"
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/mod"
+	"github.com/miry/samples/hellofresh/cmd/recipes/handler"
+	"github.com/miry/samples/hellofresh/pkg/mod"
 	"github.com/stretchr/testify/assert"
 )
 

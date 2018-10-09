@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/client"
-	"github.com/hellofreshdevtests/miry-scm-test/pkg/mod"
+	"github.com/miry/samples/hellofresh/pkg/client"
+	"github.com/miry/samples/hellofresh/pkg/mod"
 )
 
 type RecipeService struct {
