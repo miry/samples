@@ -47,4 +47,12 @@ class Node
       yield(last)
     end
   end
+
+  def delete : self
+    return self if self.next.nil?
+    next_node : self = self.next.as(Node)
+    @value = next_node.value
+    @next = next_node.next
+    return self
+  end
 end

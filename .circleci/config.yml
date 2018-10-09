@@ -1,4 +1,18 @@
 version: 2
+dry:
+  restore_shards_cache: &restore_shards_cache
+    # Use {{ checksum "shard.yml" }} if developing a shard instead of an app
+    keys:
+      - shards-cache-v1-{{ .Branch }}-{{ checksum "shard.lock" }}
+      - shards-cache-v1-{{ .Branch }}
+      - shards-cache-v1
+
+  save_shards_cache: &save_shards_cache
+    # Use {{ checksum "shard.yml" }} if developing a shard instead of an app
+    key: shards-cache-v1-{{ .Branch }}-{{ checksum "shard.lock" }}
+    paths:
+      - ./shards-cache
+
 jobs:
   golang:
     working_directory: /go/src/github.com/miry/samples/
@@ -24,6 +38,16 @@ jobs:
     steps:
       - checkout
       - run: ruby -I. -I./codewars  codewars/sudoku_test.rb
+  crystal:
+    # https://crystal-lang.org/2018/09/04/using-circleci-2.0-for-your-crystal-projects.html
+    docker:
+      - image: crystallang/crystal:latest
+    steps:
+      - run: crystal --version
+      - restore_cache: *restore_shards_cache
+      - run: shards
+      - save_cache: *save_shards_cache
+      - run: crystal run algorithms/list/node_test.cr -- --verbose
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
