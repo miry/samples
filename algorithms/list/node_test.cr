@@ -63,4 +63,16 @@ class NodeTest < Minitest::Test
     assert_equal first, actual
     assert_equal 1, first.size
   end
+
+  def test_delete_node
+    first : Node = Node.new("foo")
+    second : Node = Node.new("quux")
+    third : Node = Node.new("bar")
+    first.append(second)
+    first.append(third)
+    second.delete()
+
+    assert_equal 2, first.size
+    assert_equal ["foo", "bar"], first.values
+  end
 end
