@@ -13,3 +13,12 @@ func TestBackgroundNotTODO(t *testing.T) {
 		t.Errorf("TODO and background are equal: %q vs %q", todo, bg)
 	}
 }
+
+func TestWithCancel(t *testing.T) {
+	ctx, cancel := WithCancel(Background())
+	if err := ctx.Err(); err != nil {
+		t.Errorf("error should be nil first, got %v", err)
+	}
+	cancel()
+	<-ctx.Done()
+}
