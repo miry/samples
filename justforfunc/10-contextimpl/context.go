@@ -2,6 +2,7 @@ package contextimpl
 
 import (
 	"errors"
+	"reflect"
 	"sync"
 	"time"
 )
@@ -113,4 +114,32 @@ func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc) {
 
 func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) {
 	return WithDeadline(parent, time.Now().Add(timeout))
+}
+
+type valueCtx struct {
+	Context
+	key, value interface{}
+}
+
+func (ctx *valueCtx) Value(key interface{}) interface{} {
+	if key == ctx.key {
+		return ctx.value
+	}
+	return ctx.Context.Value(key)
+}
+
+func WithValue(parent Context, key, value interface{}) Context {
+	if key == nil {
+		panic("key is nil")
+	}
+
+	if reflect.TypeOf(key).Comparable() {
+		panic("key is not comparable")
+	}
+
+	return &valueCtx{
+		Context: parent,
+		key:     key,
+		value:   value,
+	}
 }
