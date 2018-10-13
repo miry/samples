@@ -49,6 +49,16 @@ func (ctx *cancelCtx) Err() error {
 	return ctx.err
 }
 
+func (ctx *cancelCtx) cancel(err error) {
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+	if ctx.err != nil {
+		return
+	}
+	ctx.err = err
+	close(ctx.done)
+}
+
 type CancelFunc func()
 
 func WithCancel(parent Context) (Context, CancelFunc) {
@@ -56,12 +66,51 @@ func WithCancel(parent Context) (Context, CancelFunc) {
 		Context: parent,
 		done:    make(chan struct{}),
 	}
+
 	cancel := func() {
-		ctx.mu.Lock()
-		defer ctx.mu.Unlock()
-		ctx.err = Canceled
-		close(ctx.done)
+		ctx.cancel(Canceled)
 	}
 
+	go func() {
+		select {
+		case <-parent.Done():
+			ctx.cancel(parent.Err())
+		case <-ctx.Done():
+
+		}
+	}()
+
 	return ctx, cancel
+}
+
+type deadlineCtx struct {
+	*cancelCtx
+	deadline time.Time
+}
+
+func (ctx *deadlineCtx) Deadline() (time.Time, bool) { return ctx.deadline, true }
+
+var DeadlineExceeded = errors.New("deadline exceeded")
+
+func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc) {
+	cctx, cancel := WithCancel(parent)
+
+	ctx := &deadlineCtx{
+		cancelCtx: cctx.(*cancelCtx),
+		deadline:  deadline,
+	}
+
+	t := time.AfterFunc(time.Until(deadline), func() {
+		ctx.cancel(DeadlineExceeded)
+	})
+
+	stop := func() {
+		t.Stop()
+		cancel()
+	}
+	return ctx, stop
+}
+
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) {
+	return WithDeadline(parent, time.Now().Add(timeout))
 }
