@@ -3,6 +3,7 @@ package contextimpl
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestBackgroundNotTODO(t *testing.T) {
@@ -21,4 +22,20 @@ func TestWithCancel(t *testing.T) {
 	}
 	cancel()
 	<-ctx.Done()
+}
+
+func TestWithCancelConcurent(t *testing.T) {
+	ctx, cancel := WithCancel(Background())
+
+	time.AfterFunc(1*time.Second, cancel)
+
+	if err := ctx.Err(); err != nil {
+		t.Errorf("error should be nil first, got %v", err)
+	}
+
+	<-ctx.Done()
+
+	if err := ctx.Err(); err != Canceled {
+		t.Errorf("error should be canceled now, got %v", err)
+	}
 }

@@ -2,6 +2,7 @@ package contextimpl
 
 import (
 	"errors"
+	"sync"
 	"time"
 )
 
@@ -35,24 +36,29 @@ func TODO() Context {
 var Canceled = errors.New("context canceled")
 
 type cancelCtx struct {
-	parent Context
-	done   chan struct{}
-	err    error
+	Context
+	done chan struct{}
+	err  error
+	mu   sync.Mutex
 }
 
-func (ctx *cancelCtx) Deadline() (deadline time.Time, ok bool) { return ctx.parent.Deadline() }
-func (ctx *cancelCtx) Done() <-chan struct{}                   { return ctx.done }
-func (ctx *cancelCtx) Err() error                              { return ctx.err }
-func (ctx *cancelCtx) Value(key interface{}) interface{}       { return ctx.parent.Value(key) }
+func (ctx *cancelCtx) Done() <-chan struct{} { return ctx.done }
+func (ctx *cancelCtx) Err() error {
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+	return ctx.err
+}
 
 type CancelFunc func()
 
 func WithCancel(parent Context) (Context, CancelFunc) {
 	ctx := &cancelCtx{
-		parent: parent,
-		done:   make(chan struct{}),
+		Context: parent,
+		done:    make(chan struct{}),
 	}
 	cancel := func() {
+		ctx.mu.Lock()
+		defer ctx.mu.Unlock()
 		ctx.err = Canceled
 		close(ctx.done)
 	}
