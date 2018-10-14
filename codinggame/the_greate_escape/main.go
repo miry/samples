@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"math/rand"
+	"os"
 )
 
 const (
@@ -13,7 +13,7 @@ const (
 
 type Coord struct {
 	id, x, y, wallsLeft int
-	parent *Coord
+	parent              *Coord
 }
 
 func printBoard(board [][]int, walls map[int]map[int][]string) {
@@ -70,20 +70,20 @@ func initWalls(h, w int) (result map[int]map[int][]string) {
 func (this Coord) availableMoves(walls map[int]map[int][]string) map[string]Coord {
 	result := map[string]Coord{}
 
-	if _, ok := walls[this.x + 1]; ok && walls[this.x+1][this.y][0] != VERTICAL {
-		result["RIGHT"] = Coord{id: this.id, x: this.x+1, y: this.y, parent: &this}
+	if _, ok := walls[this.x+1]; ok && walls[this.x+1][this.y][0] != VERTICAL {
+		result["RIGHT"] = Coord{id: this.id, x: this.x + 1, y: this.y, parent: &this}
 	}
 
-	if _, ok := walls[this.x - 1]; ok && walls[this.x][this.y][0] != VERTICAL {
-		result["LEFT"] = Coord{id: this.id, x: this.x-1, y: this.y, parent: &this}
+	if _, ok := walls[this.x-1]; ok && walls[this.x][this.y][0] != VERTICAL {
+		result["LEFT"] = Coord{id: this.id, x: this.x - 1, y: this.y, parent: &this}
 	}
 
-	if _, ok := walls[this.x][this.y + 1]; ok && walls[this.x][this.y+1][1] != HORIZONTAL {
-		result["DOWN"] = Coord{id: this.id, x: this.x, y: this.y+1, parent: &this}
+	if _, ok := walls[this.x][this.y+1]; ok && walls[this.x][this.y+1][1] != HORIZONTAL {
+		result["DOWN"] = Coord{id: this.id, x: this.x, y: this.y + 1, parent: &this}
 	}
 
-	if _, ok := walls[this.x][this.y - 1]; ok && walls[this.x][this.y][1] != HORIZONTAL {
-		result["UP"] = Coord{id: this.id, x: this.x, y: this.y-1, parent: &this}
+	if _, ok := walls[this.x][this.y-1]; ok && walls[this.x][this.y][1] != HORIZONTAL {
+		result["UP"] = Coord{id: this.id, x: this.x, y: this.y - 1, parent: &this}
 	}
 
 	return result
@@ -109,7 +109,6 @@ func (this Coord) suggestMove(walls map[int]map[int][]string, w int, h int) stri
 					found = &coord
 					break
 				}
-
 
 				newCoords = append(newCoords, coord)
 			}
@@ -203,7 +202,7 @@ func main() {
 		move := coord[myId].suggestMove(walls, w, h)
 		if move != "" {
 			r := rand.Intn(100)
-			if coord[myId].wallsLeft > 0 && moves > 2 && r < (50 + myId*15) {
+			if coord[myId].wallsLeft > 0 && moves > 2 && r < (50+myId*15) {
 
 				n := rand.Intn(playerCount)
 
@@ -221,10 +220,13 @@ func main() {
 						continue
 					}
 
-					if (n == 2) && (wX >= 0 && wX < w) && (wY+1 < h) && (wX+1 < w && walls[wX+1][wY][1] != HORIZONTAL) &&
-						walls[wX][wY+1][1] != HORIZONTAL &&
-						walls[wX+1][wY][1] != HORIZONTAL && walls[wX+1][wY+1][1] != HORIZONTAL && walls[wX+1][wY+1][1] != HORIZONTAL &&
-						walls[wX][wY+1][0] != VERTICAL && walls[wX+1][wY+1][0] != VERTICAL {
+					if (n == 2) && (wX >= 0 && wX < w) &&
+						(wY+1 < h) &&
+						(wX+1 < w) &&
+						(walls[wX][wY+1][1] != HORIZONTAL) &&
+						(walls[wX+1][wY][1] != HORIZONTAL) &&
+						(walls[wX+1][wY+1][1] != HORIZONTAL) &&
+						(walls[wX][wY+1][0] != VERTICAL) && (walls[wX+1][wY+1][0] != VERTICAL) {
 						fmt.Printf("%d %d %s I Kill You\n", wX, wY+1, HORIZONTAL)
 						continue
 					}
