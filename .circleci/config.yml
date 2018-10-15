@@ -44,6 +44,7 @@ jobs:
       - image: crystallang/crystal:latest
     steps:
       - run: crystal --version
+      - checkout
       - restore_cache: *restore_shards_cache
       - run: shards
       - save_cache: *save_shards_cache
