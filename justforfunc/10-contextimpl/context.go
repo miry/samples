@@ -4,6 +4,7 @@ package contextimpl
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"sync"
 	"time"
@@ -135,8 +136,8 @@ func WithValue(parent Context, key, value interface{}) Context {
 		panic("key is nil")
 	}
 
-	if reflect.TypeOf(key).Comparable() {
-		panic("key is not comparable")
+	if !reflect.TypeOf(key).Comparable() {
+		panic(fmt.Sprintf("key %v is not comparable", key))
 	}
 
 	return &valueCtx{

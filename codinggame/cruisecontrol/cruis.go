@@ -20,7 +20,7 @@ func Cruis(maxspeed int, lights []*Light) int {
 		}
 		corrector := result * 3.6
 		if corrector-math.Floor(corrector) > 0.001 {
-			result -= 0.0001
+			result = (math.Floor(corrector) + 0.1) * 10 / 36
 		}
 	}
 
