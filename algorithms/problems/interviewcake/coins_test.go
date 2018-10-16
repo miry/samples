@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	problems "github.com/miry/samples/algorithms/problems/interviewcake"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCoins(t *testing.T) {
@@ -36,6 +35,10 @@ func TestCoins(t *testing.T) {
 			"out": {{1, 1}, {2}},
 		},
 		{
+			"in":  {{2}, {3, 2, 1}},
+			"out": {{1, 1}, {2}},
+		},
+		{
 			"in":  {{3}, {1, 2, 3}},
 			"out": {{1, 1, 1}, {2, 1}, {3}},
 		},
@@ -45,7 +48,7 @@ func TestCoins(t *testing.T) {
 		},
 		{
 			"in":  {{4}, {4, 2, 3}},
-			"out": {{4}, {2, 2}},
+			"out": {{2, 2}, {4}},
 		},
 	}
 

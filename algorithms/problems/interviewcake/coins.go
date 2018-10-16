@@ -1,5 +1,7 @@
 package interviewcake
 
+import "sort"
+
 /*
 Coins is an algorithm problem from https://www.interviewcake.com/question/ruby/coin
 
@@ -24,6 +26,7 @@ func Coins(a int, denominations []int) [][]int {
 	if len(denominations) == 0 || a < 0 {
 		return nil
 	}
+	sort.Ints(denominations)
 
 	result := [][]int{}
 	if a == 0 {
