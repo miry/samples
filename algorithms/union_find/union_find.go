@@ -19,6 +19,9 @@ func NewUF(size int) *UF {
 }
 
 func (uf *UF) Union(a, b int) {
+	if uf.Connected(a, b) {
+		return
+	}
 	c := uf.head(a)
 	uf.store[c] = b
 }
