@@ -3,9 +3,9 @@ dry:
   restore_shards_cache: &restore_shards_cache
     # Use {{ checksum "shard.yml" }} if developing a shard instead of an app
     keys:
-      - shards-cache-v1-{{ .Branch }}-{{ checksum "shard.lock" }}
-      - shards-cache-v1-{{ .Branch }}
-      - shards-cache-v1
+      - shards-cache-v26-{{ .Branch }}-{{ checksum "shard.lock" }}
+      - shards-cache-v26-{{ .Branch }}
+      - shards-cache-v26
 
   save_shards_cache: &save_shards_cache
     # Use {{ checksum "shard.yml" }} if developing a shard instead of an app
@@ -41,12 +41,12 @@ jobs:
   crystal:
     # https://crystal-lang.org/2018/09/04/using-circleci-2.0-for-your-crystal-projects.html
     docker:
-      - image: crystallang/crystal:latest
+      - image: crystallang/crystal:0.26.1
     steps:
       - run: crystal --version
       - checkout
       - restore_cache: *restore_shards_cache
-      - run: shards
+      - run: shards install
       - save_cache: *save_shards_cache
       - run: crystal run algorithms/list/node_test.cr -- --verbose
   distribusion:
