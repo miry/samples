@@ -4,6 +4,7 @@ version: 0.1.0
 development_dependencies:
   minitest:
     git: https://github.com/ysbaddaden/minitest.cr.git
-    version: ~> 0.4.0
+    # https://github.com/ysbaddaden/minitest.cr/blob/master/CHANGELOG.md#v041 does not support Crystal 0.26.1
+    version: 0.4.0
 
 license: MIT
