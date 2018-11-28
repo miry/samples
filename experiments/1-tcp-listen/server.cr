@@ -5,11 +5,13 @@ def log(message, src)
 end
 
 def handle_client(client)
-  log "Connected client: #{client}", "server"
+  log "Client is connected: #{client}", "server"
   while message = client.gets
     log "Message: #{message}", client
     client << "#{message}\n"
   end
+  log "Closing client's connection: #{client}", "server"
+  client.close
 end
 
 server = TCPServer.new("localhost", 3000)
