@@ -34,14 +34,14 @@ jobs:
           path: /tmp/test-results
   ruby:
     docker:
-      - image: circleci/ruby:2.6.0-preview2
+      - image: circleci/ruby:2.6.0-preview3
     steps:
       - checkout
       - run: ruby -I. -I./codewars  codewars/sudoku_test.rb
   crystal:
     # https://crystal-lang.org/2018/09/04/using-circleci-2.0-for-your-crystal-projects.html
     docker:
-      - image: crystallang/crystal:0.26.1
+      - image: crystallang/crystal:0.27.0
     steps:
       - run: crystal --version
       - checkout
@@ -52,7 +52,7 @@ jobs:
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
-      - image: circleci/ruby:2.6.0-preview2
+      - image: circleci/ruby:2.6.0-preview3
         environment:
           RUBYOPT: "--enable-frozen-string-literal"
     steps:
