@@ -1,4 +1,4 @@
-package main
+package recursion
 
 import (
 	"fmt"
@@ -57,11 +57,4 @@ func magicIndexRec(arr []int, s, e, counter int) (int, int) {
 
 func magicIndexBottomUp(arr []int, s, e int) int {
 	return -1
-}
-
-func main() {
-	magicIndex([]int{-10, -5, 0, 3, 5, 10, 20, 30}, 3)
-	magicIndex([]int{-1, -1, 0, 0, 1, 1, 1, 7}, 7)
-	magicIndex([]int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 1)
-	magicIndex([]int{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}, 9)
 }

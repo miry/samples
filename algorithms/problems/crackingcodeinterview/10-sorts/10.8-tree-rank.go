@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package sorts
 
 type Node struct {
 	Left  *Node
@@ -72,16 +70,4 @@ func getRankOfNumberR(node *Node, x int) int {
 	}
 
 	return result + getRankOfNumberR(node.Right, x) + 1
-}
-
-func main() {
-	in := []int{5, 1, 4, 4, 5, 9, 7, 13, 3}
-	for _, x := range in {
-		track(x)
-	}
-	fmt.Printf("rank(1): 0 == %v\n", getRankOfNumber(1))
-	fmt.Printf("rank(3): 1 == %v\n", getRankOfNumber(3))
-	fmt.Printf("rank(4): 3 == %v\n", getRankOfNumber(4))
-	fmt.Printf("rank(5): 5 == %v\n", getRankOfNumber(5))
-	fmt.Printf("rank(13): 5 == %v\n", getRankOfNumber(13))
 }
