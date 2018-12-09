@@ -17,7 +17,7 @@ jobs:
   golang:
     working_directory: /go/src/github.com/miry/samples/
     docker:
-      - image: circleci/golang:1.11.1
+      - image: circleci/golang:1.11.3
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
@@ -37,7 +37,7 @@ jobs:
       - image: circleci/ruby:2.6.0-preview3
     steps:
       - checkout
-      - run: ruby -I. -I./codewars  codewars/sudoku_test.rb
+      - run: ruby -I. -I./algorithms/problems/codewars  algorithms/problems/codewars/sudoku_test.rb
   crystal:
     # https://crystal-lang.org/2018/09/04/using-circleci-2.0-for-your-crystal-projects.html
     docker:
