@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/miry/samples/codinggame/cruisecontrol"
+	"github.com/miry/samples/algorithms/problems/codinggame/cruisecontrol"
 )
 
 func main() {

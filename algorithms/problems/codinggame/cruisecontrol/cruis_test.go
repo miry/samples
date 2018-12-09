@@ -3,7 +3,7 @@ package cruisecontrol_test
 import (
 	"testing"
 
-	"github.com/miry/samples/codinggame/cruisecontrol"
+	"github.com/miry/samples/algorithms/problems/codinggame/cruisecontrol"
 	"github.com/stretchr/testify/assert"
 )
 
