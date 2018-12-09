@@ -17,7 +17,7 @@ jobs:
   golang:
     working_directory: /go/src/github.com/miry/samples/
     docker:
-      - image: circleci/golang:1.11.3
+      - image: circleci/golang:1.11.2
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
@@ -26,7 +26,6 @@ jobs:
       - run: go get -u github.com/jstemmer/go-junit-report
       - run: go get -v -t -d ./...
       - run: go test ./algorithms/... -v |& go-junit-report > $TEST_RESULTS/algorithms/report.xml
-      - run: go test ./codinggame/... -v |& go-junit-report > $TEST_RESULTS/codinggame/report.xml
       - run: go test ./gohttproxy/... -v |& go-junit-report > $TEST_RESULTS/gohttproxy/report.xml
       - run: go test ./justforfunc/... -v |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
       - run: go test -bench=. ./benchmarks/... -v
@@ -79,6 +78,19 @@ workflows:
       - distribusion
   tests:
     jobs:
+      - golang
+      - ruby
+      - crystal
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - distribusion
       - golang
       - ruby
       - crystal

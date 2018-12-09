@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/miry/samples/codinggame/gravity_tumbler"
+	"github.com/miry/samples/algorithms/problems/codinggame/gravity_tumbler"
 )
 
 func main() {

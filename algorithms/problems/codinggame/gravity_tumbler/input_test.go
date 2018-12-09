@@ -6,9 +6,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/miry/samples/algorithms/problems/codinggame/gravity_tumbler"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/miry/samples/codinggame/gravity_tumbler"
 )
 
 func TestNewInputFromReader(t *testing.T) {
