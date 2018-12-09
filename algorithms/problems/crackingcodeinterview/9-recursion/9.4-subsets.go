@@ -1,8 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
+package recursion
 
 func sumAriphmenticProgression(n int) int {
 	return (2+n-1)*n/2 + 1
@@ -21,15 +17,4 @@ func subsets(arr []int) [][]int {
 		}
 	}
 	return result
-}
-
-func main() {
-	sample := []int{}
-	fmt.Printf("%v = %v\n", subsets(sample), "[]")
-	sample = []int{1}
-	fmt.Printf("%v = %v\n", subsets(sample), "[[] [1]]")
-	sample = []int{1, 2, 3}
-	fmt.Printf("%v = %v\n", subsets(sample), "[[] [1] [1 2] [1 2 3] [2] [2 3] [3]]")
-	sample = []int{1, 2, 3, 4}
-	fmt.Printf("%v = %v\n", subsets(sample), "[[] [1] [1 2] [1 2 3] [1 2 3 4] [2] [2 3] [2 3 4] [3] [3 4] [4]]")
 }
