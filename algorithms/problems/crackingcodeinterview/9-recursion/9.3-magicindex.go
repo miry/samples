@@ -50,9 +50,9 @@ func magicIndexRec(arr []int, s, e, counter int) (int, int) {
 
 	if arr[mid] < mid+1 {
 		return magicIndexRec(arr, mid+1, e, counter+leftCounter)
-	} else {
-		return magicIndexRec(arr, arr[mid], e, counter+leftCounter)
 	}
+
+	return magicIndexRec(arr, arr[mid], e, counter+leftCounter)
 }
 
 func magicIndexBottomUp(arr []int, s, e int) int {
