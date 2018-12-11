@@ -3,15 +3,26 @@ dry:
   restore_shards_cache: &restore_shards_cache
     # Use {{ checksum "shard.yml" }} if developing a shard instead of an app
     keys:
-      - shards-cache-v26-{{ .Branch }}-{{ checksum "shard.lock" }}
-      - shards-cache-v26-{{ .Branch }}
-      - shards-cache-v26
+      - shards-cache-v1-{{ .Branch }}-{{ checksum "shard.lock" }}
+      - shards-cache-v1-{{ .Branch }}
+      - shards-cache-v1
 
   save_shards_cache: &save_shards_cache
     # Use {{ checksum "shard.yml" }} if developing a shard instead of an app
     key: shards-cache-v1-{{ .Branch }}-{{ checksum "shard.lock" }}
     paths:
-      - ./shards-cache
+      - shards-cache
+
+  restore_bundle_cache: &restore_bundle_cache
+    keys:
+      - bundle-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+      - bundle-cache-v1-{{ .Branch }}
+      - bundle-cache-v1
+
+  save_bundle_cache: &save_bundle_cache
+    key: bundle-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+    paths:
+      - vendor/bundle
 
 jobs:
   golang:
@@ -31,23 +42,40 @@ jobs:
       - run: go test -bench=. ./benchmarks/... -v
       - store_test_results:
           path: /tmp/test-results
+
   ruby:
     docker:
       - image: circleci/ruby:2.6.0-preview3
+        environment:
+          RUBYOPT: "--enable-frozen-string-literal --jit"
+
     steps:
       - checkout
-      - run: ruby -I. -I./algorithms/problems/codewars  algorithms/problems/codewars/sudoku_test.rb
+
+      - restore_cache: *restore_bundle_cache
+      - run: bundle install --path vendor/bundle
+      - save_cache: *save_bundle_cache
+
+      - run:
+          command: bundle exec rubocop -c .rubocop.yml -L
+          background: true
+      - run: ruby algorithms/problems/codewars/sudoku_test.rb
+      - run: ruby algorithms/problems/interviewcake/reverse_words_test.rb
+
   crystal:
     # https://crystal-lang.org/2018/09/04/using-circleci-2.0-for-your-crystal-projects.html
     docker:
-      - image: crystallang/crystal:0.27.0
+      - image: crystallang/crystal:latest
     steps:
       - run: crystal --version
       - checkout
+
       - restore_cache: *restore_shards_cache
       - run: shards install
       - save_cache: *save_shards_cache
+
       - run: crystal run algorithms/list/node_test.cr -- --verbose
+
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
@@ -57,14 +85,11 @@ jobs:
     steps:
       - checkout:
           path: ~/samples
-      - restore_cache:
-          key: dependency-cache-{{ checksum "Gemfile.lock" }}
+      - restore_cache: *restore_bundle_cache
       - run: bundle install --path vendor/bundle
-      - save_cache:
-          key: dependency-cache-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-      - run: bundle exec rubocop -c .rubocop.yml
+      - save_cache: *save_bundle_cache
+
+      - run: bundle exec rubocop -P -c .rubocop.yml
       - run: bundle exec rake test
       - run: bundle exec ruby --enable-frozen-string-literal ./bin/local -v -s all -p $DISTRIBUSION_PASSPHRASE | sed s/"${DISTRIBUSION_PASSPHRASE}"/xxx/g
 

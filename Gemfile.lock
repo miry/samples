@@ -1,21 +1,27 @@
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: https://github.com/rubocop-hq/rubocop
+  revision: 548a39a441c0959e898fa8ebfe9d361237a1c331
   specs:
-    ast (2.4.0)
-    jaro_winkler (1.5.1)
-    parallel (1.12.1)
-    parser (2.5.1.2)
-      ast (~> 2.4.0)
-    powerpack (0.1.2)
-    rainbow (3.0.0)
-    rubocop (0.58.2)
+    rubocop (0.61.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
       powerpack (~> 0.1)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (~> 1.0, >= 1.0.1)
+      unicode-display_width (~> 1.4.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.0)
+    jaro_winkler (1.5.1)
+    minitest (5.11.3)
+    parallel (1.12.1)
+    parser (2.5.3.0)
+      ast (~> 2.4.0)
+    powerpack (0.1.2)
+    rainbow (3.0.0)
     ruby-progressbar (1.10.0)
     unicode-display_width (1.4.0)
 
@@ -23,7 +29,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rubocop
+  minitest
+  rubocop!
 
 BUNDLED WITH
-   1.16.4
+   1.17.1
