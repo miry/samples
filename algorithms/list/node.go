@@ -10,6 +10,7 @@ type Node struct {
 	Value string
 }
 
+// Values returns a list of node's values
 func (n *Node) Values() (result []string) {
 	for node := n; node != nil; node = node.Next {
 		result = append(result, node.Value)

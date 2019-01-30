@@ -1,4 +1,4 @@
-package main
+package list_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/miry/samples/algorithms/list"
 )
 
-func main() {
+func ExampleNode_Values() {
 	fmt.Println("## Example of the List implementation")
 	first := &list.Node{Value: "First node"}
 	first.Print()
@@ -52,4 +52,30 @@ func main() {
 	first, _ = first.Delete(0)
 	first, _ = first.Delete(3)
 	first.Print()
+	// Output:
+	// ## Example of the List implementation
+	// First node
+	//
+	// ### Append element
+	// First node
+	// Second node
+	// Third node
+	//
+	// ### Get element
+	// Get second node: Second node
+	// Get third node:  Third node
+	// ERROR:  Out of index
+	//
+	// ### Insert element
+	// ERROR:  Out of index
+	// New First
+	// First node
+	// New Second
+	// Second node
+	// Third node
+	//
+	// ### Delete element
+	// First node
+	// New Second
+	// Second node
 }
