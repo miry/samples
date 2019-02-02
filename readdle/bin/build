@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+
+bin/setup
+
+readonly LOCAL_OUTPUT_ROOT="_output"
+mkdir -p "${LOCAL_OUTPUT_ROOT}"
+go build -o "${LOCAL_OUTPUT_ROOT}"/server cmd/server/main.go
+go build -o "${LOCAL_OUTPUT_ROOT}"/client cmd/client/main.go
+
+readonly current_tag=`git rev-parse HEAD`
+readonly docker_image_base="miry/readdle"
+readonly docker_image="$docker_image_base:$current_tag"
+
+docker build -t "$docker_image" .

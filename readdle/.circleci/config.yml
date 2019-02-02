@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  golang:
+    docker:
+      - image: circleci/golang:1.11rc2
+    environment:
+      TEST_RESULTS: /tmp/test-results
+    working_directory: /go/src/bitbucket.org/miry/miry-readdle-test
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "Gopkg.lock" }}
+      - run: dep ensure
+      - save_cache:
+          key: dependency-cache-{{ checksum "Gopkg.lock" }}
+          paths:
+            - vendor/
+      - run: mkdir -p $TEST_RESULTS
+      - run: go get -u github.com/jstemmer/go-junit-report
+      - run: go get -v -t -d ./...
+      - run: go test ./... -v 2>&1 | go-junit-report > $TEST_RESULTS/report.xml
+      - store_test_results:
+          path: /tmp/test-results
+
+
+workflows:
+  version: 2
+  distribusion:
+    jobs:
+      - golang

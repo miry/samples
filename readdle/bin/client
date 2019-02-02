@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+name=$*
+
+if [ $# -eq 0 ]; then
+  name=$USER
+fi
+
+go run cmd/client/main.go $name

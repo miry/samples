@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+./bin/build
+
+readonly current_branch=`git rev-parse --abbrev-ref HEAD`
+readonly current_tag=`git rev-parse HEAD`
+staging_name="$current_branch-$USER-readdle"
+
+if [ $# -eq 0 ]; then
+  staging_name=$*
+fi
+
+
+# Check access to Heroku
+heroku status
+
+# Deploy app
+heroku apps:info -a "$staging_name" || heroku create "$staging_name" -s container
+
+heroku container:push web
+heroku container:release web
+
+docker run miry/readdle:"${current_tag}" /client -address "${staging_name}.herokuapp.com:80" $USER
