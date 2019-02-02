@@ -25,6 +25,7 @@ module Distribusion
 
       def build_routes(node_times:, routes:, sequences:)
         return [] if [node_times, routes, sequences].any? { |i| i.nil? || i.empty? }
+
         indexed_node_times = indexing_by(node_times, :node_time_id)
         indexed_routes = indexing_by(routes, :route_id)
         combined_routes = combine_routes(indexed_node_times, indexed_routes, sequences)

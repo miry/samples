@@ -51,6 +51,7 @@ module Distribusion
         result = {}
         routes.each do |route|
           next unless node_pairs.key? route[:node_pair_id]
+
           node_pair = node_pairs[route[:node_pair_id]]
           result[route[:route_id]] ||= []
           attributes = route.merge(start_node: node_pair[:start_node], end_node: node_pair[:end_node])

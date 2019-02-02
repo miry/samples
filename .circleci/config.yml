@@ -15,12 +15,12 @@ dry:
 
   restore_bundle_cache: &restore_bundle_cache
     keys:
-      - bundle-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-      - bundle-cache-v1-{{ .Branch }}
-      - bundle-cache-v1
+      - bundle-cache-v2-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+      - bundle-cache-v2-{{ .Branch }}
+      - bundle-cache-v2
 
   save_bundle_cache: &save_bundle_cache
-    key: bundle-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+    key: bundle-cache-v2-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
     paths:
       - vendor/bundle
 
@@ -45,7 +45,7 @@ jobs:
 
   ruby:
     docker:
-      - image: circleci/ruby:2.6.0-preview3
+      - image: circleci/ruby:2.6.0
         environment:
           RUBYOPT: "--enable-frozen-string-literal --jit"
 
@@ -79,7 +79,7 @@ jobs:
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
-      - image: circleci/ruby:2.6.0-preview3
+      - image: circleci/ruby:2.6.0
         environment:
           RUBYOPT: "--enable-frozen-string-literal"
     steps:

@@ -23,11 +23,13 @@ module Distribusion
       def build_routes(routes:)
         result = []
         return result if routes.nil? || routes.empty?
+
         combined_routes = routes_by_id(routes)
         combined_routes.keys.each do |route_id|
           # Expecting that records has indexes connected to smae route uniq and growing by 1
           nodes = combined_routes[route_id].sort_by(&:index)
           next if nodes.size == 1
+
           result << build_route(nodes[0], nodes[-1])
         end
         result
