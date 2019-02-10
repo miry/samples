@@ -1,8 +1,8 @@
-package anagram
+package arrays
 
 import "fmt"
 
-func isAnagramMap(a, b string) bool {
+func IsAnagramMap(a, b string) bool {
 	if len(a) != len(b) {
 		return false
 	}
@@ -25,7 +25,7 @@ func isAnagramMap(a, b string) bool {
 }
 
 // Expect ASCII chars only
-func isAnagramArray(a, b string) bool {
+func IsAnagramArray(a, b string) bool {
 	if len(a) != len(b) {
 		return false
 	}
@@ -60,13 +60,13 @@ func main() {
 	}
 
 	for in, expected := range anagramTests {
-		if actual := isAnagramMap(in[0], in[1]); actual != expected {
+		if actual := IsAnagramMap(in[0], in[1]); actual != expected {
 			fmt.Printf("isAnagramMap: %v expected to return %v, but returns %v\n", in, expected, actual)
 		}
 	}
 
 	for in, expected := range anagramTests {
-		if actual := isAnagramArray(in[0], in[1]); actual != expected {
+		if actual := IsAnagramArray(in[0], in[1]); actual != expected {
 			fmt.Printf("isAnagramArray: %v expected to return %v, but returns %v\n", in, expected, actual)
 		}
 	}
