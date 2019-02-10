@@ -1,0 +1,6 @@
+Brewfile
+*.md
+/.circleci/
+/vendor/
+/pkg/version/base_generated.go
+/_output/
