@@ -28,7 +28,7 @@ jobs:
   golang:
     working_directory: /go/src/github.com/miry/samples/
     docker:
-      - image: circleci/golang:1.11.2
+      - image: circleci/golang:1.11.5
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
@@ -45,7 +45,7 @@ jobs:
 
   ruby:
     docker:
-      - image: circleci/ruby:2.6.0
+      - image: circleci/ruby:2.6.1
         environment:
           RUBYOPT: "--enable-frozen-string-literal --jit"
 
@@ -79,7 +79,7 @@ jobs:
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
-      - image: circleci/ruby:2.6.0
+      - image: circleci/ruby:2.6.1
         environment:
           RUBYOPT: "--enable-frozen-string-literal"
     steps:
