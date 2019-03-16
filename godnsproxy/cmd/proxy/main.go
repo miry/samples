@@ -21,6 +21,15 @@ var (
 	printVersion = flag.Bool("version", false, "Print version")
 )
 
+type Addr struct {
+	Network string
+	Host    string
+}
+
+func (a *Addr) String() string {
+	return a.Host
+}
+
 func main() {
 	flag.Parse()
 
@@ -29,16 +38,25 @@ func main() {
 		os.Exit(0)
 	}
 
-	network, addr, err := parseAddress(*address)
+	upstreamAddr, err := parseAddress(*upstream)
 	if err != nil {
-		log.Fatalf("Invalid address `%s' : %v", *address, err)
+		log.Fatalf("Invalid upstream address `%s' : %v", *upstream, err)
 	}
 
-	log.Printf("Listening %s on %s\n", network, addr)
-
-	listen, err := net.Listen(network, addr)
+	listenAddr, err := parseAddress(*address)
 	if err != nil {
-		log.Fatalf("Could not listen %s : %v", *address, err)
+		log.Fatalf("Invalid server address `%s' : %v", *address, err)
+	}
+
+	connect(upstreamAddr)
+	listen(listenAddr)
+}
+
+func listen(addr *Addr) {
+	log.Printf("Listening %s on %s\n", addr.Network, addr.Host)
+	listen, err := net.Listen(addr.Network, addr.Host)
+	if err != nil {
+		log.Fatalf("Could not listen %s : %v", addr, err)
 	}
 	defer listen.Close()
 
@@ -52,7 +70,11 @@ func main() {
 	}
 }
 
-func parseAddress(addr string) (string, string, error) {
+func connect(addr *Addr) {
+	log.Printf("Connect upstream %s on %s\n", addr.Network, addr.Host)
+}
+
+func parseAddress(addr string) (*Addr, error) {
 	network := ""
 	host := ""
 
@@ -67,14 +89,19 @@ func parseAddress(addr string) (string, string, error) {
 	}
 
 	if _, _, err = net.SplitHostPort(host); err != nil {
-		return "", "", fmt.Errorf("could not parse address %s : %v", addr, err)
+		return nil, fmt.Errorf("could not parse address %s : %v", addr, err)
 	}
 
 	if len(network) == 0 {
 		network = "tcp"
 	}
 
-	return network, host, nil
+	result := &Addr{
+		Network: network,
+		Host:    host,
+	}
+
+	return result, nil
 }
 
 func handleConnection(conn net.Conn) {
@@ -97,5 +124,6 @@ func handleConnection(conn net.Conn) {
 		}
 		log.Printf("[%s] DEBUG: Read %d bytes", client, n)
 		log.Printf("\n%s", hex.Dump(clientConnBuf[:n]))
+
 	}
 }
