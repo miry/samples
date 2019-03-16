@@ -3,8 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/miry/samples/godnsproxy/pkg/dnstls"
 	"github.com/miry/samples/godnsproxy/pkg/version"
 )
 
@@ -20,5 +22,20 @@ func main() {
 		fmt.Println("DNS server:", *server)
 		fmt.Printf("%#v\n", version.Get())
 		os.Exit(0)
+	}
+
+	names := flag.Args()
+
+	if len(names) == 0 {
+		log.Fatal("No names to resolve")
+	}
+
+	resolver, err := dnstls.New(*server)
+	if err != nil {
+		log.Fatalf("Could not connect to server %s : %v\n", *server, err)
+	}
+
+	for _, name := range names {
+		fmt.Printf("%s : %s\n", name, resolver.Lookup(name))
 	}
 }
