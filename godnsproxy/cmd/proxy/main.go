@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/hex"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"net/url"
@@ -10,6 +12,8 @@ import (
 
 	"github.com/miry/samples/godnsproxy/pkg/version"
 )
+
+const NetBufferSize = 1024
 
 var (
 	address      = flag.String("address", "tcp://127.0.0.1:8080", "Listen address for incoming connections e.g 127.0.0.1:3000")
@@ -31,6 +35,21 @@ func main() {
 	}
 
 	log.Printf("Listening %s on %s\n", network, addr)
+
+	listen, err := net.Listen(network, addr)
+	if err != nil {
+		log.Fatalf("Could not listen %s : %v", *address, err)
+	}
+	defer listen.Close()
+
+	for {
+		conn, err := listen.Accept()
+		if err != nil {
+			log.Printf("ERROR: %v\n", err)
+			return
+		}
+		go handleConnection(conn)
+	}
 }
 
 func parseAddress(addr string) (string, string, error) {
@@ -56,4 +75,27 @@ func parseAddress(addr string) (string, string, error) {
 	}
 
 	return network, host, nil
+}
+
+func handleConnection(conn net.Conn) {
+	defer conn.Close()
+
+	client := conn.RemoteAddr().String()
+	log.Printf("[%s] INFO: Serving", client)
+
+	for {
+		clientConnBuf := make([]byte, NetBufferSize)
+		n, err := conn.Read(clientConnBuf)
+		if err != nil {
+			if err == io.EOF {
+				log.Printf("[%s] INFO: Connection closed", client)
+				return
+			}
+
+			log.Printf("[%s] ERROR: %v", client, err)
+			continue
+		}
+		log.Printf("[%s] DEBUG: Read %d bytes", client, n)
+		log.Printf("\n%s", hex.Dump(clientConnBuf[:n]))
+	}
 }
