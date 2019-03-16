@@ -1,0 +1,2 @@
+brew 'go', head: true
+cask 'docker'
