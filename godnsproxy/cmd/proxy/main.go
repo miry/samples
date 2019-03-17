@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/hex"
 	"flag"
 	"fmt"
@@ -9,11 +10,12 @@ import (
 	"net"
 	"net/url"
 	"os"
+	"sync"
 
 	"github.com/miry/samples/godnsproxy/pkg/version"
 )
 
-const NetBufferSize = 1024
+const netBufferSize = 1024
 
 var (
 	address      = flag.String("address", "tcp://127.0.0.1:8080", "Listen address for incoming connections e.g 127.0.0.1:3000")
@@ -21,6 +23,7 @@ var (
 	printVersion = flag.Bool("version", false, "Print version")
 )
 
+// Addr stores net netowrk and host
 type Addr struct {
 	Network string
 	Host    string
@@ -30,6 +33,8 @@ func (a *Addr) String() string {
 	return a.Host
 }
 
+// TODO: Implement context
+// TODO: Worker pools for connecitons
 func main() {
 	flag.Parse()
 
@@ -48,11 +53,24 @@ func main() {
 		log.Fatalf("Invalid server address `%s' : %v", *address, err)
 	}
 
-	connect(upstreamAddr)
-	listen(listenAddr)
+	// TODO: Handle listenUDP
+	if len(listenAddr.Network) > 2 && listenAddr.Network[:3] == "tcp" {
+		listenTCP(listenAddr, connectionPool(upstreamAddr))
+	} else {
+		log.Fatalf("Network %s is not supported for server", listenAddr.Network)
+	}
+
 }
 
-func listen(addr *Addr) {
+func connectionPool(addr *Addr) *sync.Pool {
+	return &sync.Pool{
+		New: func() interface{} {
+			return connect(addr)
+		},
+	}
+}
+
+func listenTCP(addr *Addr, upstreams *sync.Pool) {
 	log.Printf("Listening %s on %s\n", addr.Network, addr.Host)
 	listen, err := net.Listen(addr.Network, addr.Host)
 	if err != nil {
@@ -63,15 +81,30 @@ func listen(addr *Addr) {
 	for {
 		conn, err := listen.Accept()
 		if err != nil {
-			log.Printf("ERROR: %v\n", err)
+			log.Printf("ERROR: Could not accept connection : %v\n", err)
 			return
 		}
-		go handleConnection(conn)
+		go handleConnection(conn, upstreams)
 	}
 }
 
-func connect(addr *Addr) {
-	log.Printf("Connect upstream %s on %s\n", addr.Network, addr.Host)
+func connect(addr *Addr) net.Conn {
+	log.Printf("Connecting to upstream %s on %s\n", addr.Network, addr.Host)
+
+	var conn net.Conn
+	var err error
+
+	if addr.Network == "tls" {
+		conn, err = tls.Dial("tcp", addr.Host, &tls.Config{})
+	} else {
+		conn, err = net.Dial(addr.Network, addr.Host)
+	}
+
+	if err != nil {
+		log.Fatalf("failed to connect to upstream (%s) %s : %v", addr.Network, addr.Host, err)
+	}
+
+	return conn
 }
 
 func parseAddress(addr string) (*Addr, error) {
@@ -104,14 +137,21 @@ func parseAddress(addr string) (*Addr, error) {
 	return result, nil
 }
 
-func handleConnection(conn net.Conn) {
+func handleConnection(conn net.Conn, upstreams *sync.Pool) {
 	defer conn.Close()
 
 	client := conn.RemoteAddr().String()
 	log.Printf("[%s] INFO: Serving", client)
 
+	var upstreamConn net.Conn
+	var remoteAddr string
+
+	upstreamConn = upstreams.Get().(net.Conn)
+	defer upstreams.Put(upstreamConn)
+	remoteAddr = upstreamConn.RemoteAddr().String()
+
 	for {
-		clientConnBuf := make([]byte, NetBufferSize)
+		clientConnBuf := make([]byte, netBufferSize)
 		n, err := conn.Read(clientConnBuf)
 		if err != nil {
 			if err == io.EOF {
@@ -122,8 +162,35 @@ func handleConnection(conn net.Conn) {
 			log.Printf("[%s] ERROR: %v", client, err)
 			continue
 		}
-		log.Printf("[%s] DEBUG: Read %d bytes", client, n)
+		log.Printf("[%s] DEBUG: Read %d bytes from client", client, n)
 		log.Printf("\n%s", hex.Dump(clientConnBuf[:n]))
 
+		n, err = upstreamConn.Write(clientConnBuf[:n])
+		if err != nil {
+			fmt.Errorf("failed to write to server %s : %v", remoteAddr, err)
+			continue
+		}
+		fmt.Printf("Write %d bytets to server %v\n", n, remoteAddr)
+
+		// TODO: Handle big responses without blocking clients
+		// for {
+		bufServer := make([]byte, 1024000)
+		n, err = upstreamConn.Read(bufServer)
+		if err != nil {
+			fmt.Errorf("failed to read from server %s : %v", remoteAddr, err)
+			continue
+		}
+
+		fmt.Printf("[%s] Read %d bytets from server %v\n", client, n, remoteAddr)
+		fmt.Printf("%s", hex.Dump(bufServer[:n]))
+
+		n, err = conn.Write(bufServer[:n])
+		if err != nil {
+			fmt.Errorf("failed to write to client %v : %v", client, err)
+			continue
+		}
+		fmt.Printf("[%s] Write %d bytes to client %v\n", client, n, client)
+		// }
+		fmt.Printf("[%s] Finish transfer\n", client)
 	}
 }
