@@ -180,43 +180,46 @@ func handleConnection(client *Client, upstream *Addr) {
 	log.Printf("[%s] INFO: Serving", client)
 
 	var upstreamConn net.Conn
-	var remoteAddr string
 
 	upstreamConn = connect(upstream) //upstreams.Get().(net.Conn)
 	defer upstreamConn.Close()
-	remoteAddr = upstreamConn.RemoteAddr().String()
 
-	var n int
 	for {
 		clientConnBuf, err := client.Read()
 		if err != nil {
 			break
 		}
 
-		n, err = upstreamConn.Write(clientConnBuf)
+		bufServer, err := requestUpstream(upstreamConn, clientConnBuf)
 		if err != nil {
-			log.Printf("failed to write to server %s : %v", remoteAddr, err)
-			break
-		}
-		log.Printf("Write %d bytets to server %v\n", n, remoteAddr)
-
-		// TODO: Handle big responses without blocking clients
-		// for {
-		bufServer := make([]byte, 1024000)
-		n, err = upstreamConn.Read(bufServer)
-		if err != nil {
-			log.Printf("failed to read from server %s : %v", remoteAddr, err)
 			break
 		}
 
-		log.Printf("[%s] Read %d bytets from server %v\n", client, n, remoteAddr)
-		log.Printf("%s", hex.Dump(bufServer[:n]))
-
-		if err = client.Write(bufServer[:n]); err != nil {
+		if err = client.Write(bufServer); err != nil {
 			break
 		}
-		// }
 	}
 
 	log.Printf("[%s] Finish transfer\n", client)
+}
+
+func requestUpstream(upstreamConn net.Conn, clientConnBuf []byte) ([]byte, error) {
+	remoteAddr := upstreamConn.RemoteAddr().String()
+	n, err := upstreamConn.Write(clientConnBuf)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to write to server %s : %v", remoteAddr, err)
+	}
+	log.Printf("Write %d bytets to server %v\n", n, remoteAddr)
+
+	// TODO: Handle big responses without blocking clients
+	bufServer := make([]byte, 1024000)
+	n, err = upstreamConn.Read(bufServer)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read from server %s : %v", remoteAddr, err)
+	}
+
+	log.Printf("Read %d bytets from server %v\n", n, remoteAddr)
+	log.Printf("%s", hex.Dump(bufServer[:n]))
+	return bufServer[:n], nil
 }
