@@ -36,7 +36,15 @@ func main() {
 	}
 
 	for _, name := range names {
-		fmt.Printf("%s : %s\n", name, resolver.Lookup(name))
+		fmt.Printf("%s : ", name)
+		result, err := resolver.Lookup(name)
+
+		if err == nil {
+			fmt.Println(result)
+		} else {
+			fmt.Println(err.Error())
+		}
+
 	}
 }
 

@@ -33,11 +33,11 @@ func TestLookup(t *testing.T) {
 
 	tc := []struct {
 		name     string
-		expected string
+		expected []string
 	}{
-		{"google-public-dns-a.google.com", "8.8.8.8"},
-		{"google-public-dns-b.google.com", "8.8.4.4"},
-		{"one.one.one.one", "1.1.1.1"},
+		{"google-public-dns-a.google.com", []string{"8.8.8.8"}},
+		{"google-public-dns-b.google.com", []string{"8.8.4.4"}},
+		{"one.one.one.one", []string{"1.1.1.1", "1.0.0.1"}},
 	}
 
 	for _, tt := range tc {

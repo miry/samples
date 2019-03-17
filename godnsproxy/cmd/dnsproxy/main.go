@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/binary"
 	"encoding/hex"
 	"fmt"
 	"log"
@@ -51,7 +52,11 @@ func main() {
 		remoteAddr := conn.RemoteAddr().String()
 		fmt.Printf("Connected to %s\n", remoteAddr)
 
-		n, err = conn.Write(append(udpTcpDiffReq, buf[:n]...))
+		// Enrich UDP to TCP add size of message infront
+		b := make([]byte, 2)
+		binary.BigEndian.PutUint16(b[0:], uint16(n))
+
+		n, err = conn.Write(append(b, buf[:n]...))
 		// n, err = conn.Write(buf[:n])
 		if err != nil {
 			fmt.Printf("failed to write to server %s : %v\n", remoteAddr, err)
@@ -68,6 +73,7 @@ func main() {
 		fmt.Printf("Read %d bytets from server %v\n", n, remoteAddr)
 		fmt.Printf("%s", hex.Dump(bufServer[:n]))
 
+		// Cut message size field: first 2 bytes for TCP -> UDP
 		n, err = pc.WriteTo(bufServer[2:n], addr)
 		if err != nil {
 			fmt.Printf("failed to write to client %v : %v\n", addr, err)
