@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"encoding/hex"
 	"flag"
 	"fmt"
@@ -92,7 +91,12 @@ func (c *Client) Write(buf []byte) error {
 func connectionPool(addr *n.Addr) *sync.Pool {
 	return &sync.Pool{
 		New: func() interface{} {
-			return connect(addr)
+			c, err := addr.Connect()
+			if err != nil {
+				log.Printf("ERROR: %v\n", err)
+				panic(err)
+			}
+			return c
 		},
 	}
 }
@@ -115,25 +119,6 @@ func listenTCP(addr *n.Addr, upstream *n.Addr) error {
 	}
 }
 
-func connect(addr *n.Addr) net.Conn {
-	log.Printf("Connecting to upstream %s on %s\n", addr.Network, addr.Host)
-
-	var conn net.Conn
-	var err error
-
-	if addr.Network == "tls" {
-		conn, err = tls.Dial("tcp", addr.Host, &tls.Config{})
-	} else {
-		conn, err = net.Dial(addr.Network, addr.Host)
-	}
-
-	if err != nil {
-		log.Fatalf("failed to connect to upstream (%s) %s : %v", addr.Network, addr.Host, err)
-	}
-
-	return conn
-}
-
 func handleConnection(client *Client, upstream *n.Addr) {
 	defer func() {
 		if x := recover(); x != nil {
@@ -144,9 +129,10 @@ func handleConnection(client *Client, upstream *n.Addr) {
 	defer client.Close()
 	log.Printf("[%s] INFO: Serving", client)
 
-	var upstreamConn net.Conn
-
-	upstreamConn = connect(upstream) //upstreams.Get().(net.Conn)
+	upstreamConn, err := upstream.Connect() //upstreams.Get().(net.Conn)
+	if err != nil {
+		return
+	}
 	defer upstreamConn.Close()
 
 	cR, cW := net.Pipe()
