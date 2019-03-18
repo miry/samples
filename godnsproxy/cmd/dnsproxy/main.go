@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"encoding/binary"
 	"encoding/hex"
 	"flag"
@@ -56,18 +55,6 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 	}
 	defer pc.Close()
 
-	// cloudfareDNSTLS := "1.1.1.1:853"
-	// cloudfareDNS := "1.1.1.1:53"
-	quadDNSTLS := "9.9.9.9:853"
-	// conn, err := tls.Dial("tcp", quadDNSTLS, &tls.Config{})
-	// // conn, err := net.Dial("udp", "1.1.1.1:53")
-	// if err != nil {
-	// 	log.Fatalf("failed to connect to server : %v", err)
-	// }
-	// defer conn.Close()
-	// remoteAddr := conn.RemoteAddr().String()
-	// fmt.Printf("Connected to %s\n", remoteAddr)
-
 	for {
 		buf := make([]byte, 1024)
 		n, addr, err := pc.ReadFrom(buf)
@@ -78,10 +65,11 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 		fmt.Printf("Read %d bytes from client %v\n", n, addr)
 		fmt.Printf("%s", hex.Dump(buf[:n]))
 
-		conn, err := tls.Dial("tcp", quadDNSTLS, &tls.Config{})
-		// conn, err := net.Dial("udp", "1.1.1.1:53")
+		// TODO: Implement reconnect
+		conn, err := upstream.Connect()
 		if err != nil {
-			log.Fatalf("failed to connect to server : %v", err)
+			fmt.Printf("ERROR: could not connect to upstream : %v", err)
+			break
 		}
 
 		remoteAddr := conn.RemoteAddr().String()
@@ -108,8 +96,11 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 		fmt.Printf("Read %d bytes from server %v\n", n, remoteAddr)
 		fmt.Printf("%s", hex.Dump(bufServer[:n]))
 
+		u := binary.BigEndian.Uint16(b[:2]) + 2
+		fmt.Printf("Size: %x %x : %v\n", bufServer[0], bufServer[1], u)
+
 		// Cut message size field: first 2 bytes for TCP -> UDP
-		n, err = pc.WriteTo(bufServer[2:n], addr)
+		n, err = pc.WriteTo(bufServer[2:u], addr)
 		if err != nil {
 			fmt.Printf("failed to write to client %v : %v\n", addr, err)
 			continue
@@ -117,6 +108,7 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 		fmt.Printf("Write %d bytes to client %v\n", n, addr)
 		conn.Close()
 	}
+	return nil
 }
 
 func init() {
