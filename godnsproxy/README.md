@@ -29,6 +29,14 @@ $ make proxy-dns
 $ make proxy-dns-test
 ```
 
+## Docker
+
+```
+$ ./build/run
+$ docker run -p 8053:8053/udp -it miry/dnsproxy
+$ dig @127.0.0.1 -p 8053 one.one.one.one
+```
+
 # Development
 
 ## Build

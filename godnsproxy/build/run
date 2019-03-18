@@ -12,6 +12,6 @@ go build -o "${LOCAL_OUTPUT_ROOT}"/dnsproxy cmd/dnsproxy/main.go
 
 readonly current_tag=`git rev-parse HEAD`
 readonly docker_image_base="miry/dnsproxy"
-readonly docker_image="$docker_image_base:$current_tag"
+readonly docker_image="$docker_image_base"
 
 docker build -t "$docker_image" .
