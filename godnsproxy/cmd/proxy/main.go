@@ -4,11 +4,9 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"net"
 	"os"
-	"sync"
 	"time"
 
 	n "github.com/miry/samples/godnsproxy/pkg/net"
@@ -50,57 +48,6 @@ func main() {
 
 }
 
-type Client struct {
-	Conn net.Conn
-}
-
-func (c *Client) String() string {
-	return c.Conn.RemoteAddr().String()
-}
-
-func (c *Client) Close() {
-	c.Conn.Close()
-}
-
-func (c *Client) Read() ([]byte, error) {
-	result := make([]byte, netBufferSize)
-	n, err := c.Conn.Read(result)
-	if err != nil {
-		if err == io.EOF {
-			log.Printf("[%s] INFO: Connection closed", c)
-			return nil, err
-		}
-
-		log.Printf("[%s] ERROR: %v", c, err)
-		return nil, err
-	}
-	log.Printf("[%s] DEBUG: Read %d bytes from client", c, n)
-	log.Printf("\n%s", hex.Dump(result[:n]))
-	return result[:n], nil
-}
-
-func (c *Client) Write(buf []byte) error {
-	n, err := c.Conn.Write(buf)
-	if err != nil {
-		return fmt.Errorf("failed to write to client %v : %v", c, err)
-	}
-	log.Printf("[%s] Write %d bytes to client\n", c, n)
-	return nil
-}
-
-func connectionPool(addr *n.Addr) *sync.Pool {
-	return &sync.Pool{
-		New: func() interface{} {
-			c, err := addr.Connect()
-			if err != nil {
-				log.Printf("ERROR: %v\n", err)
-				panic(err)
-			}
-			return c
-		},
-	}
-}
-
 func listenTCP(addr *n.Addr, upstream *n.Addr) error {
 	log.Printf("Listening %s on %s\n", addr.Network, addr.Host)
 	listen, err := net.Listen(addr.Network, addr.Host)
@@ -110,7 +57,7 @@ func listenTCP(addr *n.Addr, upstream *n.Addr) error {
 	defer listen.Close()
 
 	for {
-		client := &Client{}
+		client := &n.Client{}
 		client.Conn, err = listen.Accept()
 		if err != nil {
 			return fmt.Errorf("Could not accept connection : %v", err)
@@ -119,7 +66,7 @@ func listenTCP(addr *n.Addr, upstream *n.Addr) error {
 	}
 }
 
-func handleConnection(client *Client, upstream *n.Addr) {
+func handleConnection(client *n.Client, upstream *n.Addr) {
 	defer func() {
 		if x := recover(); x != nil {
 			log.Printf("[%s] ERROR: Panic %v", client, x)
@@ -144,7 +91,7 @@ func handleConnection(client *Client, upstream *n.Addr) {
 	defer uW.Close()
 
 	exit := make(chan int, 0)
-	go func(client *Client, cW net.Conn, exit chan int) {
+	go func(client *n.Client, cW net.Conn, exit chan int) {
 		defer func() {
 			if x := recover(); x != nil {
 				log.Printf("ERROR: %v", x)
@@ -221,7 +168,7 @@ func handleConnection(client *Client, upstream *n.Addr) {
 		}
 	}(upstreamConn, uW, exit)
 
-	go func(client *Client, uR net.Conn, exit chan int) {
+	go func(client *n.Client, uR net.Conn, exit chan int) {
 		defer func() {
 			if x := recover(); x != nil {
 				log.Printf("ERROR: %v", x)
