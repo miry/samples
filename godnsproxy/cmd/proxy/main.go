@@ -8,11 +8,11 @@ import (
 	"io"
 	"log"
 	"net"
-	"net/url"
 	"os"
 	"sync"
 	"time"
 
+	n "github.com/miry/samples/godnsproxy/pkg/net"
 	"github.com/miry/samples/godnsproxy/pkg/version"
 )
 
@@ -24,18 +24,6 @@ var (
 	printVersion = flag.Bool("version", false, "Print version")
 )
 
-// Addr stores net netowrk and host
-type Addr struct {
-	Network string
-	Host    string
-}
-
-func (a *Addr) String() string {
-	return a.Host
-}
-
-// TODO: Implement context
-// TODO: Worker pools for connecitons
 func main() {
 	flag.Parse()
 
@@ -44,12 +32,12 @@ func main() {
 		os.Exit(0)
 	}
 
-	upstreamAddr, err := parseAddress(*upstream)
+	upstreamAddr, err := n.ParseAddress(*upstream)
 	if err != nil {
 		log.Fatalf("Invalid upstream address `%s' : %v", *upstream, err)
 	}
 
-	listenAddr, err := parseAddress(*address)
+	listenAddr, err := n.ParseAddress(*address)
 	if err != nil {
 		log.Fatalf("Invalid server address `%s' : %v", *address, err)
 	}
@@ -101,7 +89,7 @@ func (c *Client) Write(buf []byte) error {
 	return nil
 }
 
-func connectionPool(addr *Addr) *sync.Pool {
+func connectionPool(addr *n.Addr) *sync.Pool {
 	return &sync.Pool{
 		New: func() interface{} {
 			return connect(addr)
@@ -109,7 +97,7 @@ func connectionPool(addr *Addr) *sync.Pool {
 	}
 }
 
-func listenTCP(addr *Addr, upstream *Addr) error {
+func listenTCP(addr *n.Addr, upstream *n.Addr) error {
 	log.Printf("Listening %s on %s\n", addr.Network, addr.Host)
 	listen, err := net.Listen(addr.Network, addr.Host)
 	if err != nil {
@@ -127,7 +115,7 @@ func listenTCP(addr *Addr, upstream *Addr) error {
 	}
 }
 
-func connect(addr *Addr) net.Conn {
+func connect(addr *n.Addr) net.Conn {
 	log.Printf("Connecting to upstream %s on %s\n", addr.Network, addr.Host)
 
 	var conn net.Conn
@@ -146,37 +134,7 @@ func connect(addr *Addr) net.Conn {
 	return conn
 }
 
-func parseAddress(addr string) (*Addr, error) {
-	network := ""
-	host := ""
-
-	uri, err := url.Parse(addr)
-	if err == nil {
-		network = uri.Scheme
-		host = uri.Host
-	}
-
-	if len(host) == 0 {
-		host = addr
-	}
-
-	if _, _, err = net.SplitHostPort(host); err != nil {
-		return nil, fmt.Errorf("could not parse address %s : %v", addr, err)
-	}
-
-	if len(network) == 0 {
-		network = "tcp"
-	}
-
-	result := &Addr{
-		Network: network,
-		Host:    host,
-	}
-
-	return result, nil
-}
-
-func handleConnection(client *Client, upstream *Addr) {
+func handleConnection(client *Client, upstream *n.Addr) {
 	defer func() {
 		if x := recover(); x != nil {
 			log.Printf("[%s] ERROR: Panic %v", client, x)

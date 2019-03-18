@@ -4,16 +4,55 @@ import (
 	"crypto/tls"
 	"encoding/binary"
 	"encoding/hex"
+	"flag"
 	"fmt"
 	"log"
 	"net"
 	"os"
+
+	n "github.com/miry/samples/godnsproxy/pkg/net"
+	"github.com/miry/samples/godnsproxy/pkg/version"
 )
 
-var udpTcpDiffReq = []byte{0x00, 0x2c}
-var udpTcpDiffRes = []byte{0x00, 0x4c}
+const netBufferSize = 1452
+
+var (
+	address      = flag.String("address", "tcp://127.0.0.1:853", "Listen address for incoming connections e.g 127.0.0.1:3000")
+	upstream     = flag.String("upstream", "", "Upstream address e.g tls://1.1.1.1:853")
+	printVersion = flag.Bool("version", false, "Print version")
+)
+
+// Addr stores net netowrk and host
+type Addr struct {
+	Network string
+	Host    string
+}
+
+func (a *Addr) String() string {
+	return a.Host
+}
 
 func main() {
+
+	flag.Parse()
+
+	if *printVersion {
+		fmt.Printf("%#v\n", version.Get())
+		os.Exit(0)
+	}
+
+	upstreamAddr, err := n.ParseAddress(*upstream)
+	if err != nil {
+		log.Fatalf("Invalid upstream address `%s' : %v", *upstream, err)
+	}
+
+	listenAddr, err := n.ParseAddress(*address)
+	if err != nil {
+		log.Fatalf("Invalid server address `%s' : %v", *address, err)
+	}
+}
+
+func listenUDP() {
 	// listen to incoming udp packets
 	pc, err := net.ListenPacket("udp", ":1053")
 	if err != nil {
@@ -41,7 +80,7 @@ func main() {
 			continue
 		}
 		fmt.Printf("Read %d bytes from client %v\n", n, addr)
-		fmt.Printf("%s", hex.Dump(append(udpTcpDiffReq, buf[:n]...)))
+		fmt.Printf("%s", hex.Dump(buf[:n]))
 
 		conn, err := tls.Dial("tcp", quadDNSTLS, &tls.Config{})
 		// conn, err := net.Dial("udp", "1.1.1.1:53")
