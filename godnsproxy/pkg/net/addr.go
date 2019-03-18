@@ -18,7 +18,7 @@ func (a *Addr) String() string {
 }
 
 // Connect to host in network
-func (a *Addr) Connect() (net.Conn, error) {
+func (a *Addr) Connect() (*Client, error) {
 	log.Printf("Connecting to upstream %s/%s\n", a.Network, a.Host)
 
 	var conn net.Conn
@@ -34,5 +34,5 @@ func (a *Addr) Connect() (net.Conn, error) {
 		return nil, fmt.Errorf("failed to connect to upstream %s/%s : %v", a.Host, a.Network, err)
 	}
 
-	return conn, nil
+	return &Client{Conn: conn}, nil
 }

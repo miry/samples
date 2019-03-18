@@ -63,6 +63,7 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 	}
 	defer pc.Close()
 
+	// TODO: Support concurent processing per addr
 	handleConnectionUDP(pc, upstream)
 	return nil
 }
@@ -80,47 +81,42 @@ func handleConnectionUDP(pc net.PacketConn, upstream *n.Addr) {
 		fmt.Printf("%s", hex.Dump(buf[:n]))
 
 		// TODO: Implement reconnect
-		conn, err := upstream.Connect()
+		upstreamConn, err := upstream.Connect()
 		if err != nil {
 			fmt.Printf("ERROR: could not connect to upstream : %v", err)
 			break
 		}
 
-		remoteAddr := conn.RemoteAddr().String()
+		remoteAddr := upstreamConn.String()
 		fmt.Printf("Connected to %s\n", remoteAddr)
 
 		// Enrich UDP to TCP add size of message infront
 		b := make([]byte, 2)
 		binary.BigEndian.PutUint16(b[0:], uint16(n))
 
-		n, err = conn.Write(append(b, buf[:n]...))
-		// n, err = conn.Write(buf[:n])
+		err = upstreamConn.Write(append(b, buf[:n]...))
 		if err != nil {
-			fmt.Printf("failed to write to server %s : %v\n", remoteAddr, err)
 			continue
 		}
-		fmt.Printf("Write %d bytes to server %v\n", n, remoteAddr)
 
-		bufServer := make([]byte, 1024)
-		n, err = conn.Read(bufServer)
+		buf, err = upstreamConn.Read()
 		if err != nil {
-			fmt.Printf("failed to read from server %s : %v\n", remoteAddr, err)
 			continue
 		}
-		fmt.Printf("Read %d bytes from server %v\n", n, remoteAddr)
-		fmt.Printf("%s", hex.Dump(bufServer[:n]))
 
-		u := binary.BigEndian.Uint16(b[:2]) + 2
-		fmt.Printf("Size: %x %x : %v\n", bufServer[0], bufServer[1], u)
-
+		tcpMsgSize := int(binary.BigEndian.Uint16(buf[:2])) + 2
+		if tcpMsgSize >= len(buf) {
+			tcpMsgSize = len(buf) - 1
+		}
+		fmt.Printf("size: %v\n", tcpMsgSize)
 		// Cut message size field: first 2 bytes for TCP -> UDP
-		n, err = pc.WriteTo(bufServer[2:u], addr)
+		n, err = pc.WriteTo(buf[2:tcpMsgSize], addr)
 		if err != nil {
 			fmt.Printf("failed to write to client %v : %v\n", addr, err)
 			continue
 		}
 		fmt.Printf("Write %d bytes to client %v\n", n, addr)
-		conn.Close()
+		upstreamConn.Close()
 	}
 }
 
@@ -138,11 +134,11 @@ func listenTCP(addr *n.Addr, upstream *n.Addr) error {
 		if err != nil {
 			return fmt.Errorf("Could not accept connection : %v", err)
 		}
-		go handleConnection(client, upstream)
+		go handleConnectionTCP(client, upstream)
 	}
 }
 
-func handleConnection(client *n.Client, upstream *n.Addr) {
+func handleConnectionTCP(client *n.Client, upstream *n.Addr) {
 	defer func() {
 		if x := recover(); x != nil {
 			log.Printf("[%s] ERROR: Panic %v", client, x)
@@ -185,15 +181,13 @@ func handleConnection(client *n.Client, upstream *n.Addr) {
 		}
 	}(client, cW, exit)
 
-	go func(upstreamConn net.Conn, cR net.Conn, exit chan int) {
+	go func(upstreamConn *n.Client, cR net.Conn, exit chan int) {
 		defer func() {
 			if x := recover(); x != nil {
 				log.Printf("ERROR: %v", x)
 				exit <- 1
 			}
 		}()
-
-		remoteAddr := upstreamConn.RemoteAddr().String()
 
 		for {
 			buf := make([]byte, netBufferSize)
@@ -203,17 +197,15 @@ func handleConnection(client *n.Client, upstream *n.Addr) {
 				return
 			}
 
-			n, err = upstreamConn.Write(buf[:n])
+			err = upstreamConn.Write(buf[:n])
 			if err != nil {
-				log.Printf("failed to write to server %s : %v", remoteAddr, err)
 				exit <- 1
 				return
 			}
-			log.Printf("Write %d bytes to server %v\n", n, remoteAddr)
 		}
 	}(upstreamConn, cR, exit)
 
-	go func(upstreamConn net.Conn, uW net.Conn, exit chan int) {
+	go func(upstreamConn *n.Client, uW net.Conn, exit chan int) {
 		defer func() {
 			if x := recover(); x != nil {
 				log.Printf("ERROR: %v", x)
@@ -221,21 +213,14 @@ func handleConnection(client *n.Client, upstream *n.Addr) {
 			}
 		}()
 
-		remoteAddr := upstreamConn.RemoteAddr().String()
-
 		for {
-			buf := make([]byte, netBufferSize)
-
-			n, err := upstreamConn.Read(buf)
+			buf, err := upstreamConn.Read()
 			if err != nil {
-				log.Printf("failed to read from server %s : %v", remoteAddr, err)
 				exit <- 1
+				return
 			}
 
-			log.Printf("DEBUG: Read %d bytes from server %v\n", n, remoteAddr)
-			log.Printf("\n%s", hex.Dump(buf[:n]))
-
-			_, err = uW.Write(buf[:n])
+			_, err = uW.Write(buf)
 			if err != nil {
 				log.Printf("ERROR: could not write to upstream pipe %v\n", err)
 				exit <- 1
