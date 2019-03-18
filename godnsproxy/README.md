@@ -37,6 +37,14 @@ $ make proxy-dns-test
 $ ./build/run
 ```
 
+Currently working on Proxy tool and have more clean code. DNSProxy is under development.
+
+TODO:
+
+- [ ] Extract code to pkg
+- [ ] Reuse proxy pkg in DNS proxy
+- [ ] Handle TCP and UDP in same time
+
 # Investigation
 
 Checked documentation https://routley.io/tech/2017/12/28/hand-writing-dns-messages.html how DNS message is buidling, in short version.
