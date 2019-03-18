@@ -11,11 +11,12 @@ import (
 	"net/url"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/miry/samples/godnsproxy/pkg/version"
 )
 
-const netBufferSize = 1024
+const netBufferSize = 1452
 
 var (
 	address      = flag.String("address", "tcp://127.0.0.1:8080", "Listen address for incoming connections e.g 127.0.0.1:3000")
@@ -176,6 +177,12 @@ func parseAddress(addr string) (*Addr, error) {
 }
 
 func handleConnection(client *Client, upstream *Addr) {
+	defer func() {
+		if x := recover(); x != nil {
+			log.Printf("[%s] ERROR: Panic %v", client, x)
+		}
+	}()
+
 	defer client.Close()
 	log.Printf("[%s] INFO: Serving", client)
 
@@ -184,42 +191,117 @@ func handleConnection(client *Client, upstream *Addr) {
 	upstreamConn = connect(upstream) //upstreams.Get().(net.Conn)
 	defer upstreamConn.Close()
 
-	for {
-		clientConnBuf, err := client.Read()
-		if err != nil {
-			break
-		}
+	cR, cW := net.Pipe()
+	defer cR.Close()
+	defer cW.Close()
 
-		bufServer, err := requestUpstream(upstreamConn, clientConnBuf)
-		if err != nil {
-			break
-		}
+	uR, uW := net.Pipe()
+	defer uR.Close()
+	defer uW.Close()
 
-		if err = client.Write(bufServer); err != nil {
-			break
-		}
-	}
+	exit := make(chan int, 0)
+	go func(client *Client, cW net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
 
+		for {
+			buf, err := client.Read()
+			if err != nil {
+				exit <- 1
+				return
+			}
+			cW.Write(buf)
+		}
+	}(client, cW, exit)
+
+	go func(upstreamConn net.Conn, cR net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		remoteAddr := upstreamConn.RemoteAddr().String()
+
+		for {
+			buf := make([]byte, netBufferSize)
+			n, err := cR.Read(buf)
+			if err != nil {
+				exit <- 1
+				return
+			}
+
+			n, err = upstreamConn.Write(buf[:n])
+			if err != nil {
+				log.Printf("failed to write to server %s : %v", remoteAddr, err)
+				exit <- 1
+				return
+			}
+			log.Printf("Write %d bytes to server %v\n", n, remoteAddr)
+		}
+	}(upstreamConn, cR, exit)
+
+	go func(upstreamConn net.Conn, uW net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		remoteAddr := upstreamConn.RemoteAddr().String()
+
+		for {
+			buf := make([]byte, netBufferSize)
+
+			n, err := upstreamConn.Read(buf)
+			if err != nil {
+				log.Printf("failed to read from server %s : %v", remoteAddr, err)
+				exit <- 1
+			}
+
+			log.Printf("DEBUG: Read %d bytes from server %v\n", n, remoteAddr)
+			log.Printf("\n%s", hex.Dump(buf[:n]))
+
+			_, err = uW.Write(buf[:n])
+			if err != nil {
+				log.Printf("ERROR: could not write to upstream pipe %v\n", err)
+				exit <- 1
+				return
+			}
+		}
+	}(upstreamConn, uW, exit)
+
+	go func(client *Client, uR net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		for {
+			buf := make([]byte, 1452)
+			n, err := uR.Read(buf)
+			if err != nil {
+				exit <- 1
+				return
+			}
+
+			err = client.Write(buf[:n])
+			if err != nil {
+				exit <- 1
+				return
+			}
+		}
+	}(client, uR, exit)
+
+	<-exit
 	log.Printf("[%s] Finish transfer\n", client)
-}
-
-func requestUpstream(upstreamConn net.Conn, clientConnBuf []byte) ([]byte, error) {
-	remoteAddr := upstreamConn.RemoteAddr().String()
-	n, err := upstreamConn.Write(clientConnBuf)
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to write to server %s : %v", remoteAddr, err)
-	}
-	log.Printf("Write %d bytets to server %v\n", n, remoteAddr)
-
-	// TODO: Handle big responses without blocking clients
-	bufServer := make([]byte, 1024000)
-	n, err = upstreamConn.Read(bufServer)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read from server %s : %v", remoteAddr, err)
-	}
-
-	log.Printf("Read %d bytets from server %v\n", n, remoteAddr)
-	log.Printf("%s", hex.Dump(bufServer[:n]))
-	return bufServer[:n], nil
+	time.Sleep(10 * time.Second)
 }

@@ -1,17 +1,12 @@
-build: dnstls
-
-dnstls:
-	./build/run
-
-dnsproxy:
+dnsproxy: build
 	go run ./cmd/dnsproxy/main.go
 
-proxy:
+proxy: build
 	go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream tcp4://1.1.1.1:80
 
 proxy-dns:
-	go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream tcp4://1.1.1.1:53
-	# go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream tls://1.1.1.1:853
+	# go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream tcp4://1.1.1.1:53
+	go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream tls://1.1.1.1:853
 	# go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream udp://1.1.1.1:853
 
 proxy-test:

@@ -14,7 +14,7 @@ COPY . .
 ENV GO111MODULE=on
 
 RUN go get . \
- && go build -o /go/bin/dnstls cmd/dnstls/main.go \
+ && go build -o /go/bin/proxy cmd/proxy/main.go \
  && go build -o /go/bin/dnsproxy cmd/dnsproxy/main.go
 
 FROM alpine:3.8
@@ -29,7 +29,7 @@ ENV PORT 8080
 EXPOSE ${PORT}
 
 COPY --from=build /go/bin/dnsproxy /
-COPY --from=build /go/bin/dnstls /
+COPY --from=build /go/bin/proxy /
 CMD ["/dnsproxy"]
 
 HEALTHCHECK --interval=5m --timeout=3s \

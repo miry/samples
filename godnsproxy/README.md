@@ -5,17 +5,36 @@ Tool to query DNS over TLS.
 
 # Usage
 
+## Proxy
+
 ```
-$ dnstls -h # Print usage instructions
-$ dnstls -s 1.1.1.1 google.com example.com
+$ make proxy
+$ curl -v 127.0.0.1:8080
+$ make proxy-test
+```
+
+## DNS proxy
+
+UDP proxy to TLS
+
+```
+$ make dnsproxy
+$ dig @127.0.0.1 -p 1053 one.one.one.one
+```
+
+TCP proxy to TLS
+
+```
+$ make proxy-dns
+$ make proxy-dns-test
 ```
 
 # Development
 
-## Create module
+## Build
 
-```shell
-### $ go mod init github.com/miry/samples/cmd/dnstls
+```
+$ ./build/run
 ```
 
 # Investigation
@@ -63,7 +82,7 @@ Now checked response:
 
 ```
 UDP:
-Read 76 bytets from server 1.1.1.1:53
+Read 76 bytes from server 1.1.1.1:53
 00000000  ee b5 81 80 00 01 00 02  00 00 00 01 03 6f 6e 65  |.............one|
 00000010  03 6f 6e 65 03 6f 6e 65  03 6f 6e 65 00 00 01 00  |.one.one.one....|
 00000020  01 c0 0c 00 01 00 01 00  00 00 e3 00 04 01 01 01  |................|
@@ -73,7 +92,7 @@ Read 76 bytets from server 1.1.1.1:53
 
 ```
 TCP:
-[127.0.0.1:60694] Read 78 bytets from server 1.1.1.1:53
+[127.0.0.1:60694] Read 78 bytes from server 1.1.1.1:53
 00000000  00 4c 95 4f 81 80 00 01  00 02 00 00 00 01 03 6f  |.L.O...........o|
 00000010  6e 65 03 6f 6e 65 03 6f  6e 65 03 6f 6e 65 00 00  |ne.one.one.one..|
 00000020  01 00 01 c0 0c 00 01 00  01 00 00 00 4e 00 04 01  |............N...|

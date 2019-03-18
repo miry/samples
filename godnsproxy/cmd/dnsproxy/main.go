@@ -62,7 +62,7 @@ func main() {
 			fmt.Printf("failed to write to server %s : %v\n", remoteAddr, err)
 			continue
 		}
-		fmt.Printf("Write %d bytets to server %v\n", n, remoteAddr)
+		fmt.Printf("Write %d bytes to server %v\n", n, remoteAddr)
 
 		bufServer := make([]byte, 1024)
 		n, err = conn.Read(bufServer)
@@ -70,7 +70,7 @@ func main() {
 			fmt.Printf("failed to read from server %s : %v\n", remoteAddr, err)
 			continue
 		}
-		fmt.Printf("Read %d bytets from server %v\n", n, remoteAddr)
+		fmt.Printf("Read %d bytes from server %v\n", n, remoteAddr)
 		fmt.Printf("%s", hex.Dump(bufServer[:n]))
 
 		// Cut message size field: first 2 bytes for TCP -> UDP
@@ -79,7 +79,7 @@ func main() {
 			fmt.Printf("failed to write to client %v : %v\n", addr, err)
 			continue
 		}
-		fmt.Printf("Write %d bytets to client %v\n", n, addr)
+		fmt.Printf("Write %d bytes to client %v\n", n, addr)
 		conn.Close()
 	}
 }
