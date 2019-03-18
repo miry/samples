@@ -25,12 +25,12 @@ RUN apk add --no-cache \
       ca-certificates \
       tzdata
 
-ENV PORT 8080
+ENV PORT 8053
 EXPOSE ${PORT}
 
 COPY --from=build /go/bin/dnsproxy /
 COPY --from=build /go/bin/proxy /
-CMD ["/dnsproxy"]
+CMD /dnsproxy -address udp://0.0.0.0:${PORT} -upstream tls://1.1.1.1:853
 
 HEALTHCHECK --interval=5m --timeout=3s \
 CMD nc -v -u -z -w 5 localhost ${PORT}
