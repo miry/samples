@@ -17,20 +17,10 @@ import (
 const netBufferSize = 1452
 
 var (
-	address      = flag.String("address", "tcp://127.0.0.1:853", "Listen address for incoming connections e.g 127.0.0.1:3000")
+	address      = flag.String("address", "udp://127.0.0.1:8053", "Listen address for incoming connections e.g 127.0.0.1:3000")
 	upstream     = flag.String("upstream", "", "Upstream address e.g tls://1.1.1.1:853")
 	printVersion = flag.Bool("version", false, "Print version")
 )
-
-// Addr stores net netowrk and host
-type Addr struct {
-	Network string
-	Host    string
-}
-
-func (a *Addr) String() string {
-	return a.Host
-}
 
 func main() {
 
@@ -50,13 +40,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Invalid server address `%s' : %v", *address, err)
 	}
+
+	if len(listenAddr.Network) > 2 && listenAddr.Network[:3] == "udp" {
+		log.Fatal(listenUDP(listenAddr, upstreamAddr))
+	} else {
+		log.Fatalf("Network %s is not supported for server", listenAddr.Network)
+	}
 }
 
-func listenUDP() {
+func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 	// listen to incoming udp packets
-	pc, err := net.ListenPacket("udp", ":1053")
+	pc, err := net.ListenPacket(addr.Network, addr.Host)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer pc.Close()
 
