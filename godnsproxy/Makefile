@@ -1,6 +1,9 @@
 dnsproxy: build
 	go run ./cmd/dnsproxy/main.go -address udp://127.0.0.1:8053 -upstream tls://1.1.1.1:853
 
+dnsproxy-tcp: build
+	go run ./cmd/dnsproxy/main.go -address tcp://127.0.0.1:8053 -upstream tls://1.1.1.1:853
+
 proxy: build
 	go run ./cmd/proxy/main.go -address tcp4://127.0.0.1:8080 -upstream tcp4://1.1.1.1:80
 

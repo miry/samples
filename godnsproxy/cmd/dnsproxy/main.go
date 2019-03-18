@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"time"
 
 	n "github.com/miry/samples/godnsproxy/pkg/net"
 	"github.com/miry/samples/godnsproxy/pkg/version"
@@ -40,23 +41,36 @@ func main() {
 		log.Fatalf("Invalid server address `%s' : %v", *address, err)
 	}
 
-	if len(listenAddr.Network) > 2 && listenAddr.Network[:3] == "udp" {
-		log.Fatal(listenUDP(listenAddr, upstreamAddr))
+	if len(listenAddr.Network) > 2 {
+		switch listenAddr.Network[:3] {
+		case "udp":
+			log.Fatal(listenUDP(listenAddr, upstreamAddr))
+		case "tcp":
+			log.Fatal(listenTCP(listenAddr, upstreamAddr))
+		default:
+			log.Fatalf("Network %s is not supported for server", listenAddr.Network)
+		}
 	} else {
 		log.Fatalf("Network %s is not supported for server", listenAddr.Network)
 	}
 }
 
 func listenUDP(addr *n.Addr, upstream *n.Addr) error {
-	// listen to incoming udp packets
+	log.Printf("Listening %s/%s\n", addr.Host, addr.Network)
 	pc, err := net.ListenPacket(addr.Network, addr.Host)
 	if err != nil {
 		return err
 	}
 	defer pc.Close()
 
+	handleConnectionUDP(pc, upstream)
+	return nil
+}
+
+func handleConnectionUDP(pc net.PacketConn, upstream *n.Addr) {
+
 	for {
-		buf := make([]byte, 1024)
+		buf := make([]byte, netBufferSize)
 		n, addr, err := pc.ReadFrom(buf)
 		if err != nil {
 			fmt.Printf("failed readfrom : %v", err)
@@ -108,7 +122,155 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 		fmt.Printf("Write %d bytes to client %v\n", n, addr)
 		conn.Close()
 	}
-	return nil
+}
+
+func listenTCP(addr *n.Addr, upstream *n.Addr) error {
+	log.Printf("Listening %s on %s\n", addr.Network, addr.Host)
+	listen, err := net.Listen(addr.Network, addr.Host)
+	if err != nil {
+		log.Fatalf("Could not listen %s : %v", addr, err)
+	}
+	defer listen.Close()
+
+	for {
+		client := &n.Client{}
+		client.Conn, err = listen.Accept()
+		if err != nil {
+			return fmt.Errorf("Could not accept connection : %v", err)
+		}
+		go handleConnection(client, upstream)
+	}
+}
+
+func handleConnection(client *n.Client, upstream *n.Addr) {
+	defer func() {
+		if x := recover(); x != nil {
+			log.Printf("[%s] ERROR: Panic %v", client, x)
+		}
+	}()
+
+	defer client.Close()
+	log.Printf("[%s] INFO: Serving", client)
+
+	upstreamConn, err := upstream.Connect() //upstreams.Get().(net.Conn)
+	if err != nil {
+		return
+	}
+	defer upstreamConn.Close()
+
+	cR, cW := net.Pipe()
+	defer cR.Close()
+	defer cW.Close()
+
+	uR, uW := net.Pipe()
+	defer uR.Close()
+	defer uW.Close()
+
+	exit := make(chan int, 0)
+	go func(client *n.Client, cW net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		for {
+			buf, err := client.Read()
+			if err != nil {
+				exit <- 1
+				return
+			}
+			cW.Write(buf)
+		}
+	}(client, cW, exit)
+
+	go func(upstreamConn net.Conn, cR net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		remoteAddr := upstreamConn.RemoteAddr().String()
+
+		for {
+			buf := make([]byte, netBufferSize)
+			n, err := cR.Read(buf)
+			if err != nil {
+				exit <- 1
+				return
+			}
+
+			n, err = upstreamConn.Write(buf[:n])
+			if err != nil {
+				log.Printf("failed to write to server %s : %v", remoteAddr, err)
+				exit <- 1
+				return
+			}
+			log.Printf("Write %d bytes to server %v\n", n, remoteAddr)
+		}
+	}(upstreamConn, cR, exit)
+
+	go func(upstreamConn net.Conn, uW net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		remoteAddr := upstreamConn.RemoteAddr().String()
+
+		for {
+			buf := make([]byte, netBufferSize)
+
+			n, err := upstreamConn.Read(buf)
+			if err != nil {
+				log.Printf("failed to read from server %s : %v", remoteAddr, err)
+				exit <- 1
+			}
+
+			log.Printf("DEBUG: Read %d bytes from server %v\n", n, remoteAddr)
+			log.Printf("\n%s", hex.Dump(buf[:n]))
+
+			_, err = uW.Write(buf[:n])
+			if err != nil {
+				log.Printf("ERROR: could not write to upstream pipe %v\n", err)
+				exit <- 1
+				return
+			}
+		}
+	}(upstreamConn, uW, exit)
+
+	go func(client *n.Client, uR net.Conn, exit chan int) {
+		defer func() {
+			if x := recover(); x != nil {
+				log.Printf("ERROR: %v", x)
+				exit <- 1
+			}
+		}()
+
+		for {
+			buf := make([]byte, 1452)
+			n, err := uR.Read(buf)
+			if err != nil {
+				exit <- 1
+				return
+			}
+
+			err = client.Write(buf[:n])
+			if err != nil {
+				exit <- 1
+				return
+			}
+		}
+	}(client, uR, exit)
+
+	<-exit
+	log.Printf("[%s] Finish transfer\n", client)
+	time.Sleep(10 * time.Second)
 }
 
 func init() {
