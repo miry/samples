@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+go vet ./...
+$(go env GOPATH)/bin/golint -set_exit_status ./cmd/...
+
+# Update badge on master
+readonly branch=$(./bin/branch)
+if [ "$branch" == "master" ]; then
+  curl -X POST "https://goreportcard.com/checks?repo=github.com/miry/wattx_top_coins"
+fi

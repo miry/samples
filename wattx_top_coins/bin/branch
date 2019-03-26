@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+readonly git_branch="$(git rev-parse --abbrev-ref HEAD)"
+readonly branch="${1:-$git_branch}"
+
+echo "$branch" \
+    | sed 's/[^-A-Za-z0-9]*//g' \
+    | tr '[:upper:]' '[:lower:]' \
+| cut -c 1-38

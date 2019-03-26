@@ -1,0 +1,10 @@
+/*.md
+/Brewfile
+/deploy/
+/img/
+/vendor/
+/pkg/conf/vsn_generated.go
+/bin/
+!/bin/generate-version
+.*
+!.git

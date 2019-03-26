@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+current_version=`git rev-parse HEAD`
+
+eval "$(minikube docker-env)"
+./bin/build
+
+kubectl delete -f deploy/local/web.yaml &>/dev/null || true
+
+readonly app_resources="$(cat deploy/local/web.yaml | sed -e 's/miry\/top_coins\:master/miry\/top_coins\:'${current_version}'/')"
+echo "$app_resources" | kubectl create -f -
+readonly url=$(minikube service web --url)
+open "${url}/version"

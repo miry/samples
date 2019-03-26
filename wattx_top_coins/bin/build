@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly current_version=`git rev-parse HEAD`
+readonly current_tag="$current_version"
+readonly current_branch=`bin/branch`
+
+readonly docker_image_base="miry/top_coins"
+readonly docker_image="$docker_image_base:$current_tag"
+readonly docker_image_branch="${docker_image_base}":"${current_branch}"
+
+# Download updated containers for this branch
+docker pull "${docker_image_branch}" || docker pull "${docker_image_base}":master || true
+
+docker build -t  "${docker_image}" .
+docker tag "${docker_image}" "${docker_image_branch}"
+
+docker push "${docker_image}"
+docker push "${docker_image_branch}"

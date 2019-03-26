@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+brew bundle
+
+go generate pkg/version/base.go
+
+./bin/lint
+go test ./... -v
+
+minikube status || minikube start
+eval "$(minikube docker-env)"
+kubectl config use-context minikube
