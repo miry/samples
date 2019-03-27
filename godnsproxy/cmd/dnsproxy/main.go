@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"runtime"
 	"time"
 
 	n "github.com/miry/samples/godnsproxy/pkg/net"
@@ -41,16 +42,17 @@ func main() {
 		log.Fatalf("Invalid server address `%s' : %v", *address, err)
 	}
 
-	if len(listenAddr.Network) > 2 {
-		switch listenAddr.Network[:3] {
-		case "udp":
-			log.Fatal(listenUDP(listenAddr, upstreamAddr))
-		case "tcp":
-			log.Fatal(listenTCP(listenAddr, upstreamAddr))
-		default:
-			log.Fatalf("Network %s is not supported for server", listenAddr.Network)
-		}
-	} else {
+	// TODO: Manage invalid params
+	if len(listenAddr.Network) < 3 {
+		log.Fatalf("Network %s is not supported for server", listenAddr.Network)
+	}
+
+	switch listenAddr.Network[:3] {
+	case "udp":
+		log.Fatal(listenUDP(listenAddr, upstreamAddr))
+	case "tcp":
+		log.Fatal(listenTCP(listenAddr, upstreamAddr))
+	default:
 		log.Fatalf("Network %s is not supported for server", listenAddr.Network)
 	}
 }
@@ -64,11 +66,22 @@ func listenUDP(addr *n.Addr, upstream *n.Addr) error {
 	defer pc.Close()
 
 	// TODO: Support concurent processing per addr
-	handleConnectionUDP(pc, upstream)
+	exit := make(chan int, 0)
+	for i := 0; i < runtime.NumCPU(); i++ {
+		go handleConnectionUDP(pc, upstream, exit)
+	}
+	<-exit
+	time.Sleep(10 * time.Second)
 	return nil
 }
 
-func handleConnectionUDP(pc net.PacketConn, upstream *n.Addr) {
+func handleConnectionUDP(pc net.PacketConn, upstream *n.Addr, exit chan int) {
+	defer func() {
+		if x := recover(); x != nil {
+			log.Printf("ERROR: Panic %v", x)
+			exit <- 1
+		}
+	}()
 
 	for {
 		buf := make([]byte, netBufferSize)
@@ -80,12 +93,16 @@ func handleConnectionUDP(pc net.PacketConn, upstream *n.Addr) {
 		fmt.Printf("Read %d bytes from client %v\n", n, addr)
 		fmt.Printf("%s", hex.Dump(buf[:n]))
 
+		time.Sleep(10 * time.Second)
+
 		// TODO: Implement reconnect
 		upstreamConn, err := upstream.Connect()
 		if err != nil {
 			fmt.Printf("ERROR: could not connect to upstream : %v", err)
+			exit <- 1
 			break
 		}
+		defer upstreamConn.Close()
 
 		remoteAddr := upstreamConn.String()
 		fmt.Printf("Connected to %s\n", remoteAddr)
@@ -116,7 +133,6 @@ func handleConnectionUDP(pc net.PacketConn, upstream *n.Addr) {
 			continue
 		}
 		fmt.Printf("Write %d bytes to client %v\n", n, addr)
-		upstreamConn.Close()
 	}
 }
 
