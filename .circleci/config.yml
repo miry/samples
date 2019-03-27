@@ -45,9 +45,9 @@ jobs:
 
   ruby:
     docker:
-      - image: circleci/ruby:2.6.1
+      - image: circleci/ruby:2.6
         environment:
-          RUBYOPT: "--enable-frozen-string-literal --jit"
+          RUBYOPT: "--enable-frozen-string-literal"
 
     steps:
       - checkout
@@ -79,7 +79,7 @@ jobs:
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
-      - image: circleci/ruby:2.6.1
+      - image: circleci/ruby:2.6
         environment:
           RUBYOPT: "--enable-frozen-string-literal"
     steps:
