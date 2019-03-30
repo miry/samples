@@ -59,7 +59,7 @@ jobs:
       - run:
           command: bundle exec rubocop -c .rubocop.yml -L
           background: true
-      - run: ruby algorithms/problems/codewars/sudoku_test.rb
+      - run: ruby algorithms/problems/codewars/*_test.rb
       - run: ruby algorithms/problems/interviewcake/reverse_words_test.rb
 
   crystal:
