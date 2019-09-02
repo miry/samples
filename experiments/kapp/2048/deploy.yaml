@@ -13,7 +13,7 @@ metadata:
   name: "2048-deployment"
   namespace: "2048-game"
 spec:
-  replicas: 5
+  replicas: 1
   template:
     metadata:
       labels:
