@@ -41,3 +41,6 @@ spec:
   type: NodePort
   selector:
     app: "2048"
+
+---
+
