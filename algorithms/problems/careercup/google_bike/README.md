@@ -5,9 +5,9 @@ bikes. You have to help the employee find the nearest Google bike.
 
 Campus map:
 
-. - Free path/road
-`#` - Building
-B - Google bike
+- `.` - Free path/road
+- `#` - Building
+- `B` - Google bike
 
 Employee location - (x, y) - (1, 2)
 
