@@ -1,0 +1,34 @@
+{
+  "builders": [
+    {
+      "vm_name": "docker-packer.qcow2",
+
+      "disk_image": true,
+      "iso_url": "output-centos/centos-packer.qcow2",
+      "iso_checksum_type": "none",
+
+      "output_directory": "output-docker",
+
+      "ssh_username": "centos",
+      "ssh_password": "centos",
+      "ssh_pty": true,
+      "ssh_wait_timeout": "2m",
+
+      "shutdown_command": "echo 'centos' | sudo -S /sbin/halt -h -p",
+
+      "type": "qemu",
+      "headless": true,
+      "memory": "8192",
+      "cpus": 4
+    }
+  ],
+  "post-processors": null,
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "{{template_dir}}/docker.sh"
+      ]
+    }
+  ]
+}
