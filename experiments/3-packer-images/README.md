@@ -1,6 +1,8 @@
 How to automate building local virtual machines with Packer
 ===========================================================
 
+[Published in medium](https://jtway.co/how-to-automate-building-local-virtual-machines-with-packer-a238ba6b49c7)
+
 We will learn how to create a disk image base on a remote iso disk image. Auto install packages and configure a virtual machine with a small configuration file. Setup another disk image, this time, the source would have a different format.
 
 There are multiple ways to build a virtual machine for experiments.
