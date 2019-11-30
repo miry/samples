@@ -125,7 +125,7 @@ $ TF_LOG=debug terraform apply -target=libvirt_cloudinit_disk.cloudinit
 In the output, I found the full command of how the iso was created. I understand the problem - it is not to be bootable at all.
 I remember a similar problem when cloud-init is not working for AWS resources. When there is missing the first line: `#cloud-init`
 Because there are 2 formats of cloud-init user data: shell or YAML.
-
+More sample of cloud-init for ISO [here](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html).
 After this fix, everything started work: console login and ssh connection.
 
 
