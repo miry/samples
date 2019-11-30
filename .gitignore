@@ -1,3 +1,5 @@
 .shards/
 lib/
 *.o
+.terraform/
+terraform.tfstate*
