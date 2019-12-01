@@ -51,6 +51,43 @@ $ nc fe80:1::1 3000
 !
 ```
 
+----
+
+cat <<EOF | crystal eval --no-debug
+require "socket"
+s = TCPServer.new("localhost", 3000)
+puts "Listen on #{s.local_address}"
+while c = s.accept?
+   c << "busy\n"
+   c.close()
+end
+EOF
+
+
+How resolve is working?
+
+http://man7.org/linux/man-pages/man3/getaddrinfo.3.html
+
+Quote from man:
+
+       The getaddrinfo() function allocates and initializes a linked list of
+       addrinfo structures, one for each network address that matches node
+       and service, subject to any restrictions imposed by hints, and
+       returns a pointer to the start of the list in res.  The items in the
+       linked list are linked by the ai_next field.
+
+       There are several reasons why the linked list may have more than one
+       addrinfo structure, including: the network host is multihomed, acces‐
+       sible over multiple protocols (e.g., both AF_INET and AF_INET6); or
+       the same service is available from multiple socket types (one
+       SOCK_STREAM address and another SOCK_DGRAM address, for example).
+       Normally, the application should try using the addresses in the order
+       in which they are returned.  The sorting function used within getad‐
+       drinfo() is defined in RFC 3484; the order can be tweaked for a par‐
+       ticular system by editing /etc/gai.conf (available since glibc 2.5).
+
+----
+
 How to use **SO_REUSEPORT** with TCPServer.
 
 ```shell
