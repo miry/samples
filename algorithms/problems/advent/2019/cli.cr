@@ -1,5 +1,6 @@
 require "option_parser"
 require "./day_one"
+require "./day_two"
 
 def run
   exit = false
@@ -33,6 +34,21 @@ def run
     end
 
     answer = fuel_requirement(modules_mass)
+    puts "Answer: #{answer}"
+  when 2
+    puts "--- Day 2: 1202 Program Alarm ---"
+    puts "What value is left at position 0 after the program halts?"
+    commands = [] of Int64
+    STDIN.each_line do |line|
+      commands = line.split(",").map {|a| a.to_i64 }
+    end
+
+    commands[1] = 12
+    commands[2] = 2
+
+    computer = Computer.new(commands)
+    computer.perform()
+    answer = computer.state[0]
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
