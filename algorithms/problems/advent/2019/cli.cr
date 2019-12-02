@@ -33,7 +33,7 @@ def run
       modules_mass << line.to_i64
     end
 
-    answer = fuel_requirement(modules_mass)
+    answer = fuel2_requirement(modules_mass)
     puts "Answer: #{answer}"
   when 2
     puts "--- Day 2: 1202 Program Alarm ---"

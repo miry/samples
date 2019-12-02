@@ -30,6 +30,10 @@ def fuel2(mass : Int)
 end
 
 def fuel_requirement(mass_list : Array(Int))
+  mass_list.reduce(0) { |acc, i| acc + fuel(i) }
+end
+
+def fuel2_requirement(mass_list : Array(Int))
   mass_list.reduce(0) { |acc, i| acc + fuel2(i) }
 end
 
