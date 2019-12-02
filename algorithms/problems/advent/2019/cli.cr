@@ -43,12 +43,7 @@ def run
       commands = line.split(",").map {|a| a.to_i64 }
     end
 
-    commands[1] = 12
-    commands[2] = 2
-
-    computer = Computer.new(commands)
-    computer.perform()
-    answer = computer.state[0]
+    answer = Computer.detect_inputs(commands, 19690720)
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
