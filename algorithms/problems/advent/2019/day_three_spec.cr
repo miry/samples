@@ -17,7 +17,7 @@ describe "Day 3" do
 
     subject.add(["R8", "U2", "R5"])
     subject.add(["U1", "R10", "U3"])
-    subject.intersections.should eq([{1, 8}, {2, 10}])
+    subject.intersections.should eq (Set.new [{8, 1}, {10, 2}])
   end
 
   it "detects closest intersection" do
@@ -25,6 +25,29 @@ describe "Day 3" do
 
     subject.add(["R8", "U2", "L1"])
     subject.add(["U1", "R10"])
-    subject.closest.should eq({1, 8})
+    subject.closest.should eq(9)
+  end
+
+  it "first sample form defenition" do
+    subject = Grid.new
+    subject.add("R8,U5,L5,D3".split(","))
+    subject.add("U7,R6,D4,L4".split(","))
+    subject.intersections.should eq(Set.new [{3, 3}, {6, 5}])
+    subject.closest.should eq(6)
+  end
+
+  it "second sample from task" do
+    subject = Grid.new
+    subject.add("R75,D30,R83,U83,L12,D49,R71,U7,L72".split(","))
+    subject.add("U62,R66,U55,R34,D71,R55,D58,R83".split(","))
+    subject.intersections.should eq(Set.new [{158, -12}, {146, 46}, {155, 4}, {155, 11}])
+    subject.closest.should eq(159)
+  end
+
+  it "third sample from task" do
+    subject = Grid.new
+    subject.add("R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51".split(","))
+    subject.add("U98,R91,D20,R16,D67,R40,U7,R15,U6,R7".split(","))
+    subject.closest.should eq(135)
   end
 end

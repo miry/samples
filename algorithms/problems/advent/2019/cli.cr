@@ -1,6 +1,7 @@
 require "option_parser"
 require "./day_one"
 require "./day_two"
+require "./day_three"
 
 def run
   exit = false
@@ -43,6 +44,17 @@ def run
     end
 
     answer = Computer.detect_inputs(commands, 19690720)
+    puts "Answer: #{answer}"
+  when 3
+    puts "--- Day 3: Crossed Wires ---"
+    puts "What is the Manhattan distance from the central port to the closest intersection?"
+    grid = Grid.new
+
+    STDIN.each_line do |line|
+      grid.add(line.split(","))
+    end
+
+    answer = grid.closest
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
