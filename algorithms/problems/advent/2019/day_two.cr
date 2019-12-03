@@ -75,26 +75,26 @@
 
 class Computer
   EXIT_CODE = 99
-  SUM_CODE = 1
-  MUL_CODE = 2
+  SUM_CODE  =  1
+  MUL_CODE  =  2
 
   getter state : Array(Int64)
 
   def initialize(@state : Array(Int64))
   end
 
-  def perform()
+  def perform
     ipc = 0
     n = @state.size
     while ipc < n
       code = @state[ipc]
       case code
       when MUL_CODE
-        addendum1, addendum2, result = @state[ipc+1..ipc+4]
+        addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
         ipc += 4
         mul(addendum1, addendum2, result)
       when SUM_CODE
-        addendum1, addendum2, result = @state[ipc+1..ipc+4]
+        addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
         ipc += 4
         sum(addendum1, addendum2, result)
       when EXIT_CODE
@@ -119,7 +119,7 @@ class Computer
       100_i64.times do |verb|
         state[2] = verb
         computer = Computer.new(state.dup)
-        computer.perform()
+        computer.perform
         return noun * 100 + verb if 19690720 == computer.state[0]
       end
     end

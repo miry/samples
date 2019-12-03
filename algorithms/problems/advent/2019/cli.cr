@@ -19,7 +19,6 @@ def run
   return if exit
 
   if day == 0
-
   end
 
   case day
@@ -40,7 +39,7 @@ def run
     puts "What value is left at position 0 after the program halts?"
     commands = [] of Int64
     STDIN.each_line do |line|
-      commands = line.split(",").map {|a| a.to_i64 }
+      commands = line.split(",").map { |a| a.to_i64 }
     end
 
     answer = Computer.detect_inputs(commands, 19690720)

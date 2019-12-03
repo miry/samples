@@ -1,6 +1,10 @@
 .PHONY: test
-test:
+test: fmt
 	crystal run *_spec.cr
+
+.PHONY: fmt
+fmt:
+	crystal tool format
 
 .PHONY: day%
 day%: input/day%.txt
