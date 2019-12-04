@@ -18,6 +18,18 @@
 #     123789 does not meet these criteria (no double).
 #
 # How many different passwords within the range given in your puzzle input meet these criteria?
+#
+# --- Part Two ---
+#
+# An Elf just remembered one more important detail: the two adjacent matching digits are not part of a larger group of matching digits.
+#
+# Given this additional criterion, but still ignoring the range rule, the following are now true:
+#
+#     112233 meets these criteria because the digits never decrease and all repeated digits are exactly two digits long.
+#     123444 no longer meets the criteria (the repeated 44 is part of a larger group of 444).
+#     111122 meets the criteria (even though 1 is repeated more than twice, it still contains a double 22).
+#
+# How many different passwords within the range given in your puzzle input meet all of the criteria?
 
 def brute_force(start, last)
   result = 0
@@ -38,6 +50,37 @@ def valid?(number)
   end
 
   return doubles
+end
+
+def brute_force2(start, last)
+  result = 0
+  (start..last).each do |i|
+    result += 1 if valid2?(i)
+  end
+  result
+end
+
+def valid2?(number)
+  digits = to_digits(number)
+  doubles = {} of Int32 => Int32
+  i = 1
+  while i < digits.size
+    digit = digits[i]
+    return false if digits[i - 1] > digit
+    if digits[i - 1] == digit
+      doubles[digit] ||= 1
+      doubles[digit] += 1
+    end
+    i += 1
+  end
+
+  return false if doubles.size == 0
+  found = false
+  doubles.each_value do |v|
+    found = true if v == 2
+  end
+
+  return found
 end
 
 def to_digits(number : Int)

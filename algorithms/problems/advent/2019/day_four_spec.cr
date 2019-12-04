@@ -2,9 +2,11 @@ require "spec"
 require "./day_four"
 
 describe "Day 4" do
-  it "returns valid number" do
-    actual = brute_force(264793, 803935)
-    actual.should eq(966)
+  describe "brute_force" do
+    it "returns valid number" do
+      actual = brute_force(264793, 803935)
+      actual.should eq(966)
+    end
   end
 
   describe "valid?" do
@@ -18,6 +20,20 @@ describe "Day 4" do
 
     it "covers case when missing double" do
       valid?(123789).should eq(false)
+    end
+  end
+
+  describe "valid2?" do
+    it "returns true for 112233" do
+      valid2?(112233).should eq(true)
+    end
+
+    it "covers large group" do
+      valid2?(123444).should eq(false)
+    end
+
+    it "covers case when large group and smaller exists" do
+      valid2?(111122).should eq(true)
     end
   end
 

@@ -67,7 +67,10 @@ def run
     end
 
     answer = brute_force(range[0], range[1])
-    puts "Answer: #{answer}"
+    puts "Part 1 Answer: #{answer}"
+
+    answer = brute_force2(range[0], range[1])
+    puts "Part 2 Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end
