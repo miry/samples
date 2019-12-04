@@ -2,6 +2,7 @@ require "option_parser"
 require "./day_one"
 require "./day_two"
 require "./day_three"
+require "./day_four"
 
 def run
   exit = false
@@ -55,6 +56,17 @@ def run
     end
 
     answer = grid.closest
+    puts "Answer: #{answer}"
+  when 4
+    puts "--- Day 4: Secure Container ---"
+    puts "How many different passwords within the range given in your puzzle input meet these criteria?"
+
+    range = Array(Int32).new(2)
+    STDIN.each_line do |line|
+      range = line.split("-").map { |a| a.to_i32 }
+    end
+
+    answer = brute_force(range[0], range[1])
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
