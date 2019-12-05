@@ -40,12 +40,12 @@ describe "Day 5" do
 
   it "parameter mode multiplication" do
     subject = AirCondition.new([] of Int64)
-    subject.normalize(2).should eq([0, 0, 2])
+    subject.normalize(2).should eq([2, 0, 0, 0])
   end
 
   it "parameter mode multiplication" do
     subject = AirCondition.new([1002, 4, 3, 4, 33] of Int64)
     subject.perform
-    subject.state.should eq [30, 1, 1, 4, 2, 5, 6, 0, 99] of Int64
+    subject.state.should eq [1002, 4, 3, 4, 99] of Int64
   end
 end

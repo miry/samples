@@ -3,6 +3,7 @@ require "./day_one"
 require "./day_two"
 require "./day_three"
 require "./day_four"
+require "./day_five"
 
 def run
   exit = false
@@ -71,6 +72,19 @@ def run
 
     answer = brute_force2(range[0], range[1])
     puts "Part 2 Answer: #{answer}"
+  when 5
+    puts "--- Day 5: Sunny with a Chance of Asteroids ---"
+    puts "what diagnostic code does the program produce?"
+    commands = [] of Int64
+    STDIN.each_line do |line|
+      commands = line.split(",").map { |a| a.to_i64 }
+    end
+
+    computer = AirCondition.new(commands)
+    computer.perform
+    answer = 0
+    puts "Answer: #{answer}"
+
   else
     raise "Day should be from 1 to 25"
   end

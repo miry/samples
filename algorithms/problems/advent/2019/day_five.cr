@@ -70,28 +70,39 @@ class AirCondition
     n = @state.size
     while ipc < n
       command = normalize(@state[ipc])
+
+      # p "-- ipc: #{ipc} code: #{command}"
+      # p @state
+
       raise "Could not normalize instruction #{@state[ipc]}" if command.nil?
-      case command[-1]
+      case command[0]
       when MUL_CODE
-        addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
+        addendum1, addendum2, result = values(ipc, command)
         ipc += 4
-        mul(addendum1, addendum2, result)
+        @state[result] = addendum1 * addendum2
       when SUM_CODE
-        addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
+        addendum1, addendum2, result = values(ipc, command)
         ipc += 4
-        sum(addendum1, addendum2, result)
+        @state[result] = addendum1 + addendum2
       when INPUT_CODE
         ipc += 1
-        @state[ipc] = 1
+        addr = @state[ipc]
+
+        @state[addr] = 1
+        # p "-- modified: #{addr}"
         ipc += 1
       when OUTPUT_CODE
         ipc += 1
-        puts @state[ipc]
+        addr = @state[ipc]
+        addr = @state[addr] if command[1] == 0
+        puts "Output of ipc #{ipc} with addr #{addr} with value #{addr}"
+        #raise "Test failed #{ipc}: #{addr} is not 0" if addr != 0
+        puts addr
         ipc += 1
       when EXIT_CODE
         return
       else
-        raise("Unknown code #{command[-2..-1]}")
+        raise("Unknown code #{command[0]}")
       end
     end
   end
@@ -99,14 +110,11 @@ class AirCondition
   def normalize(instruction)
     digits = to_digits(instruction)
     n = digits.size
-    (4-n).times do
+    (5 - n).times do
       digits.insert(0, 0_i32)
     end
-    digits
-    result = [0, 0, 0] of Int32
-    result[0] = digits[0]
-    result[1] = digits[1]
-    result[2] = digits[2]*10 + digits[3]
+    result = [0, digits[2], digits[1], digits[0]] of Int32
+    result[0] = digits[3]*10 + digits[4]
     result
   end
 
@@ -141,4 +149,11 @@ class AirCondition
     result
   end
 
+  def values(ipc, params)
+    addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
+    addendum1 = @state[addendum1] if params[1] == 0
+    addendum2 = @state[addendum2] if params[2] == 0
+    # result = @state[result] if params[3] == 0
+    return {addendum1, addendum2, result}
+  end
 end
