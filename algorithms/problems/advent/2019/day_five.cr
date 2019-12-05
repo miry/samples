@@ -52,13 +52,12 @@
 # After providing 1 to the only input instruction and passing all the tests, what diagnostic code does the program produce?
 #
 
-
 class AirCondition
   EXIT_CODE = 99
 
-  SUM_CODE  =  1
-  MUL_CODE  =  2
-  INPUT_CODE = 3
+  SUM_CODE    = 1
+  MUL_CODE    = 2
+  INPUT_CODE  = 3
   OUTPUT_CODE = 4
 
   getter state : Array(Int64)
@@ -70,8 +69,9 @@ class AirCondition
     ipc = 0
     n = @state.size
     while ipc < n
-      code = @state[ipc]
-      case code
+      command = normalize(@state[ipc])
+      raise "Could not normalize instruction #{@state[ipc]}" if command.nil?
+      case command[-1]
       when MUL_CODE
         addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
         ipc += 4
@@ -80,12 +80,34 @@ class AirCondition
         addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
         ipc += 4
         sum(addendum1, addendum2, result)
+      when INPUT_CODE
+        ipc += 1
+        @state[ipc] = 1
+        ipc += 1
+      when OUTPUT_CODE
+        ipc += 1
+        puts @state[ipc]
+        ipc += 1
       when EXIT_CODE
         return
       else
-        raise("Unknown code #{code}")
+        raise("Unknown code #{command[-2..-1]}")
       end
     end
+  end
+
+  def normalize(instruction)
+    digits = to_digits(instruction)
+    n = digits.size
+    (4-n).times do
+      digits.insert(0, 0_i32)
+    end
+    digits
+    result = [0, 0, 0] of Int32
+    result[0] = digits[0]
+    result[1] = digits[1]
+    result[2] = digits[2]*10 + digits[3]
+    result
   end
 
   def sum(addendum1, addendum2, result)
@@ -107,4 +129,16 @@ class AirCondition
       end
     end
   end
+
+  def to_digits(number : Int)
+    result = Array(Int32).new(6)
+    div = number
+    while div >= 10
+      div, mod = div.divmod(10)
+      result.insert(0, mod.to_i32)
+    end
+    result.insert(0, div.to_i32)
+    result
+  end
+
 end
