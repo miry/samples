@@ -99,10 +99,16 @@ class AirCondition
   MUL_CODE    = 2
   INPUT_CODE  = 3
   OUTPUT_CODE = 4
+  JUMP_IF_TRUE_CODE = 5
+  JUMP_IF_FALSE_CODE = 6
+  LESS_THAN_CODE = 7
+  EQUALS_CODE = 8
 
   getter state : Array(Int64)
+  getter output : Array(Int64)
 
   def initialize(@state : Array(Int64))
+    @output = [] of Int64
   end
 
   def perform
@@ -112,6 +118,7 @@ class AirCondition
       command = normalize(@state[ipc])
 
       # p "-- ipc: #{ipc} code: #{command}"
+      # p @state[ipc..ipc+4]
       # p @state
 
       raise "Could not normalize instruction #{@state[ipc]}" if command.nil?
@@ -120,15 +127,17 @@ class AirCondition
         addendum1, addendum2, result = values(ipc, command)
         ipc += 4
         @state[result] = addendum1 * addendum2
+        # p "-- modified: #{result}"
       when SUM_CODE
         addendum1, addendum2, result = values(ipc, command)
         ipc += 4
         @state[result] = addendum1 + addendum2
+        # p "-- modified: #{result}"
       when INPUT_CODE
         ipc += 1
         addr = @state[ipc]
 
-        @state[addr] = 1
+        @state[addr] = 5
         # p "-- modified: #{addr}"
         ipc += 1
       when OUTPUT_CODE
@@ -138,7 +147,38 @@ class AirCondition
         puts "Output of ipc #{ipc} with addr #{addr} with value #{addr}"
         # raise "Test failed #{ipc}: #{addr} is not 0" if addr != 0
         puts addr
+        @output << addr
         ipc += 1
+      when JUMP_IF_TRUE_CODE
+        addendum1 = @state[ipc+1]
+        addendum1 = @state[addendum1] if command[1] == 0
+        next_ipc = @state[ipc+2]
+        next_ipc = @state[next_ipc] if command[2] == 0
+
+        if addendum1 == 0
+          ipc += 3
+        else
+          ipc = next_ipc
+        end
+      when JUMP_IF_FALSE_CODE
+        addendum1 = @state[ipc+1]
+        addendum1 = @state[addendum1] if command[1] == 0
+        next_ipc = @state[ipc+2]
+        next_ipc = @state[next_ipc] if command[2] == 0
+
+        if addendum1 != 0
+          ipc += 3
+        else
+          ipc = next_ipc
+        end
+      when LESS_THAN_CODE
+        addendum1, addendum2, result = values(ipc, command)
+        ipc += 4
+        @state[result] = addendum1 < addendum2 ? 1_i64 : 0_i64
+      when EQUALS_CODE
+        addendum1, addendum2, result = values(ipc, command)
+        ipc += 4
+        @state[result] = addendum1 == addendum2 ? 1_i64 : 0_i64
       when EXIT_CODE
         return
       else

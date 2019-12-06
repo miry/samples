@@ -82,7 +82,7 @@ def run
 
     computer = AirCondition.new(commands)
     computer.perform
-    answer = 0
+    answer = computer.output[-1]
     puts "Answer: #{answer}"
 
   else
