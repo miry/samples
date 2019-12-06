@@ -95,14 +95,14 @@
 class AirCondition
   EXIT_CODE = 99
 
-  SUM_CODE    = 1
-  MUL_CODE    = 2
-  INPUT_CODE  = 3
-  OUTPUT_CODE = 4
-  JUMP_IF_TRUE_CODE = 5
+  SUM_CODE           = 1
+  MUL_CODE           = 2
+  INPUT_CODE         = 3
+  OUTPUT_CODE        = 4
+  JUMP_IF_TRUE_CODE  = 5
   JUMP_IF_FALSE_CODE = 6
-  LESS_THAN_CODE = 7
-  EQUALS_CODE = 8
+  LESS_THAN_CODE     = 7
+  EQUALS_CODE        = 8
 
   getter state : Array(Int64)
   getter output : Array(Int64)
@@ -150,9 +150,9 @@ class AirCondition
         @output << addr
         ipc += 1
       when JUMP_IF_TRUE_CODE
-        addendum1 = @state[ipc+1]
+        addendum1 = @state[ipc + 1]
         addendum1 = @state[addendum1] if command[1] == 0
-        next_ipc = @state[ipc+2]
+        next_ipc = @state[ipc + 2]
         next_ipc = @state[next_ipc] if command[2] == 0
 
         if addendum1 == 0
@@ -161,9 +161,9 @@ class AirCondition
           ipc = next_ipc
         end
       when JUMP_IF_FALSE_CODE
-        addendum1 = @state[ipc+1]
+        addendum1 = @state[ipc + 1]
         addendum1 = @state[addendum1] if command[1] == 0
-        next_ipc = @state[ipc+2]
+        next_ipc = @state[ipc + 2]
         next_ipc = @state[next_ipc] if command[2] == 0
 
         if addendum1 != 0

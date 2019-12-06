@@ -4,6 +4,7 @@ require "./day_two"
 require "./day_three"
 require "./day_four"
 require "./day_five"
+require "./day_six"
 
 def run
   exit = false
@@ -84,7 +85,17 @@ def run
     computer.perform
     answer = computer.output[-1]
     puts "Answer: #{answer}"
+  when 6
+    puts "--- Day 6: Universal Orbit Map ---"
+    puts "What is the total number of direct and indirect orbits in your map data?"
+    input = [] of String
+    STDIN.each_line do |line|
+      input << line
+    end
 
+    computer = OrbitsMap.new(input)
+    answer = computer.all_orbits
+    puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end

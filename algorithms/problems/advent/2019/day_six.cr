@@ -56,3 +56,86 @@
 #
 # What is the total number of direct and indirect orbits in your map data?
 #
+
+require "logger"
+
+class Orbit
+  property object : String
+  property orbits_count : Int32
+  property orbit : Orbit?
+
+  def initialize(@object : String, @orbit : Orbit?, @orbits_count : Int32)
+    puts "Init orbit with #{@orbit} -> #{@object}"
+  end
+
+  def orbits
+    return 0 if @orbit.nil?
+    @orbit.not_nil!.orbits + 1
+  end
+
+  def print
+    parent_orbit = "NIL"
+    parent_orbit = @orbit.not_nil!.print unless @orbit.nil?
+    "Orbit { #{@object} } <- { #{parent_orbit} } [#{@orbits_count}] "
+  end
+end
+
+class OrbitsMap
+  @logger : Logger
+
+  def initialize(input : Array(String))
+    @orbits = {} of String => Orbit
+    @leaves = {} of String => Bool
+    @logger = logger
+    parse_dag(input)
+  end
+
+  def orbits(object : String? = nil)
+    return 0 unless @orbits.has_key?(object)
+    @orbits[object].orbits_count
+  end
+
+  def all_orbits
+    @logger.debug("-> all_orbits")
+    result = 0
+    @orbits.each_value do |orbit|
+      # @logger.debug("---> leave: #{orbit.object} #{orbit.orbits_count}")
+
+      result += orbit.orbits
+    end
+    result
+  end
+
+  def parse_dag(input : Array(String))
+    @logger.debug("-> parse_dag")
+    input.each do |rule|
+      @logger.debug("---> rule: #{rule}")
+      object, orbit = rule.split(")")
+
+      unless @orbits.has_key?(object)
+        @orbits[object] = Orbit.new(object, nil, 0)
+      end
+
+      unless @orbits.has_key?(orbit)
+        @orbits[orbit] = Orbit.new(orbit, nil, 0)
+      end
+
+      raise "found double direct orbits" unless @orbits[orbit].orbit.nil?
+
+      @orbits[orbit].orbit = @orbits[object]
+      @orbits[orbit].orbits_count = @orbits[object].orbits + 1
+      @logger.debug("---> #{@orbits[orbit].print}")
+
+      @leaves[orbit] = true unless @leaves.has_key?(orbit)
+      @leaves.delete(object) if @leaves.has_key?(object)
+    end
+
+    @logger.debug("---> leaves: #{@leaves}")
+  end
+
+  def logger
+    log = Logger.new(STDERR)
+    log.level = Logger::DEBUG
+    return log
+  end
+end
