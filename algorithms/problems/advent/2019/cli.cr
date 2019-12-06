@@ -94,7 +94,10 @@ def run
     end
 
     computer = OrbitsMap.new(input)
-    answer = computer.all_orbits
+    #answer = computer.all_orbits
+    #puts "Answer: #{answer}"
+
+    answer = computer.distance_between("YOU", "SAN")
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
