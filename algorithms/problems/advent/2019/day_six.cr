@@ -115,7 +115,7 @@ class Orbit
   property orbit : Orbit?
 
   def initialize(@object : String, @orbit : Orbit?, @orbits_count : Int32)
-    #puts "Init orbit with #{@orbit} -> #{@object}"
+    # puts "Init orbit with #{@orbit} -> #{@object}"
   end
 
   def orbits
@@ -189,8 +189,8 @@ class OrbitsMap
   end
 
   def distance_between(orbit, other)
-    orbit_route = @orbits[orbit].route.map {|a| a.object }
-    other_route = @orbits[other].route.map {|a| a.object }
+    orbit_route = @orbits[orbit].route.map { |a| a.object }
+    other_route = @orbits[other].route.map { |a| a.object }
     common = orbit_route & other_route
 
     # Find the distance by removing common parts and 2 orbits
