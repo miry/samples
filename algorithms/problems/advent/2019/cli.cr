@@ -110,7 +110,11 @@ def run
 
     phases = Array.new(5) { |i| i.to_i64 }
     answer = Amplifier.max_thruster(commands, phases)
-    puts "Answer: #{answer}"
+    puts "part 1 Answer: #{answer}"
+
+    phases = [5, 6, 7, 8, 9] of Int64
+    answer = Amplifier.max_thruster_loop(commands, phases)
+    puts "Part 2 Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end

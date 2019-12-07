@@ -85,6 +85,9 @@
 # Try every combination of the new phase settings on the amplifier feedback loop. What is the highest signal that can be sent to the thrusters?
 
 class Amplifier
+  class Halt < Exception
+  end
+
   EXIT_CODE = 99
 
   SUM_CODE           = 1
@@ -96,15 +99,18 @@ class Amplifier
   LESS_THAN_CODE     = 7
   EQUALS_CODE        = 8
 
+  @ipc : Int64
   getter state : Array(Int64)
   getter output : Array(Int64)
   getter input : Array(Int64)
 
   def initialize(@state : Array(Int64), @input : Array(Int64) = [] of Int64)
     @output = [] of Int64
+    @stop_on_output = false
+    @ipc = 0_i64
   end
 
-  def self.applifiers(state : Array(Int64), phases : Array(Int64), input = 0_i64 )
+  def self.amplifiers(state : Array(Int64), phases : Array(Int64), input = 0_i64)
     prev = input
     phases.each do |phase|
       applifier = self.new(state, [phase, prev] of Int64)
@@ -114,90 +120,120 @@ class Amplifier
     prev
   end
 
+  def self.amplifiers_loop(state : Array(Int64), phases : Array(Int64), input : Int64 = 0_i64)
+    computers : Array(Amplifier) = Array.new(phases.size) { |i| Amplifier.new(state.dup, [phases[i]] of Int64) }
+    prev = input
+    while true
+      computers.each_with_index do |amplifier, i|
+        # puts "Process applifier #{i}"
+        # puts "  state: #{state}"
+        amplifier.input << prev
+        begin
+          amplifier.perform
+          prev = amplifier.output.delete_at(0)
+        rescue Amplifier::Halt
+          return prev
+        end
+      end
+    end
+    return prev.not_nil!
+  end
+
   def self.max_thruster(state : Array(Int64), phases : Array(Int64))
-    max = 0
+    max = 0_i64
     phases.each_permutation do |variant|
-      thruster = self.applifiers state, variant
+      thruster : Int64 = self.amplifiers state, variant
       max = thruster if max < thruster
     end
     max
   end
 
   def self.max_thruster_loop(state : Array(Int64), phases : Array(Int64))
-    max_thruster(state, phases)
+    max = 0_i64
+    phases.each_permutation do |variant|
+      thruster : Int64 = self.amplifiers_loop state, variant
+      max = thruster if max < thruster
+    end
+    max
   end
 
   def perform
-    ipc = 0
     n = @state.size
-    while ipc < n
-      command = normalize(@state[ipc])
+    while @ipc < n
+      command = normalize(@state[@ipc])
 
-      # p "-- ipc: #{ipc} code: #{command}"
-      # p @state[ipc..ipc+4]
+      # p "-- @ipc: #{@ipc} code: #{command}"
+      # p @state[@ipc..@ipc+4]
       # p @state
 
-      raise "Could not normalize instruction #{@state[ipc]}" if command.nil?
+      raise "Could not normalize instruction #{@state[@ipc]}" if command.nil?
       case command[0]
       when MUL_CODE
-        addendum1, addendum2, result = values(ipc, command)
-        ipc += 4
+        addendum1, addendum2, result = values(@ipc, command)
+        @ipc += 4
         @state[result] = addendum1 * addendum2
         # p "-- modified: #{result}"
       when SUM_CODE
-        addendum1, addendum2, result = values(ipc, command)
-        ipc += 4
+        addendum1, addendum2, result = values(@ipc, command)
+        @ipc += 4
         @state[result] = addendum1 + addendum2
         # p "-- modified: #{result}"
       when INPUT_CODE
-        ipc += 1
-        addr = @state[ipc]
+        addr = @state[@ipc + 1]
 
+        # puts "Input of @ipc #{@ipc} with addr #{addr} from #{input}"
+        if input.size == 0
+          # puts "Stop until provide input"
+          return
+        end
         @state[addr] = @input.delete_at(0)
 
         # p "-- modified: #{addr}"
-        ipc += 1
+        @ipc += 2
       when OUTPUT_CODE
-        ipc += 1
-        addr = @state[ipc]
+        @ipc += 1
+        addr = @state[@ipc]
         addr = @state[addr] if command[1] == 0
-        puts "Output of ipc #{ipc} with addr #{addr} with value #{addr}"
-        # raise "Test failed #{ipc}: #{addr} is not 0" if addr != 0
-        puts addr
+
+        # puts "Output of @ipc #{@ipc} with addr #{addr} with value #{addr}"
+        # puts " state: #{@state}"
+
         @output << addr
-        ipc += 1
+        @ipc += 1
+        return
       when JUMP_IF_TRUE_CODE
-        addendum1 = @state[ipc + 1]
+        addendum1 = @state[@ipc + 1]
         addendum1 = @state[addendum1] if command[1] == 0
-        next_ipc = @state[ipc + 2]
+        next_ipc = @state[@ipc + 2]
         next_ipc = @state[next_ipc] if command[2] == 0
 
         if addendum1 == 0
-          ipc += 3
+          @ipc += 3
         else
-          ipc = next_ipc
+          @ipc = next_ipc
         end
       when JUMP_IF_FALSE_CODE
-        addendum1 = @state[ipc + 1]
+        addendum1 = @state[@ipc + 1]
         addendum1 = @state[addendum1] if command[1] == 0
-        next_ipc = @state[ipc + 2]
+        next_ipc = @state[@ipc + 2]
         next_ipc = @state[next_ipc] if command[2] == 0
 
         if addendum1 != 0
-          ipc += 3
+          @ipc += 3
         else
-          ipc = next_ipc
+          @ipc = next_ipc
         end
       when LESS_THAN_CODE
-        addendum1, addendum2, result = values(ipc, command)
-        ipc += 4
+        addendum1, addendum2, result = values(@ipc, command)
+        @ipc += 4
         @state[result] = addendum1 < addendum2 ? 1_i64 : 0_i64
       when EQUALS_CODE
-        addendum1, addendum2, result = values(ipc, command)
-        ipc += 4
+        addendum1, addendum2, result = values(@ipc, command)
+        @ipc += 4
         @state[result] = addendum1 == addendum2 ? 1_i64 : 0_i64
       when EXIT_CODE
-        return
+        # puts "Halt!!!"
+        raise Halt.new("Finish process on step #{@ipc}")
       else
         raise("Unknown code #{command[0]}")
       end
@@ -246,8 +282,8 @@ class Amplifier
     result
   end
 
-  def values(ipc, params)
-    addendum1, addendum2, result = @state[ipc + 1..ipc + 4]
+  def values(@ipc, params)
+    addendum1, addendum2, result = @state[@ipc + 1..@ipc + 4]
     addendum1 = @state[addendum1] if params[1] == 0
     addendum2 = @state[addendum2] if params[2] == 0
     # result = @state[result] if params[3] == 0
