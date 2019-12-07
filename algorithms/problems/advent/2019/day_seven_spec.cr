@@ -70,22 +70,22 @@ describe "Day 7" do
 
   describe ".applifiers" do
     it "calculate max thruster" do
-      state = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0] of Int64
-      phases = [4,3,2,1,0] of Int64
+      state = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0] of Int64
+      phases = [4, 3, 2, 1, 0] of Int64
       actual = Amplifier.applifiers(state, phases)
       actual.should eq(43210)
     end
 
     it "calculate max thruster second sample" do
-      state = [3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0] of Int64
-      phases = [0,1,2,3,4] of Int64
+      state = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23, 101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0] of Int64
+      phases = [0, 1, 2, 3, 4] of Int64
       actual = Amplifier.applifiers(state, phases)
       actual.should eq(54321)
     end
 
     it "calculate max thruster third sample" do
-      state = [3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0] of Int64
-      phases = [1,0,4,3,2] of Int64
+      state = [3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0] of Int64
+      phases = [1, 0, 4, 3, 2] of Int64
       actual = Amplifier.applifiers(state, phases)
       actual.should eq(65210)
     end
@@ -93,22 +93,21 @@ describe "Day 7" do
 
   describe ".max_thruster" do
     it "calculate max thruster first case" do
-      state = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0] of Int64
-      actual = Amplifier.max_thruster(state, 5)
+      state = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0] of Int64
+      actual = Amplifier.max_thruster(state, Array.new(5) { |i| i.to_i64 })
       actual.should eq(43210)
     end
 
     it "calculate max thruster second case" do
-      state = [3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0] of Int64
-      actual = Amplifier.max_thruster(state, 5)
+      state = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23, 101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0] of Int64
+      actual = Amplifier.max_thruster(state, Array.new(5) { |i| i.to_i64 })
       actual.should eq(54321)
     end
 
     it "calculate max thruster third case" do
-      state = [3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0] of Int64
-      actual = Amplifier.max_thruster(state, 5)
+      state = [3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0] of Int64
+      actual = Amplifier.max_thruster(state, Array.new(5) { |i| i.to_i64 })
       actual.should eq(65210)
     end
-
   end
 end

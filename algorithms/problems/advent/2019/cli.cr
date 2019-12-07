@@ -108,7 +108,8 @@ def run
       commands = line.split(",").map { |a| a.to_i64 }
     end
 
-    answer = Amplifier.max_thruster(commands, 5)
+    phases = Array.new(5) { |i| i.to_i64 }
+    answer = Amplifier.max_thruster(commands, phases)
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
