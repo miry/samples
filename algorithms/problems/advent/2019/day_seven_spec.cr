@@ -50,21 +50,37 @@ describe "Day 7" do
   end
 
   it "checks conditions if input not 0 returns 1" do
-    subject = Amplifier.new([3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9] of Int64)
+    subject = Amplifier.new([3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9] of Int64, [5] of Int64)
     subject.perform
     subject.output.should eq([1] of Int64)
   end
 
   it "checks conditions if input not 0 returns 1 using immediate mode" do
-    subject = Amplifier.new([3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1] of Int64)
+    subject = Amplifier.new([3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1] of Int64, [5] of Int64)
     subject.perform
     subject.output.should eq([1] of Int64)
   end
 
   it "complex test" do
     commands = [3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99] of Int64
-    subject = Amplifier.new(commands)
+    subject = Amplifier.new(commands, [5] of Int64)
     subject.perform
     subject.output.should eq([999] of Int64)
+  end
+
+  describe ".applifiers" do
+    it "calculate max thruster" do
+      state = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0] of Int64
+      phases = [4,3,2,1,0] of Int64
+      actual = Amplifier.applifiers(state, phases)
+      actual.should eq(43210)
+    end
+
+    it "calculate max thruster second sample" do
+      state = [3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0] of Int64
+      phases = [0,1,2,3,4] of Int64
+      actual = Amplifier.applifiers(state, phases)
+      actual.should eq(54321)
+    end
   end
 end

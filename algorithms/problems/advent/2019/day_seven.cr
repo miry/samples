@@ -61,9 +61,20 @@ class Amplifier
 
   getter state : Array(Int64)
   getter output : Array(Int64)
+  getter input : Array(Int64)
 
-  def initialize(@state : Array(Int64))
+  def initialize(@state : Array(Int64), @input : Array(Int64) = [] of Int64)
     @output = [] of Int64
+  end
+
+  def self.applifiers(state : Array(Int64), phases : Array(Int64))
+    prev = 0_i64
+    phases.each do |phase|
+      applifier = self.new(state, [phase, prev] of Int64)
+      applifier.perform
+      prev = applifier.output[-1]
+    end
+    prev
   end
 
   def perform
@@ -92,7 +103,8 @@ class Amplifier
         ipc += 1
         addr = @state[ipc]
 
-        @state[addr] = 5
+        @state[addr] = @input.delete_at(0)
+
         # p "-- modified: #{addr}"
         ipc += 1
       when OUTPUT_CODE
