@@ -5,6 +5,7 @@ require "./day_three"
 require "./day_four"
 require "./day_five"
 require "./day_six"
+require "./day_seven"
 
 def run
   exit = false
@@ -98,6 +99,16 @@ def run
     # puts "Answer: #{answer}"
 
     answer = computer.distance_between("YOU", "SAN")
+    puts "Answer: #{answer}"
+  when 7
+    puts "--- Day 7: Amplification Circuit ---"
+    puts "What is the highest signal that can be sent to the thrusters?"
+    commands = [] of Int64
+    STDIN.each_line do |line|
+      commands = line.split(",").map { |a| a.to_i64 }
+    end
+
+    answer = Amplifier.max_thruster(commands, 5)
     puts "Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"

@@ -77,6 +77,16 @@ class Amplifier
     prev
   end
 
+  def self.max_thruster(state : Array(Int64), count : Int)
+    phases = Array.new(count) {|i| i.to_i64 }
+    max  = 0
+    phases.each_permutation do |variant|
+      thruster = self.applifiers state, variant
+      max = thruster if max < thruster
+    end
+    max
+  end
+
   def perform
     ipc = 0
     n = @state.size
