@@ -127,6 +127,9 @@ def run
     network_image = NetworkImage.new(25_i64, 6_i64, input[0])
     answer = network_image.image_seed
     puts "Part 1 Answer: #{answer}"
+    l = network_image.compute_layer
+    puts "Part 2 Answer:"
+    l.print
   else
     raise "Day should be from 1 to 25"
   end

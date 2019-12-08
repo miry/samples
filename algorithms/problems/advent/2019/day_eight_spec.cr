@@ -16,4 +16,18 @@ describe "Day 8" do
     subject = NetworkImage.new(3, 2, "123456789012")
     subject.seed(['1', '1', '2', '2', '3', '4', '3', '4', '3', '1']).should eq(6)
   end
+
+  describe "Layer" do
+    it "print image" do
+      subject = Layer.new(3, 2, ['1', '1', '2', '2', '0', '0'])
+      subject.print
+    end
+
+    it "mask with layer" do
+      subject = Layer.new(3, 2, ['1', '1', '2', '2', '0', '0'])
+      other = Layer.new(3, 2, ['0', '0', '0', '0', '1', '1'])
+      actual = subject.mask(other)
+      actual.pixels.should eq(['1', '1', '0', '0', '0', '0'] of Char)
+    end
+  end
 end

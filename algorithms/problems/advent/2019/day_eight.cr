@@ -24,6 +24,74 @@
 #
 # To make sure the image wasn't corrupted during transmission, the Elves would like you to find the layer that contains the fewest 0 digits. On that layer, what is the number of 1 digits multiplied by the number of 2 digits?
 #
+# --- Part Two ---
+#
+# Now you're ready to decode the image. The image is rendered by stacking the layers and aligning the pixels with the same positions in each layer. The digits indicate the color of the corresponding pixel: 0 is black, 1 is white, and 2 is transparent.
+#
+# The layers are rendered with the first layer in front and the last layer in back. So, if a given position has a transparent pixel in the first and second layers, a black pixel in the third layer, and a white pixel in the fourth layer, the final image would have a black pixel at that position.
+#
+# For example, given an image 2 pixels wide and 2 pixels tall, the image data 0222112222120000 corresponds to the following image layers:
+#
+# Layer 1: 02
+#          22
+#
+# Layer 2: 11
+#          22
+#
+# Layer 3: 22
+#          12
+#
+# Layer 4: 00
+#          00
+#
+# Then, the full image can be found by determining the top visible pixel in each position:
+#
+#     The top-left pixel is black because the top layer is 0.
+#     The top-right pixel is white because the top layer is 2 (transparent), but the second layer is 1.
+#     The bottom-left pixel is white because the top two layers are 2, but the third layer is 1.
+#     The bottom-right pixel is black because the only visible pixel in that position is 0 (from layer 4).
+#
+# So, the final image looks like this:
+#
+# 01
+# 10
+#
+# What message is produced after decoding your image?
+
+class Layer
+  property pixels
+
+  def initialize(@width : Int64, @height : Int64, @pixels : Array(Char?))
+    raise "Wrong data #{@width}x#{@height} is not #{@pixels.size}" unless @pixels.size == @width*@height
+  end
+
+  def mask(other)
+    result = @pixels.dup
+    result.each_with_index do |color, i|
+      if color == '2'
+        result[i] = other.pixels[i]
+      end
+    end
+    Layer.new(@width, @height, result)
+  end
+
+  def print
+    puts "\n===="
+    @pixels.in_groups_of(@width).each do |line|
+      line.each do |c|
+        case c
+        when '0'
+          print(' ')
+        when '1'
+          print('1')
+        when '2'
+          print ' '
+        end
+      end
+      puts
+    end
+  end
+end
 
 class NetworkImage
   @layers : Array(Array(Char?))
@@ -76,5 +144,14 @@ class NetworkImage
   def image_seed
     layer = layer_with_fewest_null
     seed(layer)
+  end
+
+  def compute_layer
+    ll = Array.new(@layers.size) { |i| Layer.new @width, @height, @layers[i] }
+    result = ll[0]
+    ll.each do |layer|
+      result = result.mask(layer)
+    end
+    result
   end
 end
