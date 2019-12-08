@@ -6,6 +6,7 @@ require "./day_four"
 require "./day_five"
 require "./day_six"
 require "./day_seven"
+require "./day_eight"
 
 def run
   exit = false
@@ -115,6 +116,17 @@ def run
     phases = [5, 6, 7, 8, 9] of Int64
     answer = Amplifier.max_thruster_loop(commands, phases)
     puts "Part 2 Answer: #{answer}"
+  when 8
+    puts "--- Day 8: Space Image Format ---"
+    puts "On that layer, what is the number of 1 digits multiplied by the number of 2 digits?"
+    input = [] of String
+    STDIN.each_line do |line|
+      input << line
+    end
+
+    network_image = NetworkImage.new(25_i64, 6_i64, input[0])
+    answer = network_image.image_seed
+    puts "Part 1 Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end
