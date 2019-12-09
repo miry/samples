@@ -59,9 +59,9 @@
 # What message is produced after decoding your image?
 
 class Layer
-  property pixels
+  property pixels : Array(Char | Nil)
 
-  def initialize(@width : Int64, @height : Int64, @pixels : Array(Char?))
+  def initialize(@width : Int64, @height : Int64, @pixels : Array(Char | Nil))
     raise "Wrong data #{@width}x#{@height} is not #{@pixels.size}" unless @pixels.size == @width*@height
   end
 

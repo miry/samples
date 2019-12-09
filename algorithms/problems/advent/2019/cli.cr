@@ -7,6 +7,7 @@ require "./day_five"
 require "./day_six"
 require "./day_seven"
 require "./day_eight"
+require "./day_nine"
 
 def run
   exit = false
@@ -130,6 +131,20 @@ def run
     l = network_image.compute_layer
     puts "Part 2 Answer:"
     l.print
+  when 9
+    puts "--- Day 9: Sensor Boost ---"
+    puts "What BOOST keycode does it produce?"
+    commands = [] of Int64
+    STDIN.each_line do |line|
+      commands = line.split(",").map { |a| a.to_i64 }
+    end
+
+    answer = Boost.get_keycode(commands, 1)
+    puts "part 1 Answer: #{answer}"
+
+    # phases = [5, 6, 7, 8, 9] of Int64
+    # answer = Amplifier.max_thruster_loop(commands, phases)
+    # puts "Part 2 Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end
