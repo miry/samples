@@ -51,10 +51,10 @@ class Boost
   MUL_CODE                  =  2
   INPUT_CODE                =  3
   OUTPUT_CODE               =  4
-  JUMP_IF_TRUE_CODE         =  5  # if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
-  JUMP_IF_FALSE_CODE        =  6  # if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
-  LESS_THAN_CODE            =  7
-  EQUALS_CODE               =  8  # if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+  JUMP_IF_TRUE_CODE         =  5 # if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+  JUMP_IF_FALSE_CODE        =  6 # if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+  LESS_THAN_CODE            =  7 # if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+  EQUALS_CODE               =  8 # if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
   ADJUST_RELATIVE_BASE_CODE =  9
   EXIT_CODE                 = 99
 
@@ -122,8 +122,8 @@ class Boost
     while @ipc < n
       command = normalize(@state[@ipc])
 
-      p "-- @ipc: #{@ipc} code: #{command}"
-      p @state[@ipc..@ipc+4]
+      p "-- @ipc: #{@ipc} ; @relative_base: #{@relative_base} ; code: #{command}"
+      p @state[@ipc..@ipc + 4]
       p @state
 
       raise "Could not normalize instruction #{@state[@ipc]}" if command.nil?
@@ -191,12 +191,7 @@ class Boost
       when ADJUST_RELATIVE_BASE_CODE
         @ipc += 1
         value = @state[@ipc]
-        p "when ADJUST_RELATIVE_BASE_CODE:"
-        p "   value: #{value}"
-        p "   value with relative base: #{value+@relative_base}"
         value = value_by(value, command[1])
-        p "   last change: #{value}"
-
         @relative_base += value
         p "-- modified relative base: #{@relative_base}"
         @ipc += 1
@@ -296,11 +291,11 @@ class Boost
   def set(addr, val)
     old = get(addr)
     @state[addr] = val
-    p "---> modified: #{addr} from #{old} to #{val}"
+    p "---> modified: @ipc #{addr} from #{old} to #{val}"
   end
 
   def increase_memory(addr)
-    @state = @state + Array(Int64).new(addr) { 0_i64 }
+    @state = @state + Array(Int64).new(addr - @state.size + 1) { 0_i64 }
   end
 
   def self.get_keycode(state : Array(Int64), input : Int64)
@@ -310,6 +305,5 @@ class Boost
       computer.perform
       p computer.output
     end
-
   end
 end

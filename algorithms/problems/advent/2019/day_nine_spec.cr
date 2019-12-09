@@ -165,17 +165,17 @@ describe "Day 9" do
       15.times do
         subject.perform
       end
-      subject.output.should eq( [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99] of Int64)
+      subject.output.should eq([109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99] of Int64)
     end
 
     it "should output a 16-digit number" do
-      subject = Boost.new([1102,34915192,34915192,7,4,7,99,0] of Int64)
+      subject = Boost.new([1102, 34915192, 34915192, 7, 4, 7, 99, 0] of Int64)
       subject.perform
       subject.output.should eq([1219070632396864] of Int64)
     end
 
     it "should output the large number in the middle" do
-      subject = Boost.new([104,1125899906842624,99] of Int64)
+      subject = Boost.new([104, 1125899906842624, 99] of Int64)
       subject.perform
       subject.output.should eq([1125899906842624] of Int64)
     end

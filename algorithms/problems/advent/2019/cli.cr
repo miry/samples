@@ -139,12 +139,13 @@ def run
       commands = line.split(",").map { |a| a.to_i64 }
     end
 
-    answer = Boost.get_keycode(commands, 1)
-    puts "part 1 Answer: #{answer}"
+    answer = Boost.get_keycode(commands.dup, 1)
+    puts "part 1 Answer: #{answer} == 2453265701"
 
-    # phases = [5, 6, 7, 8, 9] of Int64
-    # answer = Amplifier.max_thruster_loop(commands, phases)
-    # puts "Part 2 Answer: #{answer}"
+    computer = Boost.new(commands.dup, [2] of Int64)
+    computer.perform
+    answer = computer.output[0]
+    puts "Part 2 Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end
