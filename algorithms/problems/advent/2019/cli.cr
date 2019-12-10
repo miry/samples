@@ -8,6 +8,7 @@ require "./day_six"
 require "./day_seven"
 require "./day_eight"
 require "./day_nine"
+require "./day_ten"
 
 def run
   exit = false
@@ -146,6 +147,18 @@ def run
     computer.perform
     answer = computer.output[0]
     puts "Part 2 Answer: #{answer}"
+  when 10
+    puts "--- Day 10: Monitoring Station ---"
+    puts "How many other asteroids can be detected from that location?"
+    commands = [] of String
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    map = AsteroidMap.new(commands.dup)
+    answer = map.suggestion[0]
+    puts "part 1 Answer: #{answer} == 274"
+
   else
     raise "Day should be from 1 to 25"
   end

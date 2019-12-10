@@ -105,13 +105,12 @@
 #
 # Find the best location for a new monitoring station. How many other asteroids can be detected from that location?
 
-
 class AsteroidMap
   EMPTY_CELL    = '.'
   ASTEROID_CELL = '#'
 
   def initialize(@map : Array(String))
-
+    @asteroids = [] of Tuple(Int32, Int32)
   end
 
   def size
@@ -121,12 +120,73 @@ class AsteroidMap
   end
 
   def suggestion
+    cells = asteroids
+    max = {0, cells[0]}
+    cells.each do |cell0|
+      cs = assteroids_coeficients_around(cell0)
+      counts = cs.size
+      if counts > max[0]
+        max = {counts, cell0}
+      end
+    end
+    return max
+  end
+
+  def assteroids_coeficients_around(cell0)
+    cells = asteroids
+    result = [] of Tuple(Float64, Float64, Float64)
+    dict = {} of Tuple(Float64, Float64, Float64) => Array(Tuple(Int32, Int32))
+    cells.each do |cell1|
+      next if cell0 == cell1
+      c = coefficient(cell0, cell1)
+      result << c
+      # if dict.has_key?(c)
+      #   dict[c] << cell1
+      # else
+      #   dict[c] = [cell1] of Tuple(Int32, Int32)
+      # end
+    end
+    counts = result.uniq.size
+    # puts "----"
+    # puts "cell: #{cell0}"
+    # puts "cells:     #{cells - [cell0]}"
+    # puts "coef:      #{result}"
+    # puts "coef uniq: #{result.uniq}"
+    # puts "counts: #{counts}"
+    # puts "dict[#{dict.size}]:       #{dict}"
+    # puts "dict no uniq:"
+    # dict.each do |k, v|
+    #   if v.size > 2
+    #     puts "#{k}  => #{v}"
+    #   end
+    # end
+    result.uniq
+  end
+
+  def coefficient(cell0, cell1)
+    x0, y0 = cell0
+    x1, y1 = cell1
+
+    k = (y1 - y0) / (x1 - x0)
+    # b = y0.to_f64 - k * x0
+
+    b = (y1 - y0) > 0 ? 1_f64 : -1_f64
+    d = (x1 - x0) > 0 ? 1_f64 : -1_f64
+
+    #k0 = (x1 - x0).abs
+    #k0 = 1 if k0 == 0
+    #{(y1 - y0).to_f64 / k0, (x1 - x0).to_f64 / k0}
+    {k, b, d}
+  end
+
+  def asteroids
+    return @asteroids if @asteroids.size > 0
     @map.each_with_index do |row, x|
       row.each_char_with_index do |cell, y|
         next if cell == EMPTY_CELL
-        return {x, y}
+        @asteroids << {y, x}
       end
     end
-    {0, 0}
+    @asteroids
   end
 end
