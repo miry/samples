@@ -9,6 +9,7 @@ require "./day_seven"
 require "./day_eight"
 require "./day_nine"
 require "./day_ten"
+require "./day_eleven"
 
 def run
   exit = false
@@ -162,6 +163,19 @@ def run
     answer = map.vaporized_in(200)
     puts "what do you get if you multiply its X coordinate by 100 and then add its Y"
     puts "Part 2 Answer: #{answer} == 305"
+  when 11
+    puts "--- Day 11: Space Police ---"
+    puts "How many panels does it paint at least once?"
+    commands = [] of Int64
+    STDIN.each_line do |line|
+      commands = line.split(",").map { |a| a.to_i64 }
+    end
+
+    computer = Boost.new(commands.dup)
+    panels = Panels.new(computer)
+    panels.paint
+    answer = panels.painted.size
+    puts "Part 1 Answer: #{answer}"
   else
     raise "Day should be from 1 to 25"
   end

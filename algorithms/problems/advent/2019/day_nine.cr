@@ -122,9 +122,9 @@ class Boost
     while @ipc < n
       command = normalize(@state[@ipc])
 
-      p "-- @ipc: #{@ipc} ; @relative_base: #{@relative_base} ; code: #{command}"
-      p @state[@ipc..@ipc + 4]
-      p @state
+      # p "-- @ipc: #{@ipc} ; @relative_base: #{@relative_base} ; code: #{command}"
+      # p @state[@ipc..@ipc + 4]
+      # p @state
 
       raise "Could not normalize instruction #{@state[@ipc]}" if command.nil?
       case command[0]
@@ -291,7 +291,7 @@ class Boost
   def set(addr, val)
     old = get(addr)
     @state[addr] = val
-    p "---> modified: @ipc #{addr} from #{old} to #{val}"
+    # p "---> modified: @ipc #{addr} from #{old} to #{val}"
   end
 
   def increase_memory(addr)
@@ -303,7 +303,7 @@ class Boost
 
     while true
       computer.perform
-      p computer.output
+      # p computer.output
     end
   end
 end
