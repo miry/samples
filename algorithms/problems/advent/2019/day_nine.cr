@@ -139,7 +139,7 @@ class Boost
       when INPUT_CODE
         addr = @state[@ipc + 1]
         addr = addr_by(addr, command[1])
-        puts "Input of @ipc #{@ipc} with addr #{addr} from #{input}"
+        # puts "Input of @ipc #{@ipc} with addr #{addr} from #{input}"
         if input.size == 0
           # puts "Stop until provide input"
           return
@@ -193,7 +193,7 @@ class Boost
         value = @state[@ipc]
         value = value_by(value, command[1])
         @relative_base += value
-        p "-- modified relative base: #{@relative_base}"
+        # p "-- modified relative base: #{@relative_base}"
         @ipc += 1
       when EXIT_CODE
         # puts "Halt!!!"

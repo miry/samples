@@ -175,7 +175,13 @@ def run
     panels = Panels.new(computer)
     panels.paint
     answer = panels.painted.size
-    puts "Part 1 Answer: #{answer}"
+    puts "Part 1 Answer: #{answer} == 1985"
+
+    computer = Boost.new(commands.dup)
+    panels = Panels.new(computer, 1)
+    panels.paint
+    puts "Part 2 Answer: BLCZCJLZ"
+    panels.print
   else
     raise "Day should be from 1 to 25"
   end

@@ -64,7 +64,15 @@
 # Before you deploy the robot, you should probably have an estimate of the area it will cover: specifically, you need to know the number of panels it paints at least once, regardless of color. In the example above, the robot painted 6 panels at least once. (It painted its starting panel twice, but that panel is still only counted once; it also never painted the panel it ended on.)
 #
 # Build a new emergency hull painting robot and run the Intcode program on it. How many panels does it paint at least once?
-
+#
+# --- Part Two ---
+#
+# You're not sure what it's trying to paint, but it's definitely not a registration identifier. The Space Police are getting impatient.
+#
+# Checking your external ship cameras again, you notice a white panel marked "emergency hull painting robot starting panel". The rest of the panels are still black, but it looks like the robot was expecting to start on a white panel, not a black one.
+#
+# Based on the Space Law Space Brochure that the Space Police attached to one of your windows, a valid registration identifier is always eight capital letters. After starting the robot on a single white panel instead, what registration identifier does it paint on your hull?
+#
 require "./day_nine"
 
 alias Robot = Boost
@@ -73,12 +81,17 @@ class Panels
   BLACK_COLOR = 0_i64
   WHITE_COLOR = 1_i64
 
-  TURN_LEFT = 0_i64
+  TURN_LEFT  = 0_i64
   TURN_RIGHT = 1_i64
 
-  def initialize(@robot : Robot)
+  def initialize(@robot : Robot, @start_color : Int64 = 0)
     @paints = {} of Tuple(Int32, Int32) => Int64
-    @current = {0,0}
+    @current = {0, 0}
+    @min_x = 0
+    @min_y = 0
+    @max_x = 0
+    @max_y = 0
+    set(@start_color)
     @direction = 1 # Look to North
   end
 
@@ -104,6 +117,10 @@ class Panels
 
   def set(color)
     @paints[@current] = color
+    @min_x = @current[0] if @current[0] < @min_x
+    @min_y = @current[1] if @current[1] < @min_y
+    @max_x = @current[0] if @current[0] > @max_x
+    @max_y = @current[1] if @current[1] > @max_y
   end
 
   def change_position(direction)
@@ -118,13 +135,13 @@ class Panels
 
     case @direction
     when 0
-      @current = { @current[0]+1, @current[1] }
+      @current = {@current[0] + 1, @current[1]}
     when 1
-      @current = { @current[0], @current[1]+1 }
+      @current = {@current[0], @current[1] + 1}
     when 2
-      @current = { @current[0]-1, @current[1] }
+      @current = {@current[0] - 1, @current[1]}
     when 3
-      @current = { @current[0], @current[1]-1 }
+      @current = {@current[0], @current[1] - 1}
     end
   end
 
@@ -133,9 +150,21 @@ class Panels
   end
 
   def print
-    puts "current: #{@current}"
-    @paints.each do |k,v|
-      puts "#{k} -> #{v}"
+    pixels = Array(Array(Char)).new(@max_x - @min_x + 1, Array(Char).new)
+    pixels.size.times do |i|
+      pixels[i] = Array(Char).new(@max_y - @min_y + 1, '.')
+    end
+
+    @paints.each do |k, v|
+      x, y = k[0] - @min_x, k[1] - @min_y
+      pixels[x][y] = v == WHITE_COLOR ? '#' : '.'
+    end
+
+    pixels.each do |row|
+      row.each do |pixel|
+        print pixel
+      end
+      puts
     end
   end
 end
