@@ -104,6 +104,72 @@
 #     ###.##.####.##.#..##
 #
 # Find the best location for a new monitoring station. How many other asteroids can be detected from that location?
+#
+# --- Part Two ---
+#
+# Once you give them the coordinates, the Elves quickly deploy an Instant Monitoring Station to the location and discover the worst: there are simply too many asteroids.
+#
+# The only solution is complete vaporization by giant laser.
+#
+# Fortunately, in addition to an asteroid scanner, the new monitoring station also comes equipped with a giant rotating laser perfect for vaporizing asteroids. The laser starts by pointing up and always rotates clockwise, vaporizing any asteroid it hits.
+#
+# If multiple asteroids are exactly in line with the station, the laser only has enough power to vaporize one of them before continuing its rotation. In other words, the same asteroids that can be detected can be vaporized, but if vaporizing one asteroid makes another one detectable, the newly-detected asteroid won't be vaporized until the laser has returned to the same position by rotating a full 360 degrees.
+#
+# For example, consider the following map, where the asteroid with the new monitoring station (and laser) is marked X:
+#
+# .#....#####...#..
+# ##...##.#####..##
+# ##...#...#.#####.
+# ..#.....X...###..
+# ..#.#.....#....##
+#
+# The first nine asteroids to get vaporized, in order, would be:
+#
+# .#....###24...#..
+# ##...##.13#67..9#
+# ##...#...5.8####.
+# ..#.....X...###..
+# ..#.#.....#....##
+#
+# Note that some asteroids (the ones behind the asteroids marked 1, 5, and 7) won't have a chance to be vaporized until the next full rotation. The laser continues rotating; the next nine to be vaporized are:
+#
+# .#....###.....#..
+# ##...##...#.....#
+# ##...#......1234.
+# ..#.....X...5##..
+# ..#.9.....8....76
+#
+# The next nine to be vaporized are then:
+#
+# .8....###.....#..
+# 56...9#...#.....#
+# 34...7...........
+# ..2.....X....##..
+# ..1..............
+#
+# Finally, the laser completes its first full rotation (1 through 3), a second rotation (4 through 8), and vaporizes the last asteroid (9) partway through its third rotation:
+#
+# ......234.....6..
+# ......1...5.....7
+# .................
+# ........X....89..
+# .................
+#
+# In the large example above (the one with the best monitoring station location at 11,13):
+#
+#     The 1st asteroid to be vaporized is at 11,12.
+#     The 2nd asteroid to be vaporized is at 12,1.
+#     The 3rd asteroid to be vaporized is at 12,2.
+#     The 10th asteroid to be vaporized is at 12,8.
+#     The 20th asteroid to be vaporized is at 16,0.
+#     The 50th asteroid to be vaporized is at 16,9.
+#     The 100th asteroid to be vaporized is at 10,16.
+#     The 199th asteroid to be vaporized is at 9,6.
+#     The 200th asteroid to be vaporized is at 8,2.
+#     The 201st asteroid to be vaporized is at 10,9.
+#     The 299th and final asteroid to be vaporized is at 11,1.
+#
+# The Elves are placing bets on which will be the 200th asteroid to be vaporized. Win the bet by determining which asteroid that will be; what do you get if you multiply its X coordinate by 100 and then add its Y coordinate? (For example, 8,2 becomes 802.)
 
 class AsteroidMap
   EMPTY_CELL    = '.'
@@ -111,6 +177,7 @@ class AsteroidMap
 
   def initialize(@map : Array(String))
     @asteroids = [] of Tuple(Int32, Int32)
+    @station_coord = {0, 0}
   end
 
   def size
@@ -129,24 +196,69 @@ class AsteroidMap
         max = {counts, cell0}
       end
     end
+    @station_coord = max[1]
     return max
+  end
+
+  def vaporized_in(counter : Int)
+    suggestion
+
+    coords = assteroids_coeficients_around @station_coord
+
+    coords_order = coords.keys.sort do |a, b|
+      a[0] <=> b[0]
+    end
+
+    buckets = {} of Float64 => Hash(Float64, Array(Tuple(Float64, Float64, Float64)))
+
+    coords_order.each do |coord|
+      unless buckets.has_key?(coord[1])
+        buckets[coord[1]] = {0 => [] of Tuple(Float64, Float64, Float64), 1 => [] of Tuple(Float64, Float64, Float64), -1 => [] of Tuple(Float64, Float64, Float64)} of Float64 => Array(Tuple(Float64, Float64, Float64))
+      end
+
+      buckets[coord[1]][coord[2]] << coord
+    end
+
+    coords_order = [] of Tuple(Float64, Float64, Float64)
+    coords_order += buckets[-1][0]
+    coords_order += buckets[-1][1]
+    coords_order += buckets[0][1]
+    coords_order += buckets[1][1]
+    coords_order += buckets[1][0]
+    coords_order += buckets[1][-1]
+    coords_order += buckets[0][-1]
+    coords_order += buckets[-1][-1]
+
+    result = @station_coord
+    n = coords_order.size
+    counter.times do |i|
+      key = coords_order[i % n]
+      while coords[key].size == 0
+        coords_order.delete_at(i % n)
+        n -= 1
+        key = coords_order[i % n]
+      end
+      result = coords[key].delete_at(0)
+    end
+    result
   end
 
   def assteroids_coeficients_around(cell0)
     cells = asteroids
-    result = [] of Tuple(Float64, Float64, Float64)
     dict = {} of Tuple(Float64, Float64, Float64) => Array(Tuple(Int32, Int32))
     cells.each do |cell1|
       next if cell0 == cell1
       c = coefficient(cell0, cell1)
-      result << c
-      # if dict.has_key?(c)
-      #   dict[c] << cell1
-      # else
-      #   dict[c] = [cell1] of Tuple(Int32, Int32)
-      # end
+      if dict.has_key?(c)
+        dict[c] << cell1
+      else
+        dict[c] = [cell1] of Tuple(Int32, Int32)
+      end
+
+      dict[c].sort! do |a, b|
+        distance(cell0, a) <=> distance(cell0, b)
+      end
     end
-    counts = result.uniq.size
     # puts "----"
     # puts "cell: #{cell0}"
     # puts "cells:     #{cells - [cell0]}"
@@ -156,26 +268,26 @@ class AsteroidMap
     # puts "dict[#{dict.size}]:       #{dict}"
     # puts "dict no uniq:"
     # dict.each do |k, v|
-    #   if v.size > 2
-    #     puts "#{k}  => #{v}"
-    #   end
+    #   puts "#{k}  => #{v}"
     # end
-    result.uniq
+    dict
   end
 
   def coefficient(cell0, cell1)
     x0, y0 = cell0
     x1, y1 = cell1
 
-    k = (y1 - y0) / (x1 - x0)
-    # b = y0.to_f64 - k * x0
+    dy = y1 - y0
+    dx = x1 - x0
 
-    b = (y1 - y0) > 0 ? 1_f64 : -1_f64
-    d = (x1 - x0) > 0 ? 1_f64 : -1_f64
+    k = dx == 0 ? 999.0 : dy / dx
+    b = dy > 0 ? 1_f64 : dy < 0 ? -1_f64 : 0_f64
+    d = dx > 0 ? 1_f64 : dx < 0 ? -1_f64 : 0_f64
 
-    #k0 = (x1 - x0).abs
-    #k0 = 1 if k0 == 0
-    #{(y1 - y0).to_f64 / k0, (x1 - x0).to_f64 / k0}
+    if k == 999.0 && b == -1
+      k = -999.0
+    end
+
     {k, b, d}
   end
 
@@ -188,5 +300,15 @@ class AsteroidMap
       end
     end
     @asteroids
+  end
+
+  def distance(cell0, cell1)
+    x0, y0 = cell0
+    x1, y1 = cell1
+
+    dy = y1 - y0
+    dx = x1 - x0
+
+    dx.abs + dy.abs
   end
 end

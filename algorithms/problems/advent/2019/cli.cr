@@ -156,9 +156,12 @@ def run
     end
 
     map = AsteroidMap.new(commands.dup)
-    answer = map.suggestion[0]
-    puts "part 1 Answer: #{answer} == 274"
+    # answer = map.suggestion[0]
+    # puts "Part 1 Answer: #{answer} == 274"
 
+    answer = map.vaporized_in(200)
+    puts "what do you get if you multiply its X coordinate by 100 and then add its Y"
+    puts "Part 2 Answer: #{answer} == 305"
   else
     raise "Day should be from 1 to 25"
   end
