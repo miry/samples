@@ -10,6 +10,7 @@ require "./day_eight"
 require "./day_nine"
 require "./day_ten"
 require "./day_eleven"
+require "./day_twelve"
 
 def run
   exit = false
@@ -182,6 +183,15 @@ def run
     panels.paint
     puts "Part 2 Answer: BLCZCJLZ"
     panels.print
+  when 12
+    puts "--- Day 12: The N-Body Problem ---"
+    puts "What is the total energy in the system after simulating the moons given in your scan for 1000 steps?"
+    moons = [] of Moon
+    STDIN.each_line do |line|
+      moons << Moon.parse line
+    end
+    answer = Moon.total_energy_after(moons, 1000)
+    puts "Part 1 Answer: #{answer} == ?"
   else
     raise "Day should be from 1 to 25"
   end
