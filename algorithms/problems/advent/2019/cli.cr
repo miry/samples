@@ -190,8 +190,13 @@ def run
     STDIN.each_line do |line|
       moons << Moon.parse line
     end
-    answer = Moon.total_energy_after(moons, 1000)
-    puts "Part 1 Answer: #{answer} == ?"
+
+    # answer = Moon.total_energy_after(moons, 1000)
+    # puts "Part 1 Answer: #{answer} == 7077"
+
+    big_answer = Moon.steps_of_cycle(moons)
+    puts "How many steps does it take to reach the first state that exactly matches a previous state?"
+    puts "Part 2 Answer: #{big_answer} == 402951477454512"
   else
     raise "Day should be from 1 to 25"
   end

@@ -183,6 +183,49 @@
 # Sum of total energy: 290 + 608 + 574 + 468 = 1940
 #
 # What is the total energy in the system after simulating the moons given in your scan for 1000 steps?
+#
+# --- Part Two ---
+#
+# All this drifting around in space makes you wonder about the nature of the universe. Does history really repeat itself? You're curious whether the moons will ever return to a previous state.
+#
+# Determine the number of steps that must occur before all of the moons' positions and velocities exactly match a previous point in time.
+#
+# For example, the first example above takes 2772 steps before they exactly match a previous point in time; it eventually returns to the initial state:
+#
+# After 0 steps:
+# pos=<x= -1, y=  0, z=  2>, vel=<x=  0, y=  0, z=  0>
+# pos=<x=  2, y=-10, z= -7>, vel=<x=  0, y=  0, z=  0>
+# pos=<x=  4, y= -8, z=  8>, vel=<x=  0, y=  0, z=  0>
+# pos=<x=  3, y=  5, z= -1>, vel=<x=  0, y=  0, z=  0>
+#
+# After 2770 steps:
+# pos=<x=  2, y= -1, z=  1>, vel=<x= -3, y=  2, z=  2>
+# pos=<x=  3, y= -7, z= -4>, vel=<x=  2, y= -5, z= -6>
+# pos=<x=  1, y= -7, z=  5>, vel=<x=  0, y= -3, z=  6>
+# pos=<x=  2, y=  2, z=  0>, vel=<x=  1, y=  6, z= -2>
+#
+# After 2771 steps:
+# pos=<x= -1, y=  0, z=  2>, vel=<x= -3, y=  1, z=  1>
+# pos=<x=  2, y=-10, z= -7>, vel=<x= -1, y= -3, z= -3>
+# pos=<x=  4, y= -8, z=  8>, vel=<x=  3, y= -1, z=  3>
+# pos=<x=  3, y=  5, z= -1>, vel=<x=  1, y=  3, z= -1>
+#
+# After 2772 steps:
+# pos=<x= -1, y=  0, z=  2>, vel=<x=  0, y=  0, z=  0>
+# pos=<x=  2, y=-10, z= -7>, vel=<x=  0, y=  0, z=  0>
+# pos=<x=  4, y= -8, z=  8>, vel=<x=  0, y=  0, z=  0>
+# pos=<x=  3, y=  5, z= -1>, vel=<x=  0, y=  0, z=  0>
+#
+# Of course, the universe might last for a very long time before repeating. Here's a copy of the second example from above:
+#
+# <x=-8, y=-10, z=0>
+# <x=5, y=5, z=10>
+# <x=2, y=-7, z=3>
+# <x=9, y=-8, z=-3>
+#
+# This set of initial positions takes 4686774924 steps before it repeats a previous state! Clearly, you might need to find a more efficient way to simulate the universe.
+#
+# How many steps does it take to reach the first state that exactly matches a previous state?
 
 class Moon
   property vel : Array(Int64)
@@ -197,13 +240,27 @@ class Moon
 
   def self.total_energy_after(moons : Array(Moon), steps : Int64)
     steps.times do |i|
-      moons.each do |moon|
-        moon.velocity(moons - [moon])
-      end
-
+      moons.each &.velocity(moons)
       moons.each &.step
     end
     moons.sum &.total
+  end
+
+  def self.steps_of_cycle(moons : Array(Moon))
+    counter = 0_i64
+    x_repeat_every, y_repeat_every, z_repeat_every = 0, 0, 0
+    while true
+
+      moons.each &.velocity(moons)
+      moons.each &.step
+      counter += 1
+      break if moons.all?(&.not_changed?)
+      x_repeat_every = counter if x_repeat_every == 0 && moons.map(&.vel[0]).all? {|i| i == 0}
+      y_repeat_every = counter if y_repeat_every == 0 && moons.map(&.vel[1]).all? {|i| i == 0}
+      z_repeat_every = counter if z_repeat_every == 0 && moons.map(&.vel[2]).all? {|i| i == 0}
+      break if x_repeat_every != 0 && y_repeat_every != 0 && z_repeat_every != 0
+    end
+    x_repeat_every*y_repeat_every*z_repeat_every
   end
 
   def initialize(@x : Int64, @y : Int64, @z : Int64)
@@ -212,6 +269,7 @@ class Moon
 
   def velocity(moons)
     moons.each do |moon|
+      next if moon == self
       @vel[0] += velocity_diff @x, moon.x
       @vel[1] += velocity_diff @y, moon.y
       @vel[2] += velocity_diff @z, moon.z
@@ -238,5 +296,9 @@ class Moon
 
   def total
     pot * kin
+  end
+
+  def not_changed?
+    @vel[0] == 0 && @vel[1] == 0 && @vel[2] == 0
   end
 end
