@@ -164,7 +164,7 @@ class Boost
 
         @output << addr
         @ipc += 1
-        return
+        # return
       when JUMP_IF_TRUE_CODE
         addendum1 = @state[@ipc + 1]
         addendum1 = value_by(addendum1, command[1])

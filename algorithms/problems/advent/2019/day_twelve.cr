@@ -250,14 +250,13 @@ class Moon
     counter = 0_i64
     x_repeat_every, y_repeat_every, z_repeat_every = 0, 0, 0
     while true
-
       moons.each &.velocity(moons)
       moons.each &.step
       counter += 1
       break if moons.all?(&.not_changed?)
-      x_repeat_every = counter if x_repeat_every == 0 && moons.map(&.vel[0]).all? {|i| i == 0}
-      y_repeat_every = counter if y_repeat_every == 0 && moons.map(&.vel[1]).all? {|i| i == 0}
-      z_repeat_every = counter if z_repeat_every == 0 && moons.map(&.vel[2]).all? {|i| i == 0}
+      x_repeat_every = counter if x_repeat_every == 0 && moons.map(&.vel[0]).all? { |i| i == 0 }
+      y_repeat_every = counter if y_repeat_every == 0 && moons.map(&.vel[1]).all? { |i| i == 0 }
+      z_repeat_every = counter if z_repeat_every == 0 && moons.map(&.vel[2]).all? { |i| i == 0 }
       break if x_repeat_every != 0 && y_repeat_every != 0 && z_repeat_every != 0
     end
     x_repeat_every*y_repeat_every*z_repeat_every

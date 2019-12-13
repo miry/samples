@@ -206,12 +206,19 @@ def run
       commands = line.split(",").map { |a| a.to_i64 }
     end
 
-    computer = GameProcessor.new(commands.dup)
+    # computer = GameProcessor.new(commands.dup)
+    # game = ArcadeGame.new(computer)
+    # game.build
+    # answer = game.block_titles.size
+    # puts "Part 1 Answer: #{answer} == 242"
+
+    mem = commands.dup
+    mem[0] = 2
+    computer = GameProcessor.new(mem)
     game = ArcadeGame.new(computer)
     game.build
-    answer = game.block_titles.size
-    puts "Part 1 Answer: #{answer} == 242"
-
+    answer = game.score
+    puts "Part 2 Answer: #{answer} == 11641"
   else
     raise "Day should be from 1 to 25"
   end

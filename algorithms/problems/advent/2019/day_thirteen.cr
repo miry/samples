@@ -23,6 +23,24 @@
 # and a ball tile (6 tiles from the left and 5 tiles from the top).
 #
 # Start the game. How many block tiles are on the screen when the game exits?
+#
+# --- Part Two ---
+#
+# The game didn't run because you didn't put in any quarters. Unfortunately, you did not bring any quarters.
+# Memory address 0 represents the number of quarters that have been inserted; set it to 2 to play for free.
+#
+# The arcade cabinet has a joystick that can move left and right.
+# The software reads the position of the joystick with input instructions:
+#
+#     If the joystick is in the neutral position, provide 0.
+#     If the joystick is tilted to the left, provide -1.
+#     If the joystick is tilted to the right, provide 1.
+#
+# The arcade cabinet also has a segment display capable of showing a single number that represents the player's current score.
+# When three output instructions specify X=-1, Y=0, the third output instruction is not a tile;
+# the value instead specifies the new score to show in the segment display. For example, a sequence of output values like -1,0,12345 would show 12345 as the player's current score.
+#
+# Beat the game by breaking all the blocks. What is your score after the last block is broken?
 
 require "./day_nine"
 
@@ -31,18 +49,63 @@ alias GameProcessor = Boost
 class ArcadeGame
   BLOCK_TILE = 2
 
+  getter score : Int64
+  @paddle : Tuple(Int64, Int64)
+  @ball : Tuple(Int64, Int64)
+
   def initialize(@robot : GameProcessor)
     @tiles = {} of Tuple(Int32, Int32) => Int64
     @blocks = [] of Array(Int64)
+    @score = 0
+    @paddle = {0_i64, 0_i64}
+    @ball = {0_i64, 0_i64}
   end
 
   def build
-    @robot.run
-    @blocks = @robot.output.in_groups_of(3, -1_i64)
+    while true
+      @robot.perform
+      process_state
+    end
+  rescue Boost::Halt
+    process_state
+  end
+
+  def move_joystick
+    if @paddle[0] != 0
+      @robot.input << (@ball[0] <=> @paddle[0]).to_i64
+    else
+      @robot.input << 0
+    end
+  end
+
+  def process_state
+    j = 0
+    buffer = Array(Int64).new(3, 0)
+    @robot.output.size.times do |i|
+      buffer[j] = @robot.output.delete_at(0)
+      j += 1
+      if j == 3
+        if buffer[0] == -1
+          @score = buffer[2]
+        else
+          case buffer[2]
+          when 3
+            @paddle = {buffer[0], buffer[1]}
+          when 4
+            @ball = {buffer[0], buffer[1]}
+            move_joystick
+          else
+          end
+        end
+        j = 0
+        @blocks << buffer
+        buffer = Array(Int64).new(3, 0)
+      end
+    end
   end
 
   def block_titles
-    @blocks.select {|i| i[2] == BLOCK_TILE }
+    @blocks.select { |i| i[2] == BLOCK_TILE }
   end
 
   def print
