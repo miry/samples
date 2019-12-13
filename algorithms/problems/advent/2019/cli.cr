@@ -11,6 +11,7 @@ require "./day_nine"
 require "./day_ten"
 require "./day_eleven"
 require "./day_twelve"
+require "./day_thirteen"
 
 def run
   exit = false
@@ -197,6 +198,20 @@ def run
     big_answer = Moon.steps_of_cycle(moons)
     puts "How many steps does it take to reach the first state that exactly matches a previous state?"
     puts "Part 2 Answer: #{big_answer} == 402951477454512"
+  when 13
+    puts "--- Day 13: Care Package ---"
+    puts "How many block tiles are on the screen when the game exits?"
+    commands = [] of Int64
+    STDIN.each_line do |line|
+      commands = line.split(",").map { |a| a.to_i64 }
+    end
+
+    computer = GameProcessor.new(commands.dup)
+    game = ArcadeGame.new(computer)
+    game.build
+    answer = game.block_titles.size
+    puts "Part 1 Answer: #{answer} == 242"
+
   else
     raise "Day should be from 1 to 25"
   end

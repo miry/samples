@@ -117,6 +117,14 @@ class Boost
     max
   end
 
+  def run
+    while true
+      perform
+    end
+  rescue Boost::Halt
+    return
+  end
+
   def perform
     n = @state.size
     while @ipc < n
