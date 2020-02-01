@@ -60,27 +60,27 @@ func TestSuggestMoveBegin(t *testing.T) {
 
 func TestSuggestMoveMiddle(t *testing.T) {
 	/*
-Coord: id = 0, x = 6; y = 3; wallsLeft = 3
-Coord: id = 1, x = 3; y = 8; wallsLeft = 5
-Coord: id = 2, x = 4; y = 6; wallsLeft = 5
-Walls count on the board: 5
-Wall: id = 0, x = 2; y = 7; wallsLeft = V
-Wall: id = 1, x = 5; y = 7; wallsLeft = H
-Wall: id = 2, x = 2; y = 8; wallsLeft = H
-Wall: id = 3, x = 1; y = 7; wallsLeft = H
-Wall: id = 4, x = 3; y = 7; wallsLeft = H
+	Coord: id = 0, x = 6; y = 3; wallsLeft = 3
+	Coord: id = 1, x = 3; y = 8; wallsLeft = 5
+	Coord: id = 2, x = 4; y = 6; wallsLeft = 5
+	Walls count on the board: 5
+	Wall: id = 0, x = 2; y = 7; wallsLeft = V
+	Wall: id = 1, x = 5; y = 7; wallsLeft = H
+	Wall: id = 2, x = 2; y = 8; wallsLeft = H
+	Wall: id = 3, x = 1; y = 7; wallsLeft = H
+	Wall: id = 4, x = 3; y = 7; wallsLeft = H
 
-9 9 3 1
-6 3 3
-3 8 5
-4 6 5
-5
-2 7 V
-5 7 H
-2 8 H
-1 7 H
-3 7 H
-*/
+	9 9 3 1
+	6 3 3
+	3 8 5
+	4 6 5
+	5
+	2 7 V
+	5 7 H
+	2 8 H
+	1 7 H
+	3 7 H
+	*/
 	subject := Coord{id: 1, x: 3, y: 8}
 
 	board := initBoard(9, 9)
@@ -102,5 +102,3 @@ Wall: id = 4, x = 3; y = 7; wallsLeft = H
 	actual := subject.suggestMove(walls, 9, 9)
 	assert.Equal(t, "RIGHT", actual)
 }
-
-
