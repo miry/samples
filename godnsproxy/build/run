@@ -7,11 +7,5 @@ set -o pipefail
 readonly LOCAL_OUTPUT_ROOT="_output"
 mkdir -p "${LOCAL_OUTPUT_ROOT}"
 go generate pkg/version/base.go
-go build -o "${LOCAL_OUTPUT_ROOT}"/proxy cmd/proxy/main.go
-go build -o "${LOCAL_OUTPUT_ROOT}"/dnsproxy cmd/dnsproxy/main.go
-
-readonly current_tag=`git rev-parse HEAD`
-readonly docker_image_base="miry/dnsproxy"
-readonly docker_image="$docker_image_base"
-
-docker build -t "$docker_image" .
+go build -o "${LOCAL_OUTPUT_ROOT}"/proxy ./cmd/proxy/
+go build -o "${LOCAL_OUTPUT_ROOT}"/dnsproxy ./cmd/dnsproxy/

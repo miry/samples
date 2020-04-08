@@ -1,2 +1,2 @@
-brew 'go', head: true
+brew 'go'
 cask 'docker'
