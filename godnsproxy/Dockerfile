@@ -1,4 +1,5 @@
-FROM golang:rc-alpine3.8 AS build
+# Builder
+FROM golang:alpine AS build
 
 RUN apk add --no-cache \
       git \
@@ -13,20 +14,22 @@ COPY . .
 
 ENV GO111MODULE=on
 
-RUN go get . \
- && go build -o /go/bin/proxy cmd/proxy/main.go \
- && go build -o /go/bin/dnsproxy cmd/dnsproxy/main.go
+RUN go build -o /go/bin/proxy ./cmd/proxy/ \
+ && go build -o /go/bin/dnsproxy ./cmd/dnsproxy/
 
-FROM alpine:3.8
+# Runner
+FROM alpine
 RUN apk add --no-cache \
-      bash \
-      curl \
+      # bash \
+      # curl \
       netcat-openbsd \
       ca-certificates \
       tzdata
 
 ENV PORT 8053
-EXPOSE ${PORT}
+EXPOSE ${PORT}/udp
+
+USER 1001
 
 COPY --from=build /go/bin/dnsproxy /
 COPY --from=build /go/bin/proxy /

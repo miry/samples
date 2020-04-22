@@ -3,7 +3,6 @@ package net
 import (
 	"crypto/tls"
 	"fmt"
-	"log"
 	"net"
 )
 
@@ -13,14 +12,13 @@ type Addr struct {
 	Host    string
 }
 
+// String returns the full address format (e.g tcp://0.0.0.0:53)
 func (a *Addr) String() string {
-	return a.Host
+	return fmt.Sprintf("%s://%s", a.Network, a.Host)
 }
 
 // Connect to host in network
 func (a *Addr) Connect() (*Client, error) {
-	log.Printf("Connecting to upstream %s/%s\n", a.Network, a.Host)
-
 	var conn net.Conn
 	var err error
 
@@ -35,4 +33,14 @@ func (a *Addr) Connect() (*Client, error) {
 	}
 
 	return &Client{Conn: conn}, nil
+}
+
+// ListenTCP opens a new socket for incoming connections
+func (a *Addr) ListenTCP() (net.Listener, error) {
+	return net.Listen(a.Network, a.Host)
+}
+
+// ListenUDP open a new UDP socket for incomming connections
+func (a *Addr) ListenUDP() (net.PacketConn, error) {
+	return net.ListenPacket(a.Network, a.Host)
 }

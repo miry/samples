@@ -1,3 +1,4 @@
 pkg/version/base_generated.go
 vendor/
 _output/
+*.tar.gz

@@ -2,3 +2,4 @@ Brewfile
 *.md
 /vendor/
 /_output/
+.gitignore
