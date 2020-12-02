@@ -1,5 +1,6 @@
 require "option_parser"
 require "./day_one"
+require "./day_two"
 
 def run
   exit = false
@@ -31,6 +32,28 @@ def run
   case task
   when 0
     raise "Missing required argument: -d <DAY>"
+  when 2.1
+    puts "--- Day 2: Password Philosophy ---"
+    puts "--- Part One ---"
+    puts "How many passwords are valid according to their policies?"
+    entries = [] of String
+    STDIN.each_line do |line|
+      entries << line
+    end
+
+    answer = Password.parse(entries).count { |pass| pass.valid? }
+    puts "Answer: #{answer}"
+  when 2.2
+    puts "--- Day 2: Password Philosophy ---"
+    puts "--- Part Two ---"
+    puts "How many passwords are valid according to the new interpretation of the policies?"
+    entries = [] of String
+    STDIN.each_line do |line|
+      entries << line
+    end
+
+    answer = Password.parse(entries).count { |pass| pass.valid?(2) }
+    puts "Answer: #{answer}"
   when 1.1
     puts "--- Day 1: Report Repair ---"
     puts "--- Part One ---"
