@@ -1,6 +1,7 @@
 require "option_parser"
 require "./day_one"
 require "./day_two"
+require "./day_three"
 
 def run
   exit = false
@@ -32,6 +33,28 @@ def run
   case task
   when 0
     raise "Missing required argument: -d <DAY>"
+  when 1.1
+    puts "--- Day 1: Report Repair ---"
+    puts "--- Part One ---"
+    puts "What is the sum of the fuel requirements for all of the modules on your spacecraft?"
+    entries = [] of Int64
+    STDIN.each_line do |line|
+      entries << line.to_i64
+    end
+
+    answer = mul_two_entries_to_sum(entries, 2020)
+    puts "Answer: #{answer}"
+  when 1.2
+    puts "--- Day 1: Report Repair ---"
+    puts "--- Part Two ---"
+    puts "In your expense report, what is the product of the three entries that sum to 2020?"
+    entries = [] of Int64
+    STDIN.each_line do |line|
+      entries << line.to_i64
+    end
+
+    answer = mul_entries_to_sum(entries, 3, 2020)
+    puts "Answer: #{answer}"
   when 2.1
     puts "--- Day 2: Password Philosophy ---"
     puts "--- Part One ---"
@@ -54,27 +77,37 @@ def run
 
     answer = Password.parse(entries).count { |pass| pass.valid?(2) }
     puts "Answer: #{answer}"
-  when 1.1
-    puts "--- Day 1: Report Repair ---"
+  when 3.1
+    puts "--- Day 3: Toboggan Trajectory ---"
     puts "--- Part One ---"
-    puts "What is the sum of the fuel requirements for all of the modules on your spacecraft?"
-    entries = [] of Int64
+    puts "Starting at the top-left corner of your map and following a slope of right 3 and down 1, how many trees would you encounter?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
-    answer = mul_two_entries_to_sum(entries, 2020)
+    answer = TobogganTrajectory.new(entries).traversing(3, 1).count('#')
     puts "Answer: #{answer}"
-  when 1.2
-    puts "--- Day 1: Report Repair ---"
+  when 3.2
+    puts "--- Day 3: Toboggan Trajectory ---"
     puts "--- Part Two ---"
-    puts "In your expense report, what is the product of the three entries that sum to 2020?"
-    entries = [] of Int64
+    puts "What do you get if you multiply together the number of trees encountered on each of the listed slopes?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
-    answer = mul_entries_to_sum(entries, 3, 2020)
+    trees = [] of Int64
+    [
+      {1.to_i64, 1.to_i64},
+      {3.to_i64, 1.to_i64},
+      {5.to_i64, 1.to_i64},
+      {7.to_i64, 1.to_i64},
+      {1.to_i64, 2.to_i64},
+    ].each do |step|
+      trees << TobogganTrajectory.new(entries).traversing(step[0], step[1]).count('#').to_i64
+    end
+    answer = trees.reduce(1.to_i64) { |a, i| a * i }
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
