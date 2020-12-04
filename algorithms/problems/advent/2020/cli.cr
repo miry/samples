@@ -2,6 +2,7 @@ require "option_parser"
 require "./day_one"
 require "./day_two"
 require "./day_three"
+require "./day_four"
 
 def run
   exit = false
@@ -108,6 +109,56 @@ def run
       trees << TobogganTrajectory.new(entries).traversing(step[0], step[1]).count('#').to_i64
     end
     answer = trees.reduce(1.to_i64) { |a, i| a * i }
+    puts "Answer: #{answer}"
+  when 4.1
+    puts "--- Day 4: Passport Processing ---"
+    puts "--- Part One ---"
+    puts "In your batch file, how many passports are valid?"
+    entries = [] of Passport
+    buf = ""
+    STDIN.each_line do |line|
+      if line.size == 0
+        entries << Passport.parse(buf)
+        buf = ""
+      else
+        buf += " " + line
+      end
+    end
+
+    if buf.size != 0
+      entries << Passport.parse(buf)
+    end
+
+    entries.select! do |pass|
+      pass.has_required_fields?
+    end
+
+    answer = entries.size
+    puts "Answer: #{answer}"
+  when 4.2
+    puts "--- Day 4: Passport Processing ---"
+    puts "--- Part Two ---"
+    puts "In your batch file, how many passports are valid?"
+    entries = [] of Passport
+    buf = ""
+    STDIN.each_line do |line|
+      if line.size == 0
+        entries << Passport.parse(buf)
+        buf = ""
+      else
+        buf += " " + line
+      end
+    end
+
+    if buf.size != 0
+      entries << Passport.parse(buf)
+    end
+
+    entries.select! do |pass|
+      pass.valid?
+    end
+
+    answer = entries.size
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
