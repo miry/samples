@@ -3,6 +3,7 @@ require "./day_one"
 require "./day_two"
 require "./day_three"
 require "./day_four"
+require "./day_five"
 
 def run
   exit = false
@@ -159,6 +160,43 @@ def run
     end
 
     answer = entries.size
+    puts "Answer: #{answer}"
+  when 5.1
+    puts "--- Day 5: Binary Boarding ---"
+    puts "--- Part One ---"
+    puts "What is the highest seat ID on a boarding pass?"
+    entries = [] of Int64
+
+    STDIN.each_line do |line|
+      entries << BoardSeat.parse(line).seat_id
+    end
+
+    answer = entries.max
+    puts "Answer: #{answer}"
+  when 5.2
+    puts "--- Day 5: Binary Boarding ---"
+    puts "--- Part Two ---"
+    puts "What is the ID of your seat?"
+    entries = [] of Int64
+
+    STDIN.each_line do |line|
+      entries << BoardSeat.parse(line).seat_id
+    end
+
+    entries.sort!
+    i = 0
+    prev = entries[0]
+    answer = prev
+    while i < entries.size
+      i += 1
+      cur = entries[i]
+      if cur - prev > 1
+        answer = cur - 1
+        break
+      end
+      prev = cur
+    end
+
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
