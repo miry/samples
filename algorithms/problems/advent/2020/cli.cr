@@ -198,6 +198,43 @@ def run
     end
 
     puts "Answer: #{answer}"
+  when 6.1
+    puts "--- Day 6: Custom Customs ---"
+    puts "--- Part One ---"
+    puts "What is the sum of those counts?"
+    answer = 0
+    buf = ""
+    STDIN.each_line do |line|
+      if line.size == 0
+        answer += buf.chars.uniq.size
+        buf = ""
+      else
+        buf += line
+      end
+    end
+    if buf.size != 0
+      answer += buf.chars.uniq.size
+    end
+    puts "Answer: #{answer}"
+  when 6.2
+    puts "--- Day 6: Custom Customs ---"
+    puts "--- Part Two ---"
+    puts "What is the sum of those counts?"
+    answer = 0
+    entries = [] of String
+    buf = ""
+    STDIN.each_line do |line|
+      if line.size == 0
+        answer += buf.strip.split(" ").map {|a| a.chars.sort.uniq }.reduce{|a,i| a & i}.size
+        buf = ""
+      else
+        buf += " " + line
+      end
+    end
+    if buf.size != 0
+      answer += buf.strip.split(" ").map {|a| a.chars.sort.uniq }.reduce{|a,i| a & i}.size
+    end
+    puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
   end
