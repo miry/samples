@@ -4,6 +4,7 @@ require "./day_two"
 require "./day_three"
 require "./day_four"
 require "./day_five"
+require "./day7"
 
 def run
   exit = false
@@ -225,15 +226,78 @@ def run
     buf = ""
     STDIN.each_line do |line|
       if line.size == 0
-        answer += buf.strip.split(" ").map {|a| a.chars.sort.uniq }.reduce{|a,i| a & i}.size
+        answer += buf.strip.split(" ").map { |a| a.chars.sort.uniq }.reduce { |a, i| a & i }.size
         buf = ""
       else
         buf += " " + line
       end
     end
     if buf.size != 0
-      answer += buf.strip.split(" ").map {|a| a.chars.sort.uniq }.reduce{|a,i| a & i}.size
+      answer += buf.strip.split(" ").map { |a| a.chars.sort.uniq }.reduce { |a, i| a & i }.size
     end
+    puts "Answer: #{answer}"
+  when 7.1
+    puts "--- Day 7: Handy Haversacks ---"
+    puts "--- Part One ---"
+    puts "How many bag colors can eventually contain at least one shiny gold bag? "
+    answer = 0
+    bags = Hash(String, Array(String)).new
+    reverse_bags = Hash(String, Array(String)).new
+    STDIN.each_line do |line|
+      bag = line.gsub(" contain no other bags.", "")
+        .gsub("bags", "bag").gsub("contain", "")
+        .gsub("  ", " ")
+        .gsub(".", "")
+        .gsub(",", "").split(" bag")
+      clean_bags = Array(String).new
+      bag[1..-2].each do |b|
+        clean_bag = b.gsub(/^ \d* /, "")
+        clean_bags << clean_bag
+        reverse_bags[clean_bag] ||= Array(String).new
+        reverse_bags[clean_bag] << bag[0]
+      end
+      bags[bag[0]] = clean_bags
+    end
+
+    puts "Bags: #{bags}"
+    puts "Reverse Bags: #{reverse_bags}"
+    bags_with_shiny_gold = Hash(String, Bool).new
+
+    queue = reverse_bags["shiny gold"]
+    bags_with_shiny_gold["shiny gold"] = true
+    while queue.size > 0
+      new_queue = Array(String).new
+      queue.each do |with_gold_bag|
+        bags_with_shiny_gold[with_gold_bag] = true
+        new_queue += reverse_bags[with_gold_bag] if reverse_bags.has_key?(with_gold_bag)
+      end
+      queue = new_queue
+    end
+
+    answer = 0
+    bags.keys.each do |bag|
+      if bags_with_shiny_gold.has_key?(bag) && bag != "shiny gold"
+        answer += 1
+      end
+    end
+
+    puts "Answer: #{answer}"
+  when 7.2
+    puts "--- Day 7: Handy Haversacks ---"
+    puts "--- Part Two ---"
+    puts "How many individual bags are required inside your single shiny gold bag?"
+    answer = 0
+    bags = Hash(String, Array(String)).new
+    STDIN.each_line do |line|
+      bag = line.gsub(" contain no other bags.", "")
+        .gsub("bags", "bag").gsub("contain", "")
+        .gsub("  ", " ")
+        .gsub(".", "")
+        .gsub(",", "").split(" bag")
+      bags[bag[0]] = bag[1..-2]
+    end
+
+    answer = count_bags("shiny gold", bags)
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
