@@ -5,6 +5,7 @@ require "./day_three"
 require "./day_four"
 require "./day_five"
 require "./day7"
+require "./day8"
 
 def run
   exit = false
@@ -259,8 +260,6 @@ def run
       bags[bag[0]] = clean_bags
     end
 
-    puts "Bags: #{bags}"
-    puts "Reverse Bags: #{reverse_bags}"
     bags_with_shiny_gold = Hash(String, Bool).new
 
     queue = reverse_bags["shiny gold"]
@@ -299,6 +298,48 @@ def run
 
     answer = count_bags("shiny gold", bags)
     puts "Answer: #{answer}"
+  when 8.1
+    puts "--- Day 8: Handheld Halting ---"
+    puts "--- Part One ---"
+    puts "what value is in the accumulator?"
+    code = [] of GameboyCommand
+
+    STDIN.each_line do |line|
+      code << GameboyCommand.parse(line)
+    end
+
+    console = Gameboy.new(code)
+    console.detect_loop
+    answer = console.accumulator
+    puts "Answer: #{answer}"
+  when 8.2
+    puts "--- Day 8: Handheld Halting ---"
+    puts "--- Part Two ---"
+    puts "What is the value of the accumulator after the program terminates?"
+    code = [] of GameboyCommand
+
+    STDIN.each_line do |line|
+      code << GameboyCommand.parse(line)
+    end
+
+    answer = 0.to_i64
+    console = Gameboy.new(code)
+    history = console.detect_loop
+    steps = 0
+    history.reverse.each do |cmd_id|
+      steps += 1
+      new_code = code.dup
+      new_code[cmd_id] = new_code[cmd_id].swap
+      console = Gameboy.new(new_code)
+      console.detect_loop
+      if console.end?
+        answer = console.accumulator
+        break
+      end
+    end
+
+    puts "Answer: #{answer}"
+    puts "(detected in #{steps} steps)"
   else
     raise "Day is not implemented"
   end
