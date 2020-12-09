@@ -6,6 +6,7 @@ require "./day_four"
 require "./day_five"
 require "./day7"
 require "./day8"
+require "./day9"
 
 def run
   exit = false
@@ -340,6 +341,48 @@ def run
 
     puts "Answer: #{answer}"
     puts "(detected in #{steps} steps)"
+  when 9.1
+    puts "--- Day 8: Handheld Halting ---"
+    puts "--- Part One ---"
+    puts "what value is in the accumulator?"
+    input = [] of Int64
+
+    STDIN.each_line do |line|
+      input << line.to_i64
+    end
+
+    answer = weak_number(input, 25.to_i64)
+    puts "Answer: #{answer}"
+  when 9.2
+    puts "--- Day 8: Handheld Halting ---"
+    puts "--- Part One ---"
+    puts "what value is in the accumulator?"
+    input = [] of Int64
+
+    STDIN.each_line do |line|
+      input << line.to_i64
+    end
+
+    n = weak_number_index(input, 25.to_i64)
+    if n.nil?
+      puts "Could not find index woth weak number in array"
+      return
+    end
+    broken = input[n]
+    answer = hash_largest_contiguous_numbers(input[0..n], broken.not_nil!)
+
+    # n = i + num
+    # subset = input[0..n]
+    # while n > 0
+    #   result = find_contiguous_entries_to_sum(subset, n.to_i64, weak_number.not_nil!)
+    #   if !result.empty?
+    #     answer = result[0] + result[-1]
+    #     break
+    #   end
+    #   n -= 1
+    # end
+
+    puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
   end
