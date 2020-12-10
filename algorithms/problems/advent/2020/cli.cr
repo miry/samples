@@ -7,6 +7,7 @@ require "./day_five"
 require "./day7"
 require "./day8"
 require "./day9"
+require "./day10"
 
 def run
   exit = false
@@ -342,9 +343,9 @@ def run
     puts "Answer: #{answer}"
     puts "(detected in #{steps} steps)"
   when 9.1
-    puts "--- Day 8: Handheld Halting ---"
+    puts "--- Day 9: Encoding Error ---"
     puts "--- Part One ---"
-    puts "what value is in the accumulator?"
+    puts "wWhat is the first number that does not have this property?"
     input = [] of Int64
 
     STDIN.each_line do |line|
@@ -354,9 +355,9 @@ def run
     answer = weak_number(input, 25.to_i64)
     puts "Answer: #{answer}"
   when 9.2
-    puts "--- Day 8: Handheld Halting ---"
-    puts "--- Part One ---"
-    puts "what value is in the accumulator?"
+    puts "--- Day 9: Encoding Error ---"
+    puts "--- Part Two ---"
+    puts "What is the encryption weakness in your XMAS-encrypted list of numbers?"
     input = [] of Int64
 
     STDIN.each_line do |line|
@@ -370,18 +371,34 @@ def run
     end
     broken = input[n]
     answer = hash_largest_contiguous_numbers(input[0..n], broken.not_nil!)
+    puts "Answer: #{answer}"
+  when 10.1
+    puts "--- Day 10: Adapter Array ---"
+    puts "--- Part One ---"
+    puts "What is the number of 1-jolt differences multiplied by the number of 3-jolt differences?"
+    input = [] of Int64
 
-    # n = i + num
-    # subset = input[0..n]
-    # while n > 0
-    #   result = find_contiguous_entries_to_sum(subset, n.to_i64, weak_number.not_nil!)
-    #   if !result.empty?
-    #     answer = result[0] + result[-1]
-    #     break
-    #   end
-    #   n -= 1
-    # end
+    STDIN.each_line do |line|
+      input << line.to_i64
+    end
 
+    r = distributions(input.sort)
+    answer = r[1] * r[3]
+    puts "Answer: #{answer}"
+  when 10.2
+    puts "--- Day 10: Adapter Array ---"
+    puts "--- Part Two ---"
+    puts "What is the total number of distinct ways you can arrange the adapters to connect the charging outlet to your device?"
+    input = [] of Int64
+
+    STDIN.each_line do |line|
+      input << line.to_i64
+    end
+
+    devices = [0.to_i64] + input.sort
+    device = 3.to_i64
+
+    answer = combinations(devices, Hash(Array(Int64), Int64).new)
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
