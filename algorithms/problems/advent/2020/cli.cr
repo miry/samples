@@ -8,6 +8,7 @@ require "./day7"
 require "./day8"
 require "./day9"
 require "./day10"
+require "./day11"
 
 def run
   exit = false
@@ -399,6 +400,30 @@ def run
     device = 3.to_i64
 
     answer = combinations(devices, Hash(Array(Int64), Int64).new)
+    puts "Answer: #{answer}"
+  when 11.1
+    puts "--- Day 11: Seating System ---"
+    puts "--- Part One ---"
+    puts "how many seats end up occupied?"
+    seats = [] of Array(Char)
+
+    STDIN.each_line do |line|
+      seats << line.chars
+    end
+
+    answer = SeatingSystem.new(seats).stabalize_rounds
+    puts "Answer: #{answer}"
+  when 11.2
+    puts "--- Day 11: Seating System ---"
+    puts "--- Part Two ---"
+    puts "how many seats end up occupied?"
+    seats = [] of Array(Char)
+
+    STDIN.each_line do |line|
+      seats << line.chars
+    end
+
+    answer = SeatingSystem.new(seats).stabalize_rounds('2')
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
