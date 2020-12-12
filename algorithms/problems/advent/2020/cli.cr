@@ -9,6 +9,7 @@ require "./day8"
 require "./day9"
 require "./day10"
 require "./day11"
+require "./day12"
 
 def run
   exit = false
@@ -424,6 +425,30 @@ def run
     end
 
     answer = SeatingSystem.new(seats).stabalize_rounds('2')
+    puts "Answer: #{answer}"
+  when 12.1
+    puts "--- Day 12: Rain Risk ---"
+    puts "--- Part One ---"
+    puts "What is the Manhattan distance between that location and the ship's starting position?"
+    commands = [] of String
+
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    answer = rain_risk(commands)
+    puts "Answer: #{answer}"
+  when 12.2
+    puts "--- Day 12: Rain Risk ---"
+    puts "--- Part Two ---"
+    puts "What is the Manhattan distance between that location and the ship's starting position?"
+    commands = [] of String
+
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    answer = rain_risk2(commands)
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
