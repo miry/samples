@@ -10,6 +10,7 @@ require "./day9"
 require "./day10"
 require "./day11"
 require "./day12"
+require "./day13"
 
 def run
   exit = false
@@ -449,6 +450,30 @@ def run
     end
 
     answer = rain_risk2(commands)
+    puts "Answer: #{answer}"
+  when 13.1
+    puts "--- Day 13: Shuttle Search ---"
+    puts "--- Part One ---"
+    puts "What is the ID of the earliest bus you can take to the airport multiplied by the number of minutes you'll need to wait for that bus?"
+    commands = [] of String
+
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    answer = earliest_bus(commands[0], commands[1])
+    puts "Answer: #{answer}"
+  when 13.2
+    puts "--- Day 13: Shuttle Search ---"
+    puts "--- Part Two ---"
+    puts "What is the earliest timestamp such that all of the listed bus IDs depart at offsets matching their positions in the list?"
+    commands = [] of String
+
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    answer = earliest_bus2(commands[1])
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"

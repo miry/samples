@@ -97,7 +97,6 @@ def rain_risk(commands)
       x -= value
     when 'S'
       y -= value
-
     when 'R'
       dx = (value / 90).to_i64
       direction_indx += dx
@@ -108,7 +107,6 @@ def rain_risk(commands)
       direction_indx -= dx
       direction_indx = direction_indx % 4
       direction = directions[direction_indx]
-
     else
       puts "Unknown command #{instruction} in #{command}"
       break
@@ -141,19 +139,19 @@ def rain_risk2(commands)
       x += dx
       y += dy
     when 'N'
-      wy_indx = direction_indx % 2 == 0 ? direction_indx : (direction_indx +1)%4
+      wy_indx = direction_indx % 2 == 0 ? direction_indx : (direction_indx + 1) % 4
       value *= -1 if wy_indx == 2
       directions[wy_indx] += value
     when 'E'
-      wx_indx = direction_indx % 2 == 0 ? direction_indx+1 : direction_indx
+      wx_indx = direction_indx % 2 == 0 ? direction_indx + 1 : direction_indx
       value *= -1 if wx_indx == 3
       directions[wx_indx] += value
     when 'W'
-      wx_indx = direction_indx % 2 == 0 ? direction_indx+1 : direction_indx
+      wx_indx = direction_indx % 2 == 0 ? direction_indx + 1 : direction_indx
       value *= -1 if wx_indx == 1
       directions[wx_indx] += value
     when 'S'
-      wy_indx = direction_indx % 2 == 0 ? direction_indx : (direction_indx +1)%4
+      wy_indx = direction_indx % 2 == 0 ? direction_indx : (direction_indx + 1) % 4
       value *= -1 if wy_indx == 0
       directions[wy_indx] += value
     when 'R'
