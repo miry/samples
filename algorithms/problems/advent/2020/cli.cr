@@ -11,6 +11,17 @@ require "./day10"
 require "./day11"
 require "./day12"
 require "./day13"
+require "./day14"
+require "./day15"
+require "./day16"
+require "./day17"
+require "./day18"
+require "./day19"
+require "./day20"
+require "./day21"
+require "./day22"
+require "./day23"
+require "./day24"
 
 def run
   exit = false
@@ -474,6 +485,30 @@ def run
     end
 
     answer = earliest_bus2(commands[1])
+    puts "Answer: #{answer}"
+  when 14.1
+    puts "--- Day 14: Docking Data ---"
+    puts "--- Part One ---"
+    puts "What is the sum of all values left in memory after it completes?"
+    commands = [] of String
+
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    answer = DockingData.parse(commands).sum
+    puts "Answer: #{answer}"
+  when 14.2
+    puts "--- Day 14: Docking Data ---"
+    puts "--- Part Two ---"
+    puts "What is the sum of all values left in memory after it completes?"
+    commands = [] of String
+
+    STDIN.each_line do |line|
+      commands << line
+    end
+
+    answer = DockingData.parse(commands, 2).sum
     puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
