@@ -510,6 +510,30 @@ def run
 
     answer = DockingData.parse(commands, 2).sum
     puts "Answer: #{answer}"
+  when 15.1
+    puts "--- Day 15: Rambunctious Recitation ---"
+    puts "--- Part One ---"
+    puts "Given your starting numbers, what will be the 2020th number spoken?"
+    numbers = Array(Array(Int64)).new
+
+    STDIN.each_line do |line|
+      numbers << line.split(',').map(&.to_i64)
+    end
+
+    answer = MemoryGame.new(numbers[0]).spoken(2020)
+    puts "Answer: #{answer}"
+  when 15.2
+    puts "--- Day 15: Rambunctious Recitation ---"
+    puts "--- Part Two ---"
+    puts "Given your starting numbers, what will be the 30000000th number spoken?"
+    numbers = Array(Array(Int64)).new
+
+    STDIN.each_line do |line|
+      numbers << line.split(',').map(&.to_i64)
+    end
+
+    answer = MemoryGame.new(numbers[0]).spoken(30000000)
+    puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
   end
