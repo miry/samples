@@ -534,6 +534,30 @@ def run
 
     answer = MemoryGame.new(numbers[0]).spoken(30000000)
     puts "Answer: #{answer}"
+  when 16.1
+    puts "--- Day 16: Ticket Translation ---"
+    puts "--- Part One ---"
+    puts "What is your ticket scanning error rate?"
+    tickets = Array(String).new
+
+    STDIN.each_line do |line|
+      tickets << line
+    end
+
+    answer = TicketTranslation.parse(tickets).error_rate
+    puts "Answer: #{answer}"
+  when 16.2
+    puts "--- Day 16: Ticket Translation ---"
+    puts "--- Part Two ---"
+    puts "What do you get if you multiply those six values together?"
+    tickets = Array(String).new
+
+    STDIN.each_line do |line|
+      tickets << line
+    end
+
+    answer = TicketTranslation.parse(tickets).departure_mul
+    puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
   end
