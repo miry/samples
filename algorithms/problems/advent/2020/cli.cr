@@ -558,6 +558,42 @@ def run
 
     answer = TicketTranslation.parse(tickets).departure_mul
     puts "Answer: #{answer}"
+  when 17.1
+    puts "--- Day 17: Conway Cubes ---"
+    puts "--- Part One ---"
+    puts "How many cubes are left in the active state after the sixth cycle?"
+    tickets = Array(String).new
+
+    STDIN.each_line do |line|
+      tickets << line
+    end
+
+    subject = ConwayCubes.parse(tickets)
+    6.times do
+      subject.cycle
+    end
+
+    answer = subject.active
+    puts "Answer: #{answer}"
+  when 17.2
+    puts "--- Day 17: Conway Cubes ---"
+    puts "--- Part Two ---"
+    puts "How many cubes are left in the active state after the sixth cycle?"
+    tickets = Array(String).new
+
+    STDIN.each_line do |line|
+      tickets << line
+    end
+
+    subject = ConwayCubes2.parse(tickets)
+    subject.print
+
+    6.times do
+      subject.cycle
+    end
+
+    answer = subject.active
+    puts "Answer: #{answer}"
   else
     raise "Day is not implemented"
   end
