@@ -104,13 +104,13 @@ class DockingData
   property mask2 : String
   property mem : Hash(Int64, Int64)
 
-  def initialize()
+  def initialize
     @mask = Hash(Int32, Int64).new
     @mem = Hash(Int64, Int64).new
     @mask2 = ""
   end
 
-  def self.parse(commands, ver=1) : self
+  def self.parse(commands, ver = 1) : self
     result = self.new
     commands.each do |cmd|
       case cmd[0..2]
@@ -153,23 +153,22 @@ class DockingData
   def write(addr, val)
     value = val.reverse + "0" * (36 - val.size)
     @mask.each do |i, v|
-      tvalue = i == 0 ? "" : value[0..i-1]
+      tvalue = i == 0 ? "" : value[0..i - 1]
       tvalue += "#{v}"
-      tvalue += value[i+1..] if i < 36
+      tvalue += value[i + 1..] if i < 36
       value = tvalue
     end
     @mem[addr] = value.reverse.to_i64(2)
   end
-
 
   def write2(addr, val)
     addr_bits = addr.to_s(2)
     addr = "0" * (36 - addr_bits.size) + addr_bits
     @mask2.chars.each_with_index do |v, i|
       next if v == '0'
-      tvalue = i == 0 ? "" : addr[0..i-1]
+      tvalue = i == 0 ? "" : addr[0..i - 1]
       tvalue += "#{v}"
-      tvalue += addr[i+1..] if i < 36
+      tvalue += addr[i + 1..] if i < 36
       addr = tvalue
     end
 
@@ -189,9 +188,9 @@ class DockingData
 
   def apply_mask(val)
     @mask.each do |i, v|
-      tvalue = i == 0 ? "" : value[0..i-1]
+      tvalue = i == 0 ? "" : value[0..i - 1]
       tvalue += "#{v}"
-      tvalue += value[i+1..] if i < 36
+      tvalue += value[i + 1..] if i < 36
       value = tvalue
     end
   end

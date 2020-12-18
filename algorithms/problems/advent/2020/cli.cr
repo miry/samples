@@ -50,6 +50,7 @@ def run
   end
 
   task = day + 0.1 * part
+  answer = 0
   case task
   when 0
     raise "Missing required argument: -d <DAY>"
@@ -63,7 +64,6 @@ def run
     end
 
     answer = mul_two_entries_to_sum(entries, 2020)
-    puts "Answer: #{answer}"
   when 1.2
     puts "--- Day 1: Report Repair ---"
     puts "--- Part Two ---"
@@ -74,7 +74,6 @@ def run
     end
 
     answer = mul_entries_to_sum(entries, 3, 2020)
-    puts "Answer: #{answer}"
   when 2.1
     puts "--- Day 2: Password Philosophy ---"
     puts "--- Part One ---"
@@ -85,7 +84,6 @@ def run
     end
 
     answer = Password.parse(entries).count { |pass| pass.valid? }
-    puts "Answer: #{answer}"
   when 2.2
     puts "--- Day 2: Password Philosophy ---"
     puts "--- Part Two ---"
@@ -96,7 +94,6 @@ def run
     end
 
     answer = Password.parse(entries).count { |pass| pass.valid?(2) }
-    puts "Answer: #{answer}"
   when 3.1
     puts "--- Day 3: Toboggan Trajectory ---"
     puts "--- Part One ---"
@@ -107,7 +104,6 @@ def run
     end
 
     answer = TobogganTrajectory.new(entries).traversing(3, 1).count('#')
-    puts "Answer: #{answer}"
   when 3.2
     puts "--- Day 3: Toboggan Trajectory ---"
     puts "--- Part Two ---"
@@ -128,7 +124,6 @@ def run
       trees << TobogganTrajectory.new(entries).traversing(step[0], step[1]).count('#').to_i64
     end
     answer = trees.reduce(1.to_i64) { |a, i| a * i }
-    puts "Answer: #{answer}"
   when 4.1
     puts "--- Day 4: Passport Processing ---"
     puts "--- Part One ---"
@@ -153,7 +148,6 @@ def run
     end
 
     answer = entries.size
-    puts "Answer: #{answer}"
   when 4.2
     puts "--- Day 4: Passport Processing ---"
     puts "--- Part Two ---"
@@ -178,7 +172,6 @@ def run
     end
 
     answer = entries.size
-    puts "Answer: #{answer}"
   when 5.1
     puts "--- Day 5: Binary Boarding ---"
     puts "--- Part One ---"
@@ -190,7 +183,6 @@ def run
     end
 
     answer = entries.max
-    puts "Answer: #{answer}"
   when 5.2
     puts "--- Day 5: Binary Boarding ---"
     puts "--- Part Two ---"
@@ -214,8 +206,6 @@ def run
       end
       prev = cur
     end
-
-    puts "Answer: #{answer}"
   when 6.1
     puts "--- Day 6: Custom Customs ---"
     puts "--- Part One ---"
@@ -233,7 +223,6 @@ def run
     if buf.size != 0
       answer += buf.chars.uniq.size
     end
-    puts "Answer: #{answer}"
   when 6.2
     puts "--- Day 6: Custom Customs ---"
     puts "--- Part Two ---"
@@ -252,7 +241,6 @@ def run
     if buf.size != 0
       answer += buf.strip.split(" ").map { |a| a.chars.sort.uniq }.reduce { |a, i| a & i }.size
     end
-    puts "Answer: #{answer}"
   when 7.1
     puts "--- Day 7: Handy Haversacks ---"
     puts "--- Part One ---"
@@ -295,8 +283,6 @@ def run
         answer += 1
       end
     end
-
-    puts "Answer: #{answer}"
   when 7.2
     puts "--- Day 7: Handy Haversacks ---"
     puts "--- Part Two ---"
@@ -313,7 +299,6 @@ def run
     end
 
     answer = count_bags("shiny gold", bags)
-    puts "Answer: #{answer}"
   when 8.1
     puts "--- Day 8: Handheld Halting ---"
     puts "--- Part One ---"
@@ -327,7 +312,6 @@ def run
     console = Gameboy.new(code)
     console.detect_loop
     answer = console.accumulator
-    puts "Answer: #{answer}"
   when 8.2
     puts "--- Day 8: Handheld Halting ---"
     puts "--- Part Two ---"
@@ -354,7 +338,6 @@ def run
       end
     end
 
-    puts "Answer: #{answer}"
     puts "(detected in #{steps} steps)"
   when 9.1
     puts "--- Day 9: Encoding Error ---"
@@ -367,7 +350,6 @@ def run
     end
 
     answer = weak_number(input, 25.to_i64)
-    puts "Answer: #{answer}"
   when 9.2
     puts "--- Day 9: Encoding Error ---"
     puts "--- Part Two ---"
@@ -385,7 +367,6 @@ def run
     end
     broken = input[n]
     answer = hash_largest_contiguous_numbers(input[0..n], broken.not_nil!)
-    puts "Answer: #{answer}"
   when 10.1
     puts "--- Day 10: Adapter Array ---"
     puts "--- Part One ---"
@@ -398,7 +379,6 @@ def run
 
     r = distributions(input.sort)
     answer = r[1] * r[3]
-    puts "Answer: #{answer}"
   when 10.2
     puts "--- Day 10: Adapter Array ---"
     puts "--- Part Two ---"
@@ -413,7 +393,6 @@ def run
     device = 3.to_i64
 
     answer = combinations(devices, Hash(Array(Int64), Int64).new)
-    puts "Answer: #{answer}"
   when 11.1
     puts "--- Day 11: Seating System ---"
     puts "--- Part One ---"
@@ -425,7 +404,6 @@ def run
     end
 
     answer = SeatingSystem.new(seats).stabalize_rounds
-    puts "Answer: #{answer}"
   when 11.2
     puts "--- Day 11: Seating System ---"
     puts "--- Part Two ---"
@@ -437,7 +415,6 @@ def run
     end
 
     answer = SeatingSystem.new(seats).stabalize_rounds('2')
-    puts "Answer: #{answer}"
   when 12.1
     puts "--- Day 12: Rain Risk ---"
     puts "--- Part One ---"
@@ -449,7 +426,6 @@ def run
     end
 
     answer = rain_risk(commands)
-    puts "Answer: #{answer}"
   when 12.2
     puts "--- Day 12: Rain Risk ---"
     puts "--- Part Two ---"
@@ -461,7 +437,6 @@ def run
     end
 
     answer = rain_risk2(commands)
-    puts "Answer: #{answer}"
   when 13.1
     puts "--- Day 13: Shuttle Search ---"
     puts "--- Part One ---"
@@ -473,7 +448,6 @@ def run
     end
 
     answer = earliest_bus(commands[0], commands[1])
-    puts "Answer: #{answer}"
   when 13.2
     puts "--- Day 13: Shuttle Search ---"
     puts "--- Part Two ---"
@@ -485,7 +459,6 @@ def run
     end
 
     answer = earliest_bus2(commands[1])
-    puts "Answer: #{answer}"
   when 14.1
     puts "--- Day 14: Docking Data ---"
     puts "--- Part One ---"
@@ -497,7 +470,6 @@ def run
     end
 
     answer = DockingData.parse(commands).sum
-    puts "Answer: #{answer}"
   when 14.2
     puts "--- Day 14: Docking Data ---"
     puts "--- Part Two ---"
@@ -509,7 +481,6 @@ def run
     end
 
     answer = DockingData.parse(commands, 2).sum
-    puts "Answer: #{answer}"
   when 15.1
     puts "--- Day 15: Rambunctious Recitation ---"
     puts "--- Part One ---"
@@ -521,7 +492,6 @@ def run
     end
 
     answer = MemoryGame.new(numbers[0]).spoken(2020)
-    puts "Answer: #{answer}"
   when 15.2
     puts "--- Day 15: Rambunctious Recitation ---"
     puts "--- Part Two ---"
@@ -533,7 +503,6 @@ def run
     end
 
     answer = MemoryGame.new(numbers[0]).spoken(30000000)
-    puts "Answer: #{answer}"
   when 16.1
     puts "--- Day 16: Ticket Translation ---"
     puts "--- Part One ---"
@@ -545,7 +514,6 @@ def run
     end
 
     answer = TicketTranslation.parse(tickets).error_rate
-    puts "Answer: #{answer}"
   when 16.2
     puts "--- Day 16: Ticket Translation ---"
     puts "--- Part Two ---"
@@ -557,7 +525,6 @@ def run
     end
 
     answer = TicketTranslation.parse(tickets).departure_mul
-    puts "Answer: #{answer}"
   when 17.1
     puts "--- Day 17: Conway Cubes ---"
     puts "--- Part One ---"
@@ -574,7 +541,6 @@ def run
     end
 
     answer = subject.active
-    puts "Answer: #{answer}"
   when 17.2
     puts "--- Day 17: Conway Cubes ---"
     puts "--- Part Two ---"
@@ -593,10 +559,32 @@ def run
     end
 
     answer = subject.active
-    puts "Answer: #{answer}"
+  when 18.1
+    puts "--- Day 17: Conway Cubes ---"
+    puts "--- Part One ---"
+    puts "How many cubes are left in the active state after the sixth cycle?"
+    exps = Array(String).new
+
+    STDIN.each_line do |line|
+      exps << line
+    end
+
+    answer = Calculator.sum(exps)
+  when 18.2
+    puts "--- Day 17: Conway Cubes ---"
+    puts "--- Part Two ---"
+    puts "How many cubes are left in the active state after the sixth cycle?"
+    exps = Array(String).new
+
+    STDIN.each_line do |line|
+      exps << line
+    end
+
+    answer = Calculator2.sum(exps)
   else
     raise "Day is not implemented"
   end
+  puts "Answer: #{answer}"
 end
 
 elapsed_time = Time.measure do

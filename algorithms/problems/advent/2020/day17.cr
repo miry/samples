@@ -38,7 +38,6 @@
 # ..#
 # ###
 
-
 # After 1 cycle:
 
 # z=-1
@@ -55,7 +54,6 @@
 # #..
 # ..#
 # .#.
-
 
 # After 2 cycles:
 
@@ -93,7 +91,6 @@
 # ..#..
 # .....
 # .....
-
 
 # After 3 cycles:
 
@@ -168,7 +165,6 @@
 # ..#
 # ###
 
-
 # After 1 cycle:
 
 # z=-1, w=-1
@@ -215,7 +211,6 @@
 # #..
 # ..#
 # .#.
-
 
 # After 2 cycles:
 
@@ -437,7 +432,7 @@ class ConwayCubes
 
     cells.each do |c|
       ns = neighbours(c)
-      nscount = ns.select {|nc| cell(nc) }.size
+      nscount = ns.select { |nc| cell(nc) }.size
       if cell(c)
         # current active
         if nscount > 2 && nscount < 5
@@ -483,7 +478,7 @@ class ConwayCubes
       puts "z=#{z}"
       map.keys.sort.each do |y|
         map[y].keys.sort.each do |x|
-          print (cell(x,y,z) ? '#' : '.')
+          print (cell(x, y, z) ? '#' : '.')
         end
         puts
       end
@@ -528,7 +523,6 @@ class ConwayCubes
   end
 end
 
-
 class ConwayCubes2
   alias Coord = {x: Int32, y: Int32, z: Int32, w: Int32}
   property map : Hash(Int32, Hash(Int32, Hash(Int32, Hash(Int32, Bool)))) # y, x, z, w = active?
@@ -566,7 +560,7 @@ class ConwayCubes2
 
     cells.each do |c|
       ns = neighbours(c)
-      nscount = ns.select {|nc| cell(nc) }.size
+      nscount = ns.select { |nc| cell(nc) }.size
       if cell(c)
         # current active
         if nscount > 2 && nscount < 5
@@ -617,13 +611,12 @@ class ConwayCubes2
       zmax = c[:w] if zmax < c[:w]
     end
 
-
     wmin.upto(wmax) do |w|
       zmin.upto(zmax) do |z|
         puts "z=#{z}; w=#{w}"
         map.keys.sort.each do |y|
           map[y].keys.sort.each do |x|
-            print (cell(x,y,z,w) ? '#' : '.')
+            print (cell(x, y, z, w) ? '#' : '.')
           end
           puts
         end

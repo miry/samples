@@ -70,12 +70,11 @@
 # Your puzzle answer was 737176602479.
 
 class TicketTranslation
-  property rules :  Hash(String, Array(Tuple(Int64, Int64)))
+  property rules : Hash(String, Array(Tuple(Int64, Int64)))
   property your_tickets : Array(Array(Int64))
   property nearby_tickets : Array(Array(Int64))
 
   def initialize(@rules, @your_tickets, @nearby_tickets)
-
   end
 
   def self.parse(lines) : self
@@ -131,7 +130,7 @@ class TicketTranslation
   end
 
   def detect_column(tickets)
-    classified_columns = Array(String).new(tickets[0].size) {""}
+    classified_columns = Array(String).new(tickets[0].size) { "" }
     global_rs = rules.keys.dup
     count = 0
     while count < classified_columns.size
@@ -150,14 +149,14 @@ class TicketTranslation
             end
             if !valid
               p "invalid #{rule_name}"
-              new_rs = new_rs.reject {|r| r == rule_name }
+              new_rs = new_rs.reject { |r| r == rule_name }
             end
           end
         end
         if new_rs.size == 1
           count += 1
           classified_columns[field_id] = new_rs[0]
-          global_rs = global_rs.reject {|r| r == new_rs[0] }
+          global_rs = global_rs.reject { |r| r == new_rs[0] }
         end
       end
     end
@@ -175,7 +174,7 @@ class TicketTranslation
       end
     end
     return 0 if invalid.empty?
-    invalid.reduce {|a,i| a + i }
+    invalid.reduce { |a, i| a + i }
   end
 
   def departure_mul
@@ -192,7 +191,7 @@ class TicketTranslation
   def self.parse_rule(rule)
     field, ranges_raw = rule.split(": ")
     ranges_chunks = ranges_raw.split(" or ")
-    ranges = ranges_chunks.map {|chunk| v = chunk.split('-'); {v[0].to_i64, v[1].to_i64}}
+    ranges = ranges_chunks.map { |chunk| v = chunk.split('-'); {v[0].to_i64, v[1].to_i64} }
     {field, ranges}
   end
 end
