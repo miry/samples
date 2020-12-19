@@ -581,6 +581,28 @@ def run
     end
 
     answer = Calculator2.sum(exps)
+  when 19.1
+    puts "--- Day 19: Monster Messages ---"
+    puts "--- Part One ---"
+    puts "How many messages completely match rule 0?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    answer = SimpleRegexp.validate(messages)
+  when 19.2
+    puts "--- Day 19: Monster Messages ---"
+    puts "--- Part Two ---"
+    puts "After updating rules 8 and 11, how many messages completely match rule 0?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    answer = SimpleRegexp.validate(messages, version=2)
   else
     raise "Day is not implemented"
   end
