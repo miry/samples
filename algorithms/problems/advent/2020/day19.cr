@@ -141,10 +141,10 @@
 # Your puzzle answer was 412.
 
 class SimpleRegexp
-  property rules : Hash(Int32, Array(Array(Int32|String)) | String)
+  property rules : Hash(Int32, Array(Array(Int32 | String)) | String)
 
   def initialize(rules : Array(String))
-    @rules = Hash(Int32, Array(Array(Int32|String)) | String).new
+    @rules = Hash(Int32, Array(Array(Int32 | String)) | String).new
     rules.each do |rule|
       rule_id_raw, expr = rule.split(":")
       rule_id = rule_id_raw.to_i32
@@ -152,7 +152,7 @@ class SimpleRegexp
         val = /([a-z]+)/.match(expr).not_nil![0]
         @rules[rule_id] = val
       else
-        @rules[rule_id] = expr.strip.split(" | ").map {|sub| sub.split(' ').map{|i| i.to_i32 || "" }}.as(Array(Array(Int32 | String)))
+        @rules[rule_id] = expr.strip.split(" | ").map { |sub| sub.split(' ').map { |i| i.to_i32 || "" } }.as(Array(Array(Int32 | String)))
       end
     end
 
@@ -175,7 +175,7 @@ class SimpleRegexp
     @rules.each do |rule_id, conditions|
       next if conditions.is_a?(String)
       new_conditions : typeof(conditions) = conditions.map do |sub_rule|
-        sub_rule.map do | sub_rule_id|
+        sub_rule.map do |sub_rule_id|
           if !sub_rule_id.is_a?(String) && simple_rules.includes?(sub_rule_id)
             flag = true
             @rules[sub_rule_id].as(String)
@@ -228,10 +228,9 @@ class SimpleRegexp
     rs.map do |r|
       nrs = match(str[r..], rule[1..], ident + " ")
       next [] of Int32 if nrs.empty?
-      nrs.map {|nr| nr + r}
+      nrs.map { |nr| nr + r }
     end.flatten.uniq.sort.reverse
   end
-
 
   def self.validate(messages, version = 1)
     rules = Array(String).new
@@ -243,7 +242,7 @@ class SimpleRegexp
         msg = "11: 42 31 | 42 11 31" if msg == "11: 42 31"
         rules << msg
       else
-      rules << msg
+        rules << msg
       end
       i += 1
       break if i == messages.size

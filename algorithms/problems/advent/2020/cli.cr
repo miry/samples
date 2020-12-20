@@ -602,7 +602,32 @@ def run
       messages << line
     end
 
-    answer = SimpleRegexp.validate(messages, version=2)
+    answer = SimpleRegexp.validate(messages, version = 2)
+  when 20.1
+    puts "--- Day 20: Jurassic Jigsaw ---"
+    puts "--- Part One ---"
+    puts "What do you get if you multiply together the IDs of the four corner tiles?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    images = Tile.parse(messages)
+    square = Tile.assemble(images)
+    answer = square[0][0].id.to_i64 * square[0][-1].id.to_i64 * square[-1][-1].id.to_i64 * square[-1][0].id.to_i64
+  when 20.2
+    puts "--- Day 20: Jurassic Jigsaw ---"
+    puts "--- Part Two ---"
+    puts "How many # are not part of a sea monster?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    images = Tile.parse(messages)
+    answer = Tile.detect_monster(images)
   else
     raise "Day is not implemented"
   end
