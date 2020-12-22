@@ -652,6 +652,30 @@ def run
 
     subject = AllergenDetector.parse(messages)
     answer = subject.ingredients_list
+  when 22.1
+    puts "--- Day 22: Crab Combat ---"
+    puts "--- Part One ---"
+    puts "What is the winning player's score?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    subject = SpaceCardsGame.parse(messages)
+    answer = subject.play.score
+  when 22.2
+    puts "--- Day 22: Crab Combat ---"
+    puts "--- Part Two ---"
+    puts "What is the winning player's score?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    subject = SpaceCardsGame.parse(messages)
+    answer = subject.play2.score
   else
     raise "Day is not implemented"
   end
