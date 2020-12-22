@@ -628,6 +628,30 @@ def run
 
     images = Tile.parse(messages)
     answer = Tile.detect_monster(images)
+  when 21.1
+    puts "--- Day 21: Allergen Assessment ---"
+    puts "--- Part One ---"
+    puts "How many times do any of those ingredients appear?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    subject = AllergenDetector.parse(messages)
+    answer = subject.ingredients_without_allergens
+  when 21.2
+    puts "--- Day 21: Allergen Assessment ---"
+    puts "--- Part Two ---"
+    puts "What is your canonical dangerous ingredient list?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    subject = AllergenDetector.parse(messages)
+    answer = subject.ingredients_list
   else
     raise "Day is not implemented"
   end
