@@ -676,6 +676,32 @@ def run
 
     subject = SpaceCardsGame.parse(messages)
     answer = subject.play2.score
+  when 23.1
+    puts "--- Day 23: Crab Cups ---"
+    puts "--- Part One ---"
+    puts "What are the labels on the cups after cup 1?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    game = CupGame.parse(messages[0], messages.size)
+    game.play(100)
+    answer = game.result
+  when 23.2
+    puts "--- Day 23: Crab Cups ---"
+    puts "--- Part Two ---"
+    puts "What do you get if you multiply their labels together?"
+    messages = Array(String).new
+
+    STDIN.each_line do |line|
+      messages << line
+    end
+
+    game = CupGame.parse(messages[0], 1000000)
+    game.play(10000000)
+    answer = game.found_star
   else
     raise "Day is not implemented"
   end
