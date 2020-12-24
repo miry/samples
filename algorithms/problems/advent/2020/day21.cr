@@ -87,7 +87,7 @@ class AllergenDetector
 
     allergen_to_ingredients = Hash(String, Array(String)).new
     allergen_to_foods.keys.each do |allergen|
-      r = allergen_to_foods[allergen].reduce(allergen_to_foods[allergen][0]) {|a,i| a & i}
+      r = allergen_to_foods[allergen].reduce(allergen_to_foods[allergen][0]) { |a, i| a & i }
       allergen_to_ingredients[allergen] = r
     end
 
@@ -105,7 +105,7 @@ class AllergenDetector
       memo[word] = 0 if !memo.has_key?(word)
       memo[word] += 1
     end
-    memo.keys.sort {|a,b| memo[a] <=> memo[b] }.reverse
+    memo.keys.sort { |a, b| memo[a] <=> memo[b] }.reverse
   end
 
   def self.parse(list) : self
@@ -129,9 +129,9 @@ class AllergenDetector
 
     r = ingredients_allergen
     if !r.nil?
-      no_allergen = r.keys.select {|ingredient| r[ingredient] == "NO" }
+      no_allergen = r.keys.select { |ingredient| r[ingredient] == "NO" }
     end
-    no_allergen.reduce(0) {|a, ingredient| a + @ingredients[ingredient].size }
+    no_allergen.reduce(0) { |a, ingredient| a + @ingredients[ingredient].size }
   end
 
   def ingredients_list
@@ -139,7 +139,7 @@ class AllergenDetector
     if !r.nil?
       r.delete_if { |ingredient, allergen| allergen == "NO" }
       ir = r.invert
-      ir.keys.sort.map {|k| ir[k] }.join(",")
+      ir.keys.sort.map { |k| ir[k] }.join(",")
     else
       ""
     end

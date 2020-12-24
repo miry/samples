@@ -391,7 +391,7 @@ class Tile
     puts monsters
 
     puts "size: #{image.size*image.size}"
-    result = image.reduce(0) {|a, row| a + row.count('#') }
+    result = image.reduce(0) { |a, row| a + row.count('#') }
 
     result -= monsters * MONSTER_PATTERN.size
     result

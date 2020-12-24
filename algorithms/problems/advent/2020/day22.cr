@@ -86,7 +86,6 @@
 # Player 2 plays: 7
 # Player 2 wins the round!
 
-
 # == Post-game results ==
 # Player 1's deck:
 # Player 2's deck: 3, 2, 10, 6, 8, 5, 9, 4, 7, 1
@@ -370,7 +369,6 @@
 # Player 2 wins round 17 of game 1!
 # The winner of game 1 is player 2!
 
-
 # == Post-game results ==
 # Player 1's deck:
 # Player 2's deck: 7, 5, 6, 2, 4, 1, 10, 8, 9, 3
@@ -380,7 +378,6 @@
 # Defend your honor as Raft Captain by playing the small crab in a game of Recursive Combat using the same two decks as before. What is the winning player's score?
 
 # Your puzzle answer was 32528.
-
 
 class SpaceCardsDeck
   property cards : Array(Int32)
@@ -404,7 +401,7 @@ class SpaceCardsDeck
   def score
     result = 0
     @cards.reverse.each_with_index do |card, i|
-      result += card * (i+1)
+      result += card * (i + 1)
     end
     result
   end
@@ -419,7 +416,7 @@ class SpaceCardsGame
   property winner : SpaceCardsDeck
   property id : Int32
 
-  def initialize(@decks, @id=1)
+  def initialize(@decks, @id = 1)
     @winner = SpaceCardsDeck.new(Array(Int32).new, 0)
   end
 
@@ -459,12 +456,12 @@ class SpaceCardsGame
       # puts "Player 2 plays: #{cards[1]}"
 
       if (cards[0] <= @decks[0].cards.size) &&
-        (cards[1] <= @decks[1].cards.size)
+         (cards[1] <= @decks[1].cards.size)
         # puts "Playing a sub-game to determine the winner..."
         # puts
         player_decks = [
-          SpaceCardsDeck.new(@decks[0].cards[..cards[0]-1].dup, 1), # the quantity of cards copied is equal to the number on the card they drew to trigger the sub-game
-          SpaceCardsDeck.new(@decks[1].cards[..cards[1]-1].dup, 2), # For example, if player 1 drew the 3 card, their deck in the sub-game would be copies of the next three cards in their deck.
+          SpaceCardsDeck.new(@decks[0].cards[..cards[0] - 1].dup, 1), # the quantity of cards copied is equal to the number on the card they drew to trigger the sub-game
+          SpaceCardsDeck.new(@decks[1].cards[..cards[1] - 1].dup, 2), # For example, if player 1 drew the 3 card, their deck in the sub-game would be copies of the next three cards in their deck.
         ]
         game_counter += 1
         winner = SpaceCardsGame.new(player_decks, game_counter).play2

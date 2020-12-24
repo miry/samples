@@ -165,7 +165,7 @@ class Cups
     new_items[-1].set_child old_child
   end
 
-  def pick_up(count=3)
+  def pick_up(count = 3)
     node = @list_root
     result = [] of DoubleLinkedListNode
     count.times do
@@ -216,7 +216,6 @@ class CupGame
   end
 
   def round
-
     current_value = @cups_list.get
     # puts "  cups: #{current_value} #{@cups_list.list_root.childs.join(" ")}"
     # puts "  current: #{current_value}"

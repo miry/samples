@@ -22,6 +22,7 @@ require "./day21"
 require "./day22"
 require "./day23"
 require "./day24"
+require "./day25"
 
 def run
   exit = false
@@ -702,6 +703,31 @@ def run
     game = CupGame.parse(messages[0], 1000000)
     game.play(10000000)
     answer = game.found_star
+  when 24.1
+    puts "--- Day 24: Lobby Layout ---"
+    puts "--- Part One ---"
+    puts "How many tiles are left with the black side up?"
+    instructions = Array(String).new
+
+    STDIN.each_line do |line|
+      instructions << line
+    end
+
+    floor = FloorLayout.parse(instructions)
+    answer = floor.blacks.size
+  when 24.2
+    puts "--- Day 24: Lobby Layout ---"
+    puts "--- Part Two ---"
+    puts "How many tiles will be black after 100 days?"
+    instructions = Array(String).new
+
+    STDIN.each_line do |line|
+      instructions << line
+    end
+
+    floor = FloorLayout.parse(instructions)
+    floor.after(100)
+    answer = floor.blacks.size
   else
     raise "Day is not implemented"
   end
