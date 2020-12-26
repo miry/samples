@@ -1,4 +1,6 @@
 require "option_parser"
+require "big"
+
 require "./day_one"
 require "./day_two"
 require "./day_three"
@@ -728,6 +730,32 @@ def run
     floor = FloorLayout.parse(instructions)
     floor.after(100)
     answer = floor.blacks.size
+  when 25.1
+    puts "--- Day 24: Lobby Layout ---"
+    puts "--- Part One ---"
+    puts "How many tiles are left with the black side up?"
+    keys = Array(BigInt).new
+
+    STDIN.each_line do |line|
+      break if line == ""
+      keys << BigInt.new(line)
+    end
+
+    decoder = Breaker.new(keys[0], keys[1])
+    answer = decoder.decrypt
+  when 25.2
+    puts "--- Day 24: Lobby Layout ---"
+    puts "--- Part Two ---"
+    puts "How many tiles will be black after 100 days?"
+    keys = Array(BigInt).new
+
+    STDIN.each_line do |line|
+      break if line == ""
+      keys << BigInt.new(line)
+    end
+
+    decoder = Breaker.new(keys[0], keys[1])
+    answer = decoder.decrypt
   else
     raise "Day is not implemented"
   end
