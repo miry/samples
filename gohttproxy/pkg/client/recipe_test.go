@@ -30,7 +30,7 @@ func TestGetBrokenPort(t *testing.T) {
 	_, err := client.Get(1)
 
 	assert.NotNil(t, err)
-	assert.Equal(t, "Get http://localhost:88888/1: dial tcp: address 88888: invalid port", err.Error())
+	assert.Equal(t, "Get \"http://localhost:88888/1\": dial tcp: address 88888: invalid port", err.Error())
 }
 func TestGetWrongProtocol(t *testing.T) {
 	client := client.NewRecipeClient()
@@ -39,7 +39,7 @@ func TestGetWrongProtocol(t *testing.T) {
 	_, err := client.Get(1)
 
 	assert.NotNil(t, err)
-	assert.Equal(t, "Get rng://localhost:88888/1: unsupported protocol scheme \"rng\"", err.Error())
+	assert.Equal(t, "Get \"rng://localhost:88888/1\": unsupported protocol scheme \"rng\"", err.Error())
 }
 func TestNotFound(t *testing.T) {
 	mockServer := mockEndpointNotFound()

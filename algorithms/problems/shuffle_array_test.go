@@ -2,6 +2,8 @@ package problems_test
 
 import (
 	"testing"
+	"fmt"
+
 
 	"github.com/stretchr/testify/assert"
 
@@ -12,30 +14,33 @@ func TestShuffleArray(t *testing.T) {
 	tests := []struct {
 		name     string
 		subject  []int
-		expected []int
 	}{
-		{"empty array", []int{}, []int{}},
-		{"sinlge element", []int{1}, []int{1}},
+		{"empty array", []int{}},
+		{"sinlge element", []int{1}},
+		{"two elements", []int{1, 2}},
+		{"three elements", []int{1, 2, 3}},
+		{"four elements", []int{1, 2, 3, 4}},
 	}
+
+	experiments := 100
+	epsilon := float64(experiments) * 0.05
 
 	for _, test := range tests {
-		actual := problems.ShuffleArray(test.subject)
-		assert.Equal(t, test.expected, actual)
-	}
+		t.Run(test.name, func(t *testing.T) {
+			actuals := map[string]int{}
 
-	tests = []struct {
-		name     string
-		subject  []int
-		expected []int
-	}{
-		{"two elements", []int{1, 2}, []int{1, 2}},
-		{"three elements", []int{1, 2, 3}, []int{1, 2, 3}},
-		{"four elements", []int{1, 2, 3, 4}, []int{1, 2, 3, 4}},
-	}
+			for i := 0 ; i < experiments ; i++ {
+				shuffled := fmt.Sprint(problems.ShuffleArray(test.subject))
+				if _, ok := actuals[shuffled]; !ok {
+					actuals[shuffled] = 0
+				}
+				actuals[shuffled] += 1
+			}
 
-	for _, test := range tests {
-		actual := problems.ShuffleArray(test.subject)
-		assert.NotEqual(t, test.expected, actual)
-	}
+			actual := actuals[fmt.Sprint(test.subject)]
+			avg := float64(experiments) / float64(len(actuals))
 
+			assert.InEpsilon(t, avg, actual, epsilon)
+		})
+	}
 }
