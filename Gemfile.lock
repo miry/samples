@@ -1,29 +1,34 @@
 GIT
   remote: https://github.com/rubocop-hq/rubocop
-  revision: 521745e221822135acd777df8e378e857fdd2528
+  revision: 3ade2760855459e86eeb71e6584115d3c204339d
   specs:
-    rubocop (0.74.0)
-      jaro_winkler (~> 1.5.1)
+    rubocop (1.10.0)
       parallel (~> 1.10)
-      parser (>= 2.6)
+      parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml
+      rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 1.7)
+      unicode-display_width (>= 1.4.0, < 3.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    ast (2.4.0)
-    jaro_winkler (1.5.3)
+    ast (2.4.2)
     minitest (5.11.3)
-    parallel (1.17.0)
-    parser (2.6.4.0)
-      ast (~> 2.4.0)
+    parallel (1.20.1)
+    parser (3.0.0.0)
+      ast (~> 2.4.1)
     rainbow (3.0.0)
+    regexp_parser (2.0.3)
+    rexml (3.2.4)
+    rubocop-ast (1.4.1)
+      parser (>= 2.7.1.5)
     rubocop-performance (1.4.1)
       rubocop (>= 0.71.0)
-    ruby-progressbar (1.10.1)
-    unicode-display_width (1.6.0)
+    ruby-progressbar (1.11.0)
+    unicode-display_width (2.0.0)
 
 PLATFORMS
   ruby
@@ -34,4 +39,4 @@ DEPENDENCIES
   rubocop-performance
 
 BUNDLED WITH
-   2.1.4
+   2.2.11

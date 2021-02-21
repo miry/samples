@@ -45,15 +45,17 @@ jobs:
 
   ruby:
     docker:
-      - image: circleci/ruby:2.6
+      - image: cimg/ruby:3.0.0
         environment:
           RUBYOPT: "--enable-frozen-string-literal"
+          BUNDLE_PATH: "vendor/bundle"
 
     steps:
       - checkout
-
+      - run: ruby --version
+      - run: gem install bundler:2.2.11
       - restore_cache: *restore_bundle_cache
-      - run: bundle install --path vendor/bundle
+      - run: bundle install
       - save_cache: *save_bundle_cache
 
       - run:
