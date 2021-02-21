@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'base'
+require_relative "base"
 
 module Distribusion
   class Driver
@@ -12,12 +12,12 @@ module Distribusion
 
       def parse(sentinels_info)
         data = []
-        return { routes: data } if sentinels_info.nil? || sentinels_info.empty?
+        return {routes: data} if sentinels_info.nil? || sentinels_info.empty?
 
-        CSV.parse(sentinels_info[sentinels_info.keys.first], CSV_OPTIONS) do |route|
-          data << ::Distribusion::Sentinel.new(route.to_hash)
+        CSV.parse(sentinels_info[sentinels_info.keys.first], **CSV_OPTIONS) do |route|
+          data << ::Distribusion::Sentinel.new(**route.to_hash)
         end
-        { routes: data }
+        {routes: data}
       end
 
       def build_routes(routes:)

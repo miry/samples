@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-require 'minitest/mock'
+require "test_helper"
+require "minitest/mock"
 
 class DriverSnifferTest < Minitest::Test
   include Distribusion
 
   def setup
-    @driver = Distribusion::Driver::Sniffer.new(passphrase: 'test')
+    @driver = Distribusion::Driver::Sniffer.new(passphrase: "test")
   end
 
   def test_importer_sniffer_parse_empty
@@ -50,14 +50,14 @@ class DriverSnifferTest < Minitest::Test
   end
 
   def test_build_routes_with_sample
-    routes = @driver.build_routes(sniffers_info)
+    routes = @driver.build_routes(**sniffers_info)
     assert_equal 2, routes.size
     first_route = routes.first
     last_route = routes.last
-    assert_equal 'lambda', first_route.start_node
-    assert_equal 'omega', first_route.end_node
-    assert_equal '2030-12-31T13:00:06', first_route.start_time
-    assert_equal '2030-12-31T13:00:09', first_route.end_time
+    assert_equal "lambda", first_route.start_node
+    assert_equal "omega", first_route.end_node
+    assert_equal "2030-12-31T13:00:06", first_route.start_time
+    assert_equal "2030-12-31T13:00:09", first_route.end_time
     refute_equal last_route.start_node, last_route.end_node
   end
 
@@ -98,23 +98,23 @@ class DriverSnifferTest < Minitest::Test
   def sniffers_info
     {
       node_times: [
-        { node_time_id: '1', start_node: 'lambda', end_node: 'tau', duration_in_milliseconds: '1000' },
-        { node_time_id: '2', start_node: 'tau', end_node: 'psi', duration_in_milliseconds: '1000' },
-        { node_time_id: '3', start_node: 'psi', end_node: 'omega', duration_in_milliseconds: '1000' },
-        { node_time_id: '4', start_node: 'lambda', end_node: 'psi', duration_in_milliseconds: '1000' }
+        {node_time_id: "1", start_node: "lambda", end_node: "tau", duration_in_milliseconds: "1000"},
+        {node_time_id: "2", start_node: "tau", end_node: "psi", duration_in_milliseconds: "1000"},
+        {node_time_id: "3", start_node: "psi", end_node: "omega", duration_in_milliseconds: "1000"},
+        {node_time_id: "4", start_node: "lambda", end_node: "psi", duration_in_milliseconds: "1000"}
       ],
       routes: [
-        { route_id: '1', time: '2030-12-31T13:00:06', time_zone: 'UTC±00:00' },
-        { route_id: '2', time: '2030-12-31T13:00:07', time_zone: 'UTC±00:00' },
-        { route_id: '3', time: '2030-12-31T13:00:00', time_zone: 'UTC±00:00' }
+        {route_id: "1", time: "2030-12-31T13:00:06", time_zone: "UTC\u00B100:00"},
+        {route_id: "2", time: "2030-12-31T13:00:07", time_zone: "UTC\u00B100:00"},
+        {route_id: "3", time: "2030-12-31T13:00:00", time_zone: "UTC\u00B100:00"}
       ],
       sequences: [
-        { route_id: '1', node_time_id: '1' },
-        { route_id: '1', node_time_id: '2' },
-        { route_id: '1', node_time_id: '3' },
-        { route_id: '2', node_time_id: '4' },
-        { route_id: '2', node_time_id: '3' },
-        { route_id: '3', node_time_id: '9' }
+        {route_id: "1", node_time_id: "1"},
+        {route_id: "1", node_time_id: "2"},
+        {route_id: "1", node_time_id: "3"},
+        {route_id: "2", node_time_id: "4"},
+        {route_id: "2", node_time_id: "3"},
+        {route_id: "3", node_time_id: "9"}
       ]
     }
   end

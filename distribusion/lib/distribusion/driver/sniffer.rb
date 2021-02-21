@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'base'
+require_relative "base"
 
 module Distribusion
   class Driver
@@ -11,12 +11,12 @@ module Distribusion
       end
 
       def parse(sniffer_info)
-        return { node_times: {}, routes: {}, sequences: {} } if sniffer_info.nil? || sniffer_info.empty?
+        return {node_times: {}, routes: {}, sequences: {}} if sniffer_info.nil? || sniffer_info.empty?
 
         result = {}
         sniffer_info.each do |name, content|
           result[name] = []
-          CSV.parse(content, CSV_OPTIONS) do |row|
+          CSV.parse(content, **CSV_OPTIONS) do |row|
             result[name] << row.to_hash
           end
         end
@@ -60,7 +60,7 @@ module Distribusion
           attributes = routes[sequence[:route_id]].merge(node_times[sequence[:node_time_id]])
           attributes.delete(:route_id)
           attributes.delete(:node_time_id)
-          result[sequence[:route_id]] << Distribusion::Sniffer.new(attributes)
+          result[sequence[:route_id]] << Distribusion::Sniffer.new(**attributes)
         end
         result
       end

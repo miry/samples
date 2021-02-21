@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'ougai'
+require "ougai"
 
-def setup_logger(level: Logger::ERROR, logpath: './log/test.log')
-  logger = Ougai::Logger.new(STDOUT)
+def setup_logger(level: Logger::ERROR, logpath: "./log/test.log")
+  logger = Ougai::Logger.new($stdout)
   logger.formatter = Ougai::Formatters::Readable.new
   logger.level = level
 

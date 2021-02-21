@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-require 'minitest/mock'
+require "test_helper"
+require "minitest/mock"
 
 class DriverSentinelTest < Minitest::Test
   include Distribusion
 
   def setup
-    @driver = Distribusion::Driver::Sentinel.new(passphrase: 'test')
+    @driver = Distribusion::Driver::Sentinel.new(passphrase: "test")
   end
 
   def test_importer_sentinels_parse_empty
@@ -23,9 +23,9 @@ class DriverSentinelTest < Minitest::Test
   def test_importer_sentinels_parse_sample
     sentinels = @driver.parse(routes: sentinels_routes_csv)[:routes]
     assert_equal 7, sentinels.size
-    assert_equal 'gamma', sentinels[5].node
+    assert_equal "gamma", sentinels[5].node
     assert_equal 3, sentinels[6].route_id
-    assert_equal '2030-12-31T13:00:02', sentinels[6].time
+    assert_equal "2030-12-31T13:00:02", sentinels[6].time
   end
 
   def test_build_routes_with_empty
@@ -45,10 +45,10 @@ class DriverSentinelTest < Minitest::Test
     first_route = routes.first
     last_route = routes.last
 
-    assert_equal 'alpha', first_route.start_node
-    assert_equal 'gamma', first_route.end_node
-    assert_equal '2030-12-31T13:00:01', first_route.start_time
-    assert_equal '2030-12-31T13:00:03', first_route.end_time
+    assert_equal "alpha", first_route.start_node
+    assert_equal "gamma", first_route.end_node
+    assert_equal "2030-12-31T13:00:01", first_route.start_time
+    assert_equal "2030-12-31T13:00:03", first_route.end_time
     refute_equal last_route.start_node, last_route.end_node
   end
 
@@ -69,13 +69,13 @@ class DriverSentinelTest < Minitest::Test
 
   def sentinels_routes
     [
-      Sentinel.new(route_id: '1', node: 'alpha', index: '0', time: '2030-12-31T22:00:01+09:00'),
-      Sentinel.new(route_id: '1', node: 'beta',  index: '1', time: '2030-12-31T18:00:02+05:00'),
-      Sentinel.new(route_id: '1', node: 'gamma', index: '2', time: '2030-12-31T16:00:03+03:00'),
-      Sentinel.new(route_id: '2', node: 'delta', index: '0', time: '2030-12-31T22:00:02+09:00'),
-      Sentinel.new(route_id: '2', node: 'beta',  index: '1', time: '2030-12-31T18:00:03+05:00'),
-      Sentinel.new(route_id: '2', node: 'gamma', index: '2', time: '2030-12-31T16:00:04+03:00'),
-      Sentinel.new(route_id: '3', node: 'zeta',  index: '0', time: '2030-12-31T22:00:02+09:00')
+      Sentinel.new(route_id: "1", node: "alpha", index: "0", time: "2030-12-31T22:00:01+09:00"),
+      Sentinel.new(route_id: "1", node: "beta", index: "1", time: "2030-12-31T18:00:02+05:00"),
+      Sentinel.new(route_id: "1", node: "gamma", index: "2", time: "2030-12-31T16:00:03+03:00"),
+      Sentinel.new(route_id: "2", node: "delta", index: "0", time: "2030-12-31T22:00:02+09:00"),
+      Sentinel.new(route_id: "2", node: "beta", index: "1", time: "2030-12-31T18:00:03+05:00"),
+      Sentinel.new(route_id: "2", node: "gamma", index: "2", time: "2030-12-31T16:00:04+03:00"),
+      Sentinel.new(route_id: "3", node: "zeta", index: "0", time: "2030-12-31T22:00:02+09:00")
     ]
   end
 end

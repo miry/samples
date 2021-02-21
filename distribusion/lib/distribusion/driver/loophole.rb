@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'base'
+require_relative "base"
 
 module Distribusion
   class Driver
@@ -11,7 +11,7 @@ module Distribusion
       end
 
       def parse(loophole_info)
-        return { node_pairs: {}, routes: {} } if loophole_info.nil? || loophole_info.empty?
+        return {node_pairs: {}, routes: {}} if loophole_info.nil? || loophole_info.empty?
 
         result = {}
         loophole_info.each do |name, content|
@@ -63,7 +63,7 @@ module Distribusion
       def loophole(attributes)
         attributes.delete(:route_id)
         attributes.delete(:node_pair_id)
-        Distribusion::Loophole.new(attributes)
+        Distribusion::Loophole.new(**attributes)
       end
     end
   end

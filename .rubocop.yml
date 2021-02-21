@@ -5,14 +5,13 @@ AllCops:
     - bin/*
     - vendor/bundle/**/*
 
-Layout:
-  Metrics/LineLength:
-    Max: 110
+Layout/LineLength:
+  Max: 110
 
-  Metrics/AbcSize:
-    Enabled: false
+Metrics/AbcSize:
+  Enabled: false
 
-  Metrics/ClassLength:
-    Exclude:
-      - lib/distribusion/route.rb
-      - test/**/*_test.rb
+Metrics/ClassLength:
+  Exclude:
+    - lib/distribusion/route.rb
+    - test/**/*_test.rb

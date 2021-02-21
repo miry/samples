@@ -88,19 +88,22 @@ jobs:
   distribusion:
     working_directory: ~/samples/distribusion
     docker:
-      - image: circleci/ruby:2.6
+      - image: cimg/ruby:3.0.0
         environment:
-          RUBYOPT: "--enable-frozen-string-literal"
+          RUBYOPT: "--enable-frozen-string-literal -w"
+          BUNDLE_PATH: "vendor/bundle"
     steps:
       - checkout:
           path: ~/samples
+      - run: gem install bundler:2.2.11
       - restore_cache: *restore_bundle_cache
-      - run: bundle install --path vendor/bundle
+      - run: bundle install
       - save_cache: *save_bundle_cache
 
-      - run: bundle exec rubocop -P -c .rubocop.yml
+      - run: bundle exec standardrb
       - run: bundle exec rake test
-      - run: bundle exec ruby --enable-frozen-string-literal ./bin/local -v -s all -p $DISTRIBUSION_PASSPHRASE | sed s/"${DISTRIBUSION_PASSPHRASE}"/xxx/g
+      # NOTICE: The challenge.distribusion.com:443 is not working anymore
+      # - run: bundle exec ruby ./bin/local -v -s all -p $DISTRIBUSION_PASSPHRASE | sed s/"${DISTRIBUSION_PASSPHRASE}"/xxx/g
 
       - store_artifacts:
           path: coverage

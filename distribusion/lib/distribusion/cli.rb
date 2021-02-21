@@ -1,67 +1,67 @@
 # frozen_string_literal: true
 
-require 'ougai'
-require 'optparse'
+require "ougai"
+require "optparse"
 
-require_relative '../distribusion'
+require_relative "../distribusion"
 
 module Distribusion
   # Run application form command line
   class CLI
-    LOG_FILE_PATH = './log/distribusion.log'
+    LOG_FILE_PATH = "./log/distribusion.log"
     DEFAULT_OPTIONS = {
-      passphrase: '',
+      passphrase: "",
       log_level: Logger::INFO
     }.freeze
     SOURCES = %w[sentinels sniffers loopholes].freeze
 
     attr_reader :logger
 
-    def initialize(log_level: Logger::DEBUG, passphrase:, sources: 'all')
+    def initialize(passphrase:, log_level: Logger::DEBUG, sources: "all")
       @logger = setup_logger(log_level)
 
-      @logger.debug 'Options', log_level: log_level, passphrase: passphrase
+      @logger.debug "Options", log_level: log_level, passphrase: passphrase
 
       Distribusion::Driver::Base.logger = @logger
 
       @driver = Distribusion::Driver.new(passphrase: passphrase)
-      @sources = if sources == 'all'
-                   SOURCES
-                 else
-                   sources.split ','
-                 end
+      @sources = if sources == "all"
+        SOURCES
+      else
+        sources.split ","
+      end
     end
 
     def run
-      @driver.process_sentinels if @sources.include?('sentinels')
-      @driver.process_sniffers if @sources.include?('sniffers')
-      @driver.process_loopholes if @sources.include?('loopholes')
+      @driver.process_sentinels if @sources.include?("sentinels")
+      @driver.process_sniffers if @sources.include?("sniffers")
+      @driver.process_loopholes if @sources.include?("loopholes")
     end
 
     def self.run
       options = DEFAULT_OPTIONS.merge(parsed_options)
-      new(options).run
+      new(**options).run
     end
 
     # rubocop:disable Metrics/MethodLength
     def self.parsed_options
       result = {}
 
-      parser = OptionParser.new do |opts|
-        opts.banner = 'Usage: local [options]'
+      parser = OptionParser.new { |opts|
+        opts.banner = "Usage: local [options]"
 
-        opts.on('-p', '--passphrase PASSWORD', 'Password to access services') do |v|
+        opts.on("-p", "--passphrase PASSWORD", "Password to access services") do |v|
           result[:passphrase] = v
         end
 
-        opts.on('-s', '--sources SOURCE', 'Specific sources comma seprated. Default: all') do |v|
+        opts.on("-s", "--sources SOURCE", "Specific sources comma seprated. Default: all") do |v|
           result[:sources] = v
         end
 
-        opts.on('-v', '--verbose', 'Debug') do |_v|
+        opts.on("-v", "--verbose", "Debug") do |_v|
           result[:log_level] = Logger::DEBUG
         end
-      end
+      }
       parser.parse!
       result
     rescue OptionParser::InvalidOption, OptionParser::InvalidArgument => e
@@ -74,16 +74,16 @@ module Distribusion
     private
 
     def process_loopholes
-      logger.info('Process loopholes...')
+      logger.info("Process loopholes...")
       loopholes = @driver.import_loopholes
       routes = Distribusion::Route.from_loopholes loopholes
       @driver.submit routes
     end
 
     def setup_logger(level)
-      logger = Ougai::Logger.new(STDOUT)
+      logger = Ougai::Logger.new($stdout)
       logger.formatter = Ougai::Formatters::Readable.new
-      logger.with_fields = { version: Distribusion::VERSION }
+      logger.with_fields = {version: Distribusion::VERSION}
       logger.level = level
 
       file_logger = Ougai::Logger.new(LOG_FILE_PATH)

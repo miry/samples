@@ -4,14 +4,14 @@ module Distribusion
   class Driver
     # Abstract class to load sources from service to local storage.
     class Base
-      BASE_URL = 'https://challenge.distribusion.com/the_one/routes'
+      BASE_URL = "https://challenge.distribusion.com/the_one/routes"
       BASE_URI = URI.parse(BASE_URL)
 
       MAX_FILE_SIZE = 5 * 1024 * 1024
-      TMP_FOLDER = 'tmp/importer/'
+      TMP_FOLDER = "tmp/importer/"
       CSV_OPTIONS = {
-        encoding: 'bom|utf-8',
-        col_sep: ', ',
+        # encoding: "bom|utf-8",
+        col_sep: ", ",
         row_sep: "\n",
         quote_char: '"',
         headers: :first_row,
@@ -33,7 +33,7 @@ module Distribusion
       end
 
       def self.logger
-        @logger ||= Logger.new(STDOUT)
+        @logger ||= Logger.new($stdout)
       end
 
       def logger
@@ -66,16 +66,16 @@ module Distribusion
       private
 
       def download
-        logger.debug 'Downloading', url: url
+        logger.debug "Downloading", url: url
         Down.download(url, max_size: MAX_FILE_SIZE)
       end
 
       def unzip(archive)
         result = {}
         Zip::File.open(archive.path) do |zipfile|
-          zipfile.glob('*/*.{csv,json}').each do |entry|
-            name = File.basename(entry.name, '.*').to_sym
-            result[name] ||= ''
+          zipfile.glob("*/*.{csv,json}").each do |entry|
+            name = File.basename(entry.name, ".*").to_sym
+            result[name] ||= ""
             result[name] += entry.get_input_stream.read
             logger.debug "Extracting #{entry.name}", content: result[name]
           end
@@ -93,19 +93,19 @@ module Distribusion
         request.body = to_query record.to_hash.merge(passphrase: @passphrase)
 
         response = http.request(request)
-        return if response.code == '201'
+        return if response.code == "201"
 
-        logger.debug 'Not valid request',
-                     response: { code: response.code, body: response.body },
-                     request: request.body,
-                     record: record
+        logger.debug "Not valid request",
+          response: {code: response.code, body: response.body},
+          request: request.body,
+          record: record
       end
 
       # Converts Hash to HTTP query
       def to_query(hash)
-        hash.map do |k, v|
+        hash.map { |k, v|
           "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}"
-        end.join('&')
+        }.join("&")
       end
 
       # Build http object

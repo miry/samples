@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require 'down'
-require 'zip'
-require 'csv'
-require 'json'
+require "down"
+require "zip"
+require "csv"
+require "json"
 
-require 'net/http'
+require "net/http"
 
-require_relative 'driver/sentinel'
-require_relative 'driver/sniffer'
-require_relative 'driver/loophole'
+require_relative "driver/sentinel"
+require_relative "driver/sniffer"
+require_relative "driver/loophole"
 
 module Distribusion
   # Abstract class to load sources from service to local storage.
