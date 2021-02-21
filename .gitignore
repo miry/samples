@@ -3,5 +3,5 @@ lib/
 *.o
 .terraform/
 terraform.tfstate*
-vendor/bundle
+vendor/
 .bundle/
