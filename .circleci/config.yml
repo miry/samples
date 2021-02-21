@@ -108,14 +108,14 @@ jobs:
       - store_artifacts:
           path: coverage
   godnsproxy:
-    working_directory: /go/src/github.com/miry/samples
+    working_directory: ~/samples/godnsproxy
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:latest
     steps:
-      - checkout
-      - run: go get -v -t -d ./...
-      - run: go test ./godnsproxy/... -v -race
-      - run: go test ./godnsproxy/... -v -bench=.
+      - checkout:
+          path: ~/samples
+      - run: go test ./... -v -race
+      - run: go test ./... -v -bench=.
 
 workflows:
   version: 2
