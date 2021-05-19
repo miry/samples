@@ -3,6 +3,7 @@ package main
 import (
 	"testing"
 
+	toxiServer "github.com/Shopify/toxiproxy"
 	toxiproxy "github.com/Shopify/toxiproxy/client"
 	pg "github.com/go-pg/pg/v10"
 )
@@ -22,6 +23,8 @@ func DB() *pg.DB {
 }
 
 func init() {
+	runToxiproxyServer()
+
 	toxi := toxiproxy.NewClient("localhost:8474")
 	var err error
 	_, err = toxi.Populate([]toxiproxy.Proxy{{
@@ -30,7 +33,6 @@ func init() {
 		Upstream: "localhost:5432",
 		Enabled:  true,
 	}})
-
 	if err != nil {
 		panic(err)
 	}
@@ -39,6 +41,13 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func runToxiproxyServer() {
+	server := toxiServer.NewServer()
+	go func() {
+		server.Listen("localhost", "8474")
+	}()
 }
 
 func TestPingWithConnection(t *testing.T) {
