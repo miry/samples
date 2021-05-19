@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	bitbucket.org/miry/miry-readdle-test v0.0.0-20180827183603-a1b980a8d0c4
+	github.com/Shopify/toxiproxy v2.1.4+incompatible // indirect
 	github.com/go-pg/pg/v10 v10.9.1 // indirect
 	github.com/gocraft/health v0.0.0-20170925182251-8675af27fef0
 	github.com/golang/protobuf v1.4.3

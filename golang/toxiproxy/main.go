@@ -17,7 +17,7 @@ func main() {
 }
 
 func run() error {
-	db, err := setupDB("sample")
+	db, err := setupDB(":5432", "sample")
 	if err != nil {
 		return err
 	}

@@ -5,9 +5,9 @@ import (
 	"github.com/go-pg/pg/v10/orm"
 )
 
-func setupDB(database string) (*pg.DB, error) {
+func setupDB(addr, database string) (*pg.DB, error) {
 	db := pg.Connect(&pg.Options{
-		Addr:     ":5432",
+		Addr:     addr,
 		User:     "postgres",
 		Database: database,
 	})
