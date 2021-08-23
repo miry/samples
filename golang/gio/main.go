@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"strconv"
 	"time"
 
 	"gioui.org/app"
@@ -26,6 +27,7 @@ type D = layout.Dimensions
 
 var boiling bool
 var boilDurationInput widget.Editor
+var boilDuration float64
 var progress float64
 var progressIncrementer chan float64
 
@@ -60,20 +62,28 @@ func draw(w *app.Window) error {
 			case system.FrameEvent:
 				gtx := layout.NewContext(&ops, e)
 				if startButton.Clicked() {
-					boiling = !boiling
+					if boiling && progress >= 1 {
+						boiling = false
+						progress = 0
+					}
+
+					if !boiling && boilDuration <= 0 {
+						boiling = false
+					} else {
+						boiling = !boiling
+					}
 				}
 
 				layout.Flex{
 					Axis:    layout.Vertical,
 					Spacing: layout.SpaceStart,
 				}.Layout(gtx,
-
 					// EggWidget
 					layout.Rigid(
 						func(gtx C) D {
 							// Draw a custom path, shaped like an egg
 							var eggPath clip.Path
-							op.Offset(f32.Pt(200, 150)).Add(gtx.Ops)
+							op.Offset(f32.Pt(float32(gtx.Constraints.Max.X)/2, 150)).Add(gtx.Ops)
 							eggPath.Begin(gtx.Ops)
 							// Rotate from 0 to 360 degrees
 							for deg := 0.0; deg <= 360; deg++ {
@@ -122,11 +132,15 @@ func draw(w *app.Window) error {
 							// ... and wrap it in material design
 							ed := material.Editor(th, &boilDurationInput, "sec")
 
-							boilDuration := 3.0
 							if boiling && progress < 1 {
 								boilRemain := (1.0 - progress) * boilDuration
 								inputStr := fmt.Sprintf("%.1f", math.Round(float64(boilRemain)*10)/10)
 								boilDurationInput.SetText(inputStr)
+							} else {
+								seconds, err := strconv.ParseFloat(boilDurationInput.Text(), 64)
+								if err == nil {
+									boilDuration = seconds
+								}
 							}
 
 							margin := layout.Inset{
@@ -189,7 +203,6 @@ func draw(w *app.Window) error {
 				return e.Err
 			}
 		case p := <-progressIncrementer:
-
 			if boiling && progress < 1 {
 				progress += p
 				w.Invalidate()
