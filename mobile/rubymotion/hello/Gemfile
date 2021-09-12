@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+gem 'rake', require: false
+gem 'motion-provisioning', require: false
+# Add your dependencies here:
