@@ -1,4 +1,4 @@
-# Custom isntallation
+# Custom installation
 
 1. Xcode create a sample project
 1. Add account in Preferences
