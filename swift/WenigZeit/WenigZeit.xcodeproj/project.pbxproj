@@ -21,6 +21,7 @@
 		452EF48726EFA509009F5076 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		452EF48926EFA509009F5076 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		452EF48F26EFA512009F5076 /* WenigZeit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WenigZeit.entitlements; sourceTree = "<group>"; };
+		452EF49426EFA881009F5076 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +38,7 @@
 		452EF47426EFA507009F5076 = {
 			isa = PBXGroup;
 			children = (
+				452EF49426EFA881009F5076 /* README.md */,
 				452EF47F26EFA507009F5076 /* WenigZeit */,
 				452EF47E26EFA507009F5076 /* Products */,
 			);
@@ -53,15 +55,16 @@
 		452EF47F26EFA507009F5076 /* WenigZeit */ = {
 			isa = PBXGroup;
 			children = (
-				452EF48426EFA509009F5076 /* Assets.xcassets */,
-				452EF48926EFA509009F5076 /* Info.plist */,
+				452EF48026EFA507009F5076 /* WenigZeitApp.swift */,
+				452EF49526EFB211009F5076 /* assets */,
 				452EF49326EFA702009F5076 /* layouts */,
 				452EF49126EFA6AF009F5076 /* models */,
-				452EF48626EFA509009F5076 /* Preview Content */,
 				452EF49226EFA6E2009F5076 /* stores */,
 				452EF49026EFA61B009F5076 /* views */,
+				452EF48426EFA509009F5076 /* Assets.xcassets */,
+				452EF48926EFA509009F5076 /* Info.plist */,
+				452EF48626EFA509009F5076 /* Preview Content */,
 				452EF48F26EFA512009F5076 /* WenigZeit.entitlements */,
-				452EF48026EFA507009F5076 /* WenigZeitApp.swift */,
 			);
 			path = WenigZeit;
 			sourceTree = "<group>";
@@ -77,7 +80,6 @@
 		452EF49026EFA61B009F5076 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				452EF48226EFA507009F5076 /* ContentView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -99,8 +101,16 @@
 		452EF49326EFA702009F5076 /* layouts */ = {
 			isa = PBXGroup;
 			children = (
+				452EF48226EFA507009F5076 /* ContentView.swift */,
 			);
 			path = layouts;
+			sourceTree = "<group>";
+		};
+		452EF49526EFB211009F5076 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
