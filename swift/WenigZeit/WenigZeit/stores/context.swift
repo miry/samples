@@ -21,7 +21,8 @@ final class Context: ObservableObject {
     "Read book",
     "Workout",
     "Push ups",
-    "Review daily tasks"
+    "Review daily tasks",
+    "Running"
   ]
 
   init() {
@@ -63,11 +64,22 @@ final class Context: ObservableObject {
     let today = Date()
     var previous = today ... today
 
-    let now = NSDate(timeIntervalSinceNow: 0)
+    let now = Date()
     let oneday = NSDate(timeIntervalSinceNow: +24*3600)
 
+    //    Identify the start of the events today at 10 hours or tomorrow at 10 hours
+    //    If it is already late, then show plan for tomorrow
+    var components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: now)
+    if components.hour! > workingHoursRange.upperBound {
+      components.day = components.day! + 1
+    }
+    components.hour = workingHoursRange.lowerBound
+    components.minute = 0
+    let start_working_hours = Calendar.current.date(from: components)
+    //    end of calculating the day
+
     let predicate = eventStore.predicateForEvents(
-      withStart: now as Date,
+      withStart: start_working_hours!,
       end: oneday as Date,
       calendars: calendars)
     let events = eventStore.events(matching: predicate)
@@ -83,7 +95,7 @@ final class Context: ObservableObject {
       print("Checking working hours range")
       let eventStartHour = Calendar.current.component(.hour, from: event.startDate)
       if !workingHoursRange.contains(eventStartHour) {
-        print("skipped event: ", String(event.title))
+        //        print("skipped event: ", String(event.title))
         continue
       }
 
@@ -93,7 +105,7 @@ final class Context: ObservableObject {
           previous = previous.lowerBound ... event.endDate
           result.append(event)
         } else {
-          print("skipped event: ", String(event.title))
+          //          print("skipped event: ", String(event.title))
         }
       } else {
         result.append(event)
@@ -115,24 +127,42 @@ final class Context: ObservableObject {
     let working_duration = DateComponents(calendar: Calendar.current, minute: working_mins)
     let relaxing_duration = DateComponents(calendar: Calendar.current, minute: relaxing_mins)
 
+    // Set upper boudnries
+    //    if the event finished before the working hours, then plan something
+    let last_event = events[events.count - 1]
+    let last_event_end_hour = Calendar.current.component(.hour, from: last_event.endDate)
+
+    if workingHoursRange.contains(last_event_end_hour) {
+      var components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: last_event.endDate)
+      components.hour = workingHoursRange.upperBound
+      components.minute = 0
+      let end_working_hours = Calendar.current.date(from: components)
+
+      add_event("End of the day", end_working_hours!, end_working_hours!)
+    }
+    // end of extra virtual event in the end
+
     for event in events[1 ... events.count - 1] {
       var duration_min : Int = Int(event.startDate.timeIntervalSinceReferenceDate - prev.endDate.timeIntervalSinceReferenceDate) / 60
       print("duration between: \(event.title) and \(prev.title)", duration_min)
 
       if duration_min > 0 {
         if duration_min <= working_mins {
-          add_event("Work \(duration_min) min", prev.endDate, event.startDate)
+          //              NOTE: It is good for visualiation debug on the  device
+          // add_event("Work \(duration_min) min", prev.endDate, event.startDate)
         } else {
           var event_started_at = prev.endDate!
           var event_ended_at = event_started_at
           while duration_min > 0 {
             if duration_min > working_mins {
               event_ended_at = Calendar.current.date(byAdding: working_duration, to: event_started_at)!
-              add_event("Work \(working_mins) min", event_started_at, event_ended_at)
+              //              NOTE: It is good for visualiation debug on the  device
+              //              add_event("Work \(working_mins) min", event_started_at, event_ended_at)
               duration_min = duration_min - working_mins
               event_started_at = event_ended_at
             } else {
-              add_event("Work \(duration_min) min", event_started_at, event.startDate)
+              //              NOTE: It is good for visualiation debug on the  device
+              //              add_event("Work \(duration_min) min", event_started_at, event.startDate)
               duration_min = 0
             }
 
@@ -143,10 +173,10 @@ final class Context: ObservableObject {
             result.append(event_started_at)
             if duration_min > relaxing_mins {
               event_ended_at = Calendar.current.date(byAdding: relaxing_duration, to: event_started_at)!
-              add_event("Relax \(relaxing_mins) min", event_started_at, event_ended_at)
+              add_event("\(next_routine()) \(relaxing_mins) min", event_started_at, event_ended_at)
               duration_min = duration_min - relaxing_mins
             } else {
-              add_event("Relax \(duration_min) min", event_started_at, event.startDate)
+              add_event("\(next_routine()) \(duration_min) min", event_started_at, event.startDate)
               duration_min = 0
             }
           }
@@ -157,7 +187,12 @@ final class Context: ObservableObject {
     }
 
 
+    return result
+  }
 
+  func next_routine() -> String {
+    let result = routines.removeFirst()
+    routines.append(result)
     return result
   }
 
