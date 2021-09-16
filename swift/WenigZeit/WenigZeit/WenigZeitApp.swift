@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct WenigZeitApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  @StateObject private var context = Context()
+
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environmentObject(context)
     }
+  }
 }

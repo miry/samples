@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4529633926F3BF9B00AE93C9 /* settings_show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4529633826F3BF9B00AE93C9 /* settings_show.swift */; };
 		452EF48126EFA507009F5076 /* WenigZeitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF48026EFA507009F5076 /* WenigZeitApp.swift */; };
 		452EF48326EFA507009F5076 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF48226EFA507009F5076 /* ContentView.swift */; };
 		452EF48526EFA509009F5076 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 452EF48426EFA509009F5076 /* Assets.xcassets */; };
 		452EF48826EFA509009F5076 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 452EF48726EFA509009F5076 /* Preview Assets.xcassets */; };
+		452EF49726EFC872009F5076 /* event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49626EFC872009F5076 /* event.swift */; };
+		452EF49A26EFC8CE009F5076 /* events_list.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49926EFC8CE009F5076 /* events_list.swift */; };
+		452EF49D26EFDA45009F5076 /* calendars_list.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49C26EFDA45009F5076 /* calendars_list.swift */; };
+		452EF49F26EFDBB4009F5076 /* context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49E26EFDBB4009F5076 /* context.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4529633826F3BF9B00AE93C9 /* settings_show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settings_show.swift; sourceTree = "<group>"; };
 		452EF47D26EFA507009F5076 /* WenigZeit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenigZeit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		452EF48026EFA507009F5076 /* WenigZeitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WenigZeitApp.swift; sourceTree = "<group>"; };
 		452EF48226EFA507009F5076 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -22,6 +28,10 @@
 		452EF48926EFA509009F5076 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		452EF48F26EFA512009F5076 /* WenigZeit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WenigZeit.entitlements; sourceTree = "<group>"; };
 		452EF49426EFA881009F5076 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		452EF49626EFC872009F5076 /* event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = event.swift; sourceTree = "<group>"; };
+		452EF49926EFC8CE009F5076 /* events_list.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = events_list.swift; sourceTree = "<group>"; };
+		452EF49C26EFDA45009F5076 /* calendars_list.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calendars_list.swift; sourceTree = "<group>"; };
+		452EF49E26EFDBB4009F5076 /* context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = context.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4529633726F3BF8000AE93C9 /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				4529633826F3BF9B00AE93C9 /* settings_show.swift */,
+			);
+			path = settings;
+			sourceTree = "<group>";
+		};
 		452EF47426EFA507009F5076 = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +98,9 @@
 		452EF49026EFA61B009F5076 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				4529633726F3BF8000AE93C9 /* settings */,
+				452EF49B26EFDA1E009F5076 /* calendars */,
+				452EF49826EFC8AF009F5076 /* events */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -87,6 +108,7 @@
 		452EF49126EFA6AF009F5076 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				452EF49626EFC872009F5076 /* event.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -94,6 +116,7 @@
 		452EF49226EFA6E2009F5076 /* stores */ = {
 			isa = PBXGroup;
 			children = (
+				452EF49E26EFDBB4009F5076 /* context.swift */,
 			);
 			path = stores;
 			sourceTree = "<group>";
@@ -111,6 +134,22 @@
 			children = (
 			);
 			path = assets;
+			sourceTree = "<group>";
+		};
+		452EF49826EFC8AF009F5076 /* events */ = {
+			isa = PBXGroup;
+			children = (
+				452EF49926EFC8CE009F5076 /* events_list.swift */,
+			);
+			path = events;
+			sourceTree = "<group>";
+		};
+		452EF49B26EFDA1E009F5076 /* calendars */ = {
+			isa = PBXGroup;
+			children = (
+				452EF49C26EFDA45009F5076 /* calendars_list.swift */,
+			);
+			path = calendars;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,8 +221,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				452EF49A26EFC8CE009F5076 /* events_list.swift in Sources */,
+				452EF49F26EFDBB4009F5076 /* context.swift in Sources */,
+				452EF49D26EFDA45009F5076 /* calendars_list.swift in Sources */,
 				452EF48326EFA507009F5076 /* ContentView.swift in Sources */,
 				452EF48126EFA507009F5076 /* WenigZeitApp.swift in Sources */,
+				4529633926F3BF9B00AE93C9 /* settings_show.swift in Sources */,
+				452EF49726EFC872009F5076 /* event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +368,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.miry.WenigZeit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miry.samples.motion.hello;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -350,7 +394,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.miry.WenigZeit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miry.samples.motion.hello;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
