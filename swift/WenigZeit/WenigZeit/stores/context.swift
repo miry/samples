@@ -13,8 +13,7 @@ final class Context: ObservableObject {
 
   @Published var calendars: [EKCalendar] = []
   @Published var events: [EKEvent] = []
-  @Published var startTime : Int = 10
-  @Published var endTime : Int = 22
+  @Published var workingHoursRange = 10..<22
 
   init() {
     request_access()
@@ -64,9 +63,18 @@ final class Context: ObservableObject {
       if event.isAllDay ||
           event.status != EKEventStatus.confirmed ||
           event.availability != EKEventAvailability.busy {
+        print("skipped event: ", String(event.title))
         continue
       }
-      print("event", event)
+
+      print("Checking working hours range")
+      let eventStartHour = Calendar.current.component(.hour, from: event.startDate)
+      if !workingHoursRange.contains(eventStartHour) {
+        print("skipped event: ", String(event.title))
+        continue
+      }
+
+      print("Check for duplication")
       if previous.contains(event.startDate) {
         if !previous.contains(event.endDate) {
           previous = previous.lowerBound ... event.endDate
