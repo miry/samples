@@ -5,3 +5,4 @@ lib/
 terraform.tfstate*
 vendor/
 .bundle/
+xcuserdata/
