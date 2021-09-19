@@ -16,6 +16,7 @@
 		452EF49A26EFC8CE009F5076 /* events_list.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49926EFC8CE009F5076 /* events_list.swift */; };
 		452EF49D26EFDA45009F5076 /* calendars_list.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49C26EFDA45009F5076 /* calendars_list.swift */; };
 		452EF49F26EFDBB4009F5076 /* context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49E26EFDBB4009F5076 /* context.swift */; };
+		455CE59026F74F52006B0933 /* about_show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455CE58F26F74F52006B0933 /* about_show.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		452EF49926EFC8CE009F5076 /* events_list.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = events_list.swift; sourceTree = "<group>"; };
 		452EF49C26EFDA45009F5076 /* calendars_list.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calendars_list.swift; sourceTree = "<group>"; };
 		452EF49E26EFDBB4009F5076 /* context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = context.swift; sourceTree = "<group>"; };
+		455CE58F26F74F52006B0933 /* about_show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = about_show.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		452EF47F26EFA507009F5076 /* WenigZeit */ = {
 			isa = PBXGroup;
 			children = (
+				455CE59126F7723A006B0933 /* helpers */,
 				452EF48026EFA507009F5076 /* WenigZeitApp.swift */,
 				452EF49526EFB211009F5076 /* assets */,
 				452EF49326EFA702009F5076 /* layouts */,
@@ -98,6 +101,7 @@
 		452EF49026EFA61B009F5076 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				455CE58E26F74F43006B0933 /* about */,
 				4529633726F3BF8000AE93C9 /* settings */,
 				452EF49B26EFDA1E009F5076 /* calendars */,
 				452EF49826EFC8AF009F5076 /* events */,
@@ -150,6 +154,21 @@
 				452EF49C26EFDA45009F5076 /* calendars_list.swift */,
 			);
 			path = calendars;
+			sourceTree = "<group>";
+		};
+		455CE58E26F74F43006B0933 /* about */ = {
+			isa = PBXGroup;
+			children = (
+				455CE58F26F74F52006B0933 /* about_show.swift */,
+			);
+			path = about;
+			sourceTree = "<group>";
+		};
+		455CE59126F7723A006B0933 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,6 +246,7 @@
 				452EF48326EFA507009F5076 /* ContentView.swift in Sources */,
 				452EF48126EFA507009F5076 /* WenigZeitApp.swift in Sources */,
 				4529633926F3BF9B00AE93C9 /* settings_show.swift in Sources */,
+				455CE59026F74F52006B0933 /* about_show.swift in Sources */,
 				452EF49726EFC872009F5076 /* event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

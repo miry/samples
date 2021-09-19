@@ -7,14 +7,15 @@
 
 import Foundation
 import EventKit
+import UserNotifications
 
 final class Context: ObservableObject {
   private let eventStore = EKEventStore()
+  private let center = UNUserNotificationCenter.current()
 
   @Published var calendars: [EKCalendar] = []
   @Published var events: [EKEvent] = []
   @Published var workingHoursRange = 10..<22
-  @Published var reminders: [Date] = []
   @Published var working_mins : Int = 30
   @Published var relaxing_mins : Int = 5
   @Published var routines: [String] = [
@@ -31,12 +32,16 @@ final class Context: ObservableObject {
   }
 
   func refresh() {
+    print("refresh data invoked")
     calendars = fetch_calendars()
     events = fetch_events()
-    reminders = plan_routines_reminders()
-
+    let reminders = plan_routines_reminders()
     events.sort {
       $0.startDate < $1.startDate
+    }
+
+    for reminder in reminders {
+      schedule_reminder(reminder)
     }
   }
 
@@ -46,6 +51,12 @@ final class Context: ObservableObject {
         fatalError("Couldn't grant access to calendars")
       }
     })
+
+    center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+      if !granted {
+        fatalError("Couldn't grant access to notifications")
+      }
+    }
   }
 
   func fetch_calendars() -> [EKCalendar] {
@@ -76,6 +87,7 @@ final class Context: ObservableObject {
     components.hour = workingHoursRange.lowerBound
     components.minute = 0
     let start_working_hours = Calendar.current.date(from: components)
+    print("start_working_hours:", start_working_hours)
     //    end of calculating the day
 
     let predicate = eventStore.predicateForEvents(
@@ -115,14 +127,20 @@ final class Context: ObservableObject {
     return result
   }
 
+  struct Reminder: Hashable, Identifiable {
+    var id: String
+    var title: String
+    var date: DateComponents
+  }
+  
   // Build a timetable for routines
-  func plan_routines_reminders() -> [Date] {
+  func plan_routines_reminders() -> [Reminder] {
     if events.count <= 1 {
       return []
     }
 
     var prev : EKEvent = events[0]
-    var result : [Date] = []
+    var result : [Reminder] = []
 
     let working_duration = DateComponents(calendar: Calendar.current, minute: working_mins)
     let relaxing_duration = DateComponents(calendar: Calendar.current, minute: relaxing_mins)
@@ -144,7 +162,6 @@ final class Context: ObservableObject {
 
     for event in events[1 ... events.count - 1] {
       var duration_min : Int = Int(event.startDate.timeIntervalSinceReferenceDate - prev.endDate.timeIntervalSinceReferenceDate) / 60
-      print("duration between: \(event.title) and \(prev.title)", duration_min)
 
       if duration_min > 0 {
         if duration_min <= working_mins {
@@ -170,15 +187,23 @@ final class Context: ObservableObject {
               break
             }
 
-            result.append(event_started_at)
+            let routine = next_routine()
+            var reminder = Reminder(id: UUID().uuidString, title: "", date: Calendar.current.dateComponents([.hour, .minute], from: event_started_at))
+
             if duration_min > relaxing_mins {
               event_ended_at = Calendar.current.date(byAdding: relaxing_duration, to: event_started_at)!
-              add_event("\(next_routine()) \(relaxing_mins) min", event_started_at, event_ended_at)
+              add_event("\(routine) \(relaxing_mins) min", event_started_at, event_ended_at)
+              reminder.id = "reminder\(event_started_at.timeIntervalSinceReferenceDate)"
+              reminder.title = "\(routine) \(relaxing_mins) min"
+              event_started_at = event_ended_at
               duration_min = duration_min - relaxing_mins
             } else {
-              add_event("\(next_routine()) \(duration_min) min", event_started_at, event.startDate)
+              add_event("\(routine) \(duration_min) min", event_started_at, event.startDate)
+              reminder.id = "reminder\(event_started_at.timeIntervalSinceReferenceDate)"
+              reminder.title = "\(routine) \(duration_min) min"
               duration_min = 0
             }
+            result.append(reminder)
           }
         }
       }
@@ -203,5 +228,17 @@ final class Context: ObservableObject {
     reserver.endDate = end
     reserver.calendar = eventStore.defaultCalendarForNewEvents
     events.append(reserver)
+  }
+
+  func schedule_reminder(_ reminder:Reminder) {
+    let content = UNMutableNotificationContent()
+    content.title = reminder.title
+    content.subtitle = "Reminder"
+    content.sound = UNNotificationSound.default
+
+    let trigger = UNCalendarNotificationTrigger(dateMatching: reminder.date, repeats: false)
+    let request = UNNotificationRequest(identifier: reminder.id, content: content, trigger: trigger)
+    center.add(request)
+
   }
 }

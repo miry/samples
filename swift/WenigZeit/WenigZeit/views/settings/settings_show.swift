@@ -10,8 +10,21 @@ import EventKitUI
 
 struct SettingsShow: View {
 
+  private enum Tabs: Hashable {
+    case calendars, about
+  }
+
   var body: some View {
-    Text("oops")
+    TabView {
+      CalendarsList()
+        .tabItem {
+          Label("Calendars", systemImage: "calendar")
+        }
+        .tag(Tabs.calendars)
+      AboutShow()
+        .tabItem { Label("About", systemImage: "info") }
+        .tag(Tabs.about)
+    }
   }
 }
 

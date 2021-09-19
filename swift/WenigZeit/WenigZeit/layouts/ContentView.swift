@@ -12,16 +12,11 @@ struct ContentView: View {
   @EnvironmentObject var context : Context
 
   private enum Tabs: Hashable {
-    case calendars, events, settings
+    case events, settings
   }
 
   var body: some View {
     TabView {
-      CalendarsList()
-        .tabItem {
-          Label("Calendars", systemImage: "calendar")
-        }
-        .tag(Tabs.calendars)
       EventsList()
         .tabItem {
           Label("Events", systemImage: "list.bullet.rectangle")
