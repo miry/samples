@@ -17,6 +17,7 @@
 		452EF49D26EFDA45009F5076 /* calendars_list.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49C26EFDA45009F5076 /* calendars_list.swift */; };
 		452EF49F26EFDBB4009F5076 /* context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF49E26EFDBB4009F5076 /* context.swift */; };
 		455CE59026F74F52006B0933 /* about_show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455CE58F26F74F52006B0933 /* about_show.swift */; };
+		455CE59526F79C4D006B0933 /* routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455CE59426F79C4D006B0933 /* routine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		452EF49C26EFDA45009F5076 /* calendars_list.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calendars_list.swift; sourceTree = "<group>"; };
 		452EF49E26EFDBB4009F5076 /* context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = context.swift; sourceTree = "<group>"; };
 		455CE58F26F74F52006B0933 /* about_show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = about_show.swift; sourceTree = "<group>"; };
+		455CE59426F79C4D006B0933 /* routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = routine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				452EF49626EFC872009F5076 /* event.swift */,
+				455CE59426F79C4D006B0933 /* routine.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				455CE59526F79C4D006B0933 /* routine.swift in Sources */,
 				452EF49A26EFC8CE009F5076 /* events_list.swift in Sources */,
 				452EF49F26EFDBB4009F5076 /* context.swift in Sources */,
 				452EF49D26EFDA45009F5076 /* calendars_list.swift in Sources */,

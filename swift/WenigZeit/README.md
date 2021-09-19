@@ -67,3 +67,4 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 
 - [SwiftUI for iOS 15: How to Add Swipe Actions and Hide Line Separators in List View](https://www.appcoda.com/swiftui-swipe-actions/)
 - [The Complete Guide to NavigationView in SwiftUI](https://www.youtube.com/watch?v=nA6Jo6YnL9g)
+- [Fun with print() in Swift ](https://learnappmaking.com/print-swift-how-to/)

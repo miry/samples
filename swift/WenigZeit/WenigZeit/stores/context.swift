@@ -12,30 +12,35 @@ import UserNotifications
 final class Context: ObservableObject {
   private let eventStore = EKEventStore()
   private let center = UNUserNotificationCenter.current()
+  private var start_working_date: Date
+  private var end_working_date: Date
 
   @Published var calendars: [EKCalendar] = []
   @Published var events: [EKEvent] = []
   @Published var workingHoursRange = 10..<22
   @Published var working_mins : Int = 30
-  @Published var relaxing_mins : Int = 5
-  @Published var routines: [String] = [
-    "Read book",
-    "Workout",
-    "Push ups",
-    "Review daily tasks",
-    "Running"
+  @Published var routines: [Routine] = [
+    Routine(title: "Read book", duration_min: 15),
+    Routine(title: "Workout", duration_min: 15),
+    Routine(title: "Push ups", duration_min: 1),
+    Routine(title: "Review daily tasks", duration_min: 10),
+    Routine(title: "Running", duration_min: 15),
+    Routine(title: "Walk 2000 steps", duration_min: 30)
   ]
 
   init() {
+    start_working_date = Date()
+    end_working_date = Date()
     request_access()
     refresh()
   }
 
   func refresh() {
-    print("refresh data invoked")
     calendars = fetch_calendars()
     events = fetch_events()
+
     let reminders = plan_routines_reminders()
+
     events.sort {
       $0.startDate < $1.startDate
     }
@@ -76,8 +81,6 @@ final class Context: ObservableObject {
     var previous = today ... today
 
     let now = Date()
-    let oneday = NSDate(timeIntervalSinceNow: +24*3600)
-
     //    Identify the start of the events today at 10 hours or tomorrow at 10 hours
     //    If it is already late, then show plan for tomorrow
     var components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: now)
@@ -86,13 +89,17 @@ final class Context: ObservableObject {
     }
     components.hour = workingHoursRange.lowerBound
     components.minute = 0
-    let start_working_hours = Calendar.current.date(from: components)
-    print("start_working_hours:", start_working_hours)
+    start_working_date = Calendar.current.date(from: components)!
+    print("start_working_date:", start_working_date)
+
+    components.hour = workingHoursRange.upperBound
+    end_working_date = Calendar.current.date(from: components)!
+    print("end_working_date:", end_working_date)
     //    end of calculating the day
 
     let predicate = eventStore.predicateForEvents(
-      withStart: start_working_hours!,
-      end: oneday as Date,
+      withStart: start_working_date,
+      end: end_working_date,
       calendars: calendars)
     let events = eventStore.events(matching: predicate)
 
@@ -104,14 +111,14 @@ final class Context: ObservableObject {
         continue
       }
 
-      print("Checking working hours range")
+      print("> Checking working hours range")
       let eventStartHour = Calendar.current.component(.hour, from: event.startDate)
       if !workingHoursRange.contains(eventStartHour) {
         //        print("skipped event: ", String(event.title))
         continue
       }
 
-      print("Check for duplication")
+      print("> Check for duplication")
       if previous.contains(event.startDate) {
         if !previous.contains(event.endDate) {
           previous = previous.lowerBound ... event.endDate
@@ -124,6 +131,15 @@ final class Context: ObservableObject {
         previous = event.startDate ... event.endDate
       }
     }
+
+    if result.count == 0 || workingHoursRange.contains(Calendar.current.component(.hour, from: result[0].startDate)) {
+      result.insert(create_event("Start of the day", start_working_date, start_working_date), at: 0)
+    }
+
+    if result.count == 1 || workingHoursRange.contains(Calendar.current.component(.hour, from: result[result.count-1].startDate)) {
+      result.append(create_event("End of the day", end_working_date, end_working_date))
+    }
+
     return result
   }
 
@@ -135,33 +151,21 @@ final class Context: ObservableObject {
   
   // Build a timetable for routines
   func plan_routines_reminders() -> [Reminder] {
-    if events.count <= 1 {
+    let working_duration = DateComponents(calendar: Calendar.current, minute: working_mins)
+
+    if events.count == 0 {
       return []
     }
 
+    // Schedule the empty slots
+    print("======= scheduele")
     var prev : EKEvent = events[0]
     var result : [Reminder] = []
 
-    let working_duration = DateComponents(calendar: Calendar.current, minute: working_mins)
-    let relaxing_duration = DateComponents(calendar: Calendar.current, minute: relaxing_mins)
-
-    // Set upper boudnries
-    //    if the event finished before the working hours, then plan something
-    let last_event = events[events.count - 1]
-    let last_event_end_hour = Calendar.current.component(.hour, from: last_event.endDate)
-
-    if workingHoursRange.contains(last_event_end_hour) {
-      var components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: last_event.endDate)
-      components.hour = workingHoursRange.upperBound
-      components.minute = 0
-      let end_working_hours = Calendar.current.date(from: components)
-
-      add_event("End of the day", end_working_hours!, end_working_hours!)
-    }
-    // end of extra virtual event in the end
-
     for event in events[1 ... events.count - 1] {
       var duration_min : Int = Int(event.startDate.timeIntervalSinceReferenceDate - prev.endDate.timeIntervalSinceReferenceDate) / 60
+      print("fill space between", prev, event)
+      print("duration(min): ", duration_min)
 
       if duration_min > 0 {
         if duration_min <= working_mins {
@@ -188,19 +192,25 @@ final class Context: ObservableObject {
             }
 
             let routine = next_routine()
+            print(routine)
+            let relaxing_mins = routine.duration_min
+            let relaxing_duration = DateComponents(calendar: Calendar.current, minute: relaxing_mins)
+
             var reminder = Reminder(id: UUID().uuidString, title: "", date: Calendar.current.dateComponents([.hour, .minute], from: event_started_at))
 
             if duration_min > relaxing_mins {
               event_ended_at = Calendar.current.date(byAdding: relaxing_duration, to: event_started_at)!
-              add_event("\(routine) \(relaxing_mins) min", event_started_at, event_ended_at)
+              let e = create_event(routine.description, event_started_at, event_ended_at)
+              events.append(e)
               reminder.id = "reminder\(event_started_at.timeIntervalSinceReferenceDate)"
-              reminder.title = "\(routine) \(relaxing_mins) min"
+              reminder.title = routine.description
               event_started_at = event_ended_at
               duration_min = duration_min - relaxing_mins
             } else {
-              add_event("\(routine) \(duration_min) min", event_started_at, event.startDate)
+              let e = create_event(routine.description, event_started_at, event.startDate)
+              events.append(e)
               reminder.id = "reminder\(event_started_at.timeIntervalSinceReferenceDate)"
-              reminder.title = "\(routine) \(duration_min) min"
+              reminder.title = routine.description
               duration_min = 0
             }
             result.append(reminder)
@@ -215,19 +225,19 @@ final class Context: ObservableObject {
     return result
   }
 
-  func next_routine() -> String {
+  func next_routine() -> Routine {
     let result = routines.removeFirst()
     routines.append(result)
     return result
   }
 
-  func add_event(_ title:String, _ start:Date, _ end:Date) {
+  func create_event(_ title:String, _ start:Date, _ end:Date) -> EKEvent {
     let reserver:EKEvent = EKEvent(eventStore: eventStore)
     reserver.title = title
     reserver.startDate = start
     reserver.endDate = end
     reserver.calendar = eventStore.defaultCalendarForNewEvents
-    events.append(reserver)
+    return reserver
   }
 
   func schedule_reminder(_ reminder:Reminder) {
