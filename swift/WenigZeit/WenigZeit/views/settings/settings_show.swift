@@ -8,22 +8,48 @@
 import SwiftUI
 import EventKitUI
 
-struct SettingsShow: View {
-
-  private enum Tabs: Hashable {
-    case calendars, about
-  }
+struct SettingsRowView: View {
+  var title: String
+  var iconName: String
 
   var body: some View {
-    TabView {
-      CalendarsList()
-        .tabItem {
-          Label("Calendars", systemImage: "calendar")
+    HStack {
+      Image(systemName: iconName)
+      Text (title)
+    }
+  }
+}
+
+struct SettingsShow: View {
+
+  @EnvironmentObject var context: Context
+
+  var body: some View {
+    NavigationView {
+      VStack(alignment: .leading) {
+        Form {
+          Toggle("Notifications", isOn: $context.enableReminders)
         }
-        .tag(Tabs.calendars)
-      AboutShow()
-        .tabItem { Label("About", systemImage: "info") }
-        .tag(Tabs.about)
+
+        List {
+          NavigationLink(destination: CalendarsList(), label: {
+            SettingsRowView(
+              title: "Calendars",
+              iconName: "calendar"
+            )
+          })
+
+          NavigationLink(destination: RoutinesList(), label: {
+            SettingsRowView(
+              title: "Routines",
+              iconName: "person"
+            )
+          })
+        }
+
+        Spacer()
+      }
+      .navigationTitle("Settings")
     }
   }
 }

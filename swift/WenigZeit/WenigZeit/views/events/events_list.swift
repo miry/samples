@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import EventKit
 
 struct EventsList: View {
   @EnvironmentObject var context: Context
@@ -18,13 +19,12 @@ struct EventsList: View {
           ForEach(context.events, id: \.self) { event in
             HStack {
               Text(event.title)
-                .foregroundColor(Color.init(event.calendar.cgColor))
+                .foregroundColor(eventColor(event))
               Spacer()
               VStack {
                 Text(event.startDate, style: .time)
                 Text(event.endDate, style: .time)
               }
-
             }
           }
         }
@@ -33,15 +33,27 @@ struct EventsList: View {
           ProgressView()
         }
       }
-      .navigationTitle("Events")
+      .navigationTitle("Schedule")
       .navigationBarItems(
         trailing: Button("Refresh") {
           prossecing = true
-          context.refresh()
+          context.refresh(true)
           prossecing = false
         }
       )
     }
+  }
+
+  func eventColor(_ event:EKEvent) -> Color {
+    if event.startDate < Date() {
+      return Color.gray
+    }
+
+    if event.calendar != nil {
+      return Color.init(event.calendar.cgColor)
+    }
+
+    return Color.yellow
   }
 }
 

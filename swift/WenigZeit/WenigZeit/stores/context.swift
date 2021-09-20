@@ -20,33 +20,50 @@ final class Context: ObservableObject {
   @Published var workingHoursRange = 10..<22
   @Published var working_mins : Int = 30
   @Published var routines: [Routine] = [
-    Routine(title: "Read book", duration_min: 15),
     Routine(title: "Workout", duration_min: 15),
+    Routine(title: "Deutsch", duration_min: 5),
+    Routine(title: "Today tasks", duration_min: 15),
     Routine(title: "Push ups", duration_min: 1),
+    Routine(title: "Walk 2000 steps", duration_min: 30),
     Routine(title: "Review daily tasks", duration_min: 10),
+    Routine(title: "Read book", duration_min: 15),
     Routine(title: "Running", duration_min: 15),
-    Routine(title: "Walk 2000 steps", duration_min: 30)
   ]
+
+  @Published var enableReminders = true
 
   init() {
     start_working_date = Date()
     end_working_date = Date()
     request_access()
-    refresh()
+    refresh(true)
   }
 
-  func refresh() {
+  func refresh(_ create_reminders: Bool) {
     calendars = fetch_calendars()
     events = fetch_events()
 
+    let original_routines = routines
     let reminders = plan_routines_reminders()
+    routines = original_routines
 
     events.sort {
       $0.startDate < $1.startDate
     }
 
-    for reminder in reminders {
-      schedule_reminder(reminder)
+    center.removeAllPendingNotificationRequests()
+    if enableReminders && create_reminders {
+      for reminder in reminders {
+        schedule_reminder(reminder)
+      }
+    }
+
+    // Debug reminders:
+    center.getPendingNotificationRequests {requests in
+      print("Notifications pending:")
+      for request in requests {
+        print("Schdudeled: \(request.identifier) \(request.content.title)")
+      }
     }
   }
 
@@ -84,7 +101,7 @@ final class Context: ObservableObject {
     //    Identify the start of the events today at 10 hours or tomorrow at 10 hours
     //    If it is already late, then show plan for tomorrow
     var components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: now)
-    if components.hour! > workingHoursRange.upperBound {
+    if components.hour! >= workingHoursRange.upperBound {
       components.day = components.day! + 1
     }
     components.hour = workingHoursRange.lowerBound
@@ -162,6 +179,8 @@ final class Context: ObservableObject {
     var prev : EKEvent = events[0]
     var result : [Reminder] = []
 
+    let now = Date()
+
     for event in events[1 ... events.count - 1] {
       var duration_min : Int = Int(event.startDate.timeIntervalSinceReferenceDate - prev.endDate.timeIntervalSinceReferenceDate) / 60
       print("fill space between", prev, event)
@@ -192,7 +211,6 @@ final class Context: ObservableObject {
             }
 
             let routine = next_routine()
-            print(routine)
             let relaxing_mins = routine.duration_min
             let relaxing_duration = DateComponents(calendar: Calendar.current, minute: relaxing_mins)
 
@@ -213,7 +231,12 @@ final class Context: ObservableObject {
               reminder.title = routine.description
               duration_min = 0
             }
-            result.append(reminder)
+
+            if event_started_at > now {
+              result.append(reminder)
+            } else {
+              print("no schedule for routine \(routine)")
+            }
           }
         }
       }
@@ -249,6 +272,5 @@ final class Context: ObservableObject {
     let trigger = UNCalendarNotificationTrigger(dateMatching: reminder.date, repeats: false)
     let request = UNNotificationRequest(identifier: reminder.id, content: content, trigger: trigger)
     center.add(request)
-
   }
 }

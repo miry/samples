@@ -22,6 +22,7 @@ struct CalendarsList: View {
         }
       }
     }
+    .navigationTitle("Calendars")
   }
 }
 
