@@ -11,6 +11,9 @@ import EventKit
 struct EventsList: View {
   @EnvironmentObject var context: Context
   @State private var prossecing = false
+  @State private var refreshed_at: Date? = nil
+
+  let timer = Timer.publish(every: 3600, tolerance: 900, on: .main, in: .common).autoconnect()
 
   var body: some View {
     NavigationView {
@@ -36,12 +39,23 @@ struct EventsList: View {
       .navigationTitle("Schedule")
       .navigationBarItems(
         trailing: Button("Refresh") {
-          prossecing = true
-          context.refresh(true)
-          prossecing = false
+          refresh()
         }
       )
+      .onReceive(timer) { time in
+        refresh()
+      }
     }
+  }
+
+  func refresh() {
+    if prossecing {
+      return
+    }
+    prossecing = true
+    context.refresh(true)
+    refreshed_at = Date()
+    prossecing = false
   }
 
   func eventColor(_ event:EKEvent) -> Color {
