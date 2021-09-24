@@ -30,7 +30,13 @@ final class Context: ObservableObject {
     Routine(title: "Running", duration_min: 15),
   ]
 
-  @Published var enableReminders = true
+  @Published var enableReminders = UserDefaults.standard.bool(forKey: "enableReminders") {
+    didSet {
+      print("enableReminders changed from: ", oldValue, "to: ", enableReminders)
+      UserDefaults.standard.setValue(enableReminders, forKey: "enableReminders")
+      print("read user defaults", UserDefaults.standard.bool(forKey: "enableReminders"))
+    }
+  }
 
   init() {
     start_working_date = Date()
