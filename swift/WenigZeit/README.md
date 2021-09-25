@@ -62,11 +62,21 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 1. Settings page
   1. About page
 
-
 # References
 
+- [Swift: Statements](https://docs.swift.org/swift-book/ReferenceManual/Statements.html)
+- [Guard Statement Explained in Swift](https://learnappmaking.com/swift-guard-let-statement-how-to/)
+- [Swift: Concurrency](https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html)
 - [SwiftUI for iOS 15: How to Add Swipe Actions and Hide Line Separators in List View](https://www.appcoda.com/swiftui-swipe-actions/)
 - [The Complete Guide to NavigationView in SwiftUI](https://www.youtube.com/watch?v=nA6Jo6YnL9g)
 - [Fun with print() in Swift ](https://learnappmaking.com/print-swift-how-to/)
 - [How to Read and Cancel Local Notification Requests](https://www.appsdeveloperblog.com/how-to-read-and-cancel-local-notification-requests/)
 - [Triggering events repeatedly using a timer](https://www.hackingwithswift.com/books/ios-swiftui/triggering-events-repeatedly-using-a-timer)
+- [Pull-to-Refresh in SwiftUI](https://swiftwithmajid.com/2021/07/14/pull-to-refresh-in-swiftui/)
+- [SwiftUI: List](https://developer.apple.com/documentation/swiftui/list)
+- [14 Xcode Keyboard Shortcuts - To Make You More a Productive iOS
+   Developer](https://supereasyapps.com/blog/2014/9/15/14-xcode-time-saving-shortcuts-memorize-and-improve-your-productivity)
+    Command + Shift + O: Open quick
+    Command + Shift + J: reveals the file you currently have open in the project navigator
+    Command + Shift + F: Search
+    Control + 6: File Jump Ba

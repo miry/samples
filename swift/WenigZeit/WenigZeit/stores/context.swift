@@ -10,8 +10,8 @@ import EventKit
 import UserNotifications
 
 final class Context: ObservableObject {
-  private let eventStore = EKEventStore()
-  private let center = UNUserNotificationCenter.current()
+  private let event_store = EKEventStore()
+  private let notification_center = UNUserNotificationCenter.current()
   private var start_working_date: Date
   private var end_working_date: Date
 
@@ -32,9 +32,7 @@ final class Context: ObservableObject {
 
   @Published var enableReminders = UserDefaults.standard.bool(forKey: "enableReminders") {
     didSet {
-      print("enableReminders changed from: ", oldValue, "to: ", enableReminders)
       UserDefaults.standard.setValue(enableReminders, forKey: "enableReminders")
-      print("read user defaults", UserDefaults.standard.bool(forKey: "enableReminders"))
     }
   }
 
@@ -46,6 +44,12 @@ final class Context: ObservableObject {
   }
 
   func refresh(_ create_reminders: Bool) {
+    let accessCalendar = EKEventStore.authorizationStatus(for: .event)
+    guard  accessCalendar == .authorized else {
+      print("WARNING: No access to calendar events!")
+      return
+    }
+
     calendars = fetch_calendars()
     events = fetch_events()
 
@@ -57,15 +61,17 @@ final class Context: ObservableObject {
       $0.startDate < $1.startDate
     }
 
-    center.removeAllPendingNotificationRequests()
-    if enableReminders && create_reminders {
+    notification_center.removeAllPendingNotificationRequests()
+    let schedule_reminders = enableReminders && create_reminders
+    if schedule_reminders {
+      print("Schedule reminders")
       for reminder in reminders {
         schedule_reminder(reminder)
       }
     }
 
     // Debug reminders:
-    center.getPendingNotificationRequests {requests in
+    notification_center.getPendingNotificationRequests {requests in
       print("Notifications pending:")
       for request in requests {
         print("Schdudeled: \(request.identifier) \(request.content.title)")
@@ -74,15 +80,18 @@ final class Context: ObservableObject {
   }
 
   func request_access() {
-    eventStore.requestAccess(to: EKEntityType.event, completion: { (granted, error) in
+    event_store.requestAccess(to: EKEntityType.event, completion: { (granted, error) in
       if !granted {
-        fatalError("Couldn't grant access to calendars")
+        print("WARNING: Couldn't grant access to calendars")
       }
     })
+    request_access_enable_notifications()
+  }
 
-    center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+  func request_access_enable_notifications() {
+    notification_center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
       if !granted {
-        fatalError("Couldn't grant access to notifications")
+        print("WARNING: Couldn't grant access to notifications")
       }
     }
   }
@@ -90,7 +99,7 @@ final class Context: ObservableObject {
   func fetch_calendars() -> [EKCalendar] {
     var result: [EKCalendar] = []
 
-    for calendar in eventStore.calendars(for: EKEntityType.event) {
+    for calendar in event_store.calendars(for: EKEntityType.event) {
       if calendar.allowsContentModifications {
         result.append(calendar)
       }
@@ -113,18 +122,16 @@ final class Context: ObservableObject {
     components.hour = workingHoursRange.lowerBound
     components.minute = 0
     start_working_date = Calendar.current.date(from: components)!
-    print("start_working_date:", start_working_date)
 
     components.hour = workingHoursRange.upperBound
     end_working_date = Calendar.current.date(from: components)!
-    print("end_working_date:", end_working_date)
     //    end of calculating the day
 
-    let predicate = eventStore.predicateForEvents(
+    let predicate = event_store.predicateForEvents(
       withStart: start_working_date,
       end: end_working_date,
       calendars: calendars)
-    let events = eventStore.events(matching: predicate)
+    let events = event_store.events(matching: predicate)
 
     for event in events {
       if event.isAllDay ||
@@ -166,12 +173,6 @@ final class Context: ObservableObject {
     return result
   }
 
-  struct Reminder: Hashable, Identifiable {
-    var id: String
-    var title: String
-    var date: DateComponents
-  }
-  
   // Build a timetable for routines
   func plan_routines_reminders() -> [Reminder] {
     let working_duration = DateComponents(calendar: Calendar.current, minute: working_mins)
@@ -261,11 +262,11 @@ final class Context: ObservableObject {
   }
 
   func create_event(_ title:String, _ start:Date, _ end:Date) -> EKEvent {
-    let reserver:EKEvent = EKEvent(eventStore: eventStore)
+    let reserver:EKEvent = EKEvent(eventStore: event_store)
     reserver.title = title
     reserver.startDate = start
     reserver.endDate = end
-    reserver.calendar = eventStore.defaultCalendarForNewEvents
+    reserver.calendar = event_store.defaultCalendarForNewEvents
     return reserver
   }
 
@@ -277,6 +278,6 @@ final class Context: ObservableObject {
 
     let trigger = UNCalendarNotificationTrigger(dateMatching: reminder.date, repeats: false)
     let request = UNNotificationRequest(identifier: reminder.id, content: content, trigger: trigger)
-    center.add(request)
+    notification_center.add(request)
   }
 }

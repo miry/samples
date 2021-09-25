@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4503970726FF3C4200BD59C1 /* reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4503970626FF3C4200BD59C1 /* reminder.swift */; };
 		4529633926F3BF9B00AE93C9 /* settings_show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4529633826F3BF9B00AE93C9 /* settings_show.swift */; };
 		452EF48126EFA507009F5076 /* WenigZeitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF48026EFA507009F5076 /* WenigZeitApp.swift */; };
 		452EF48326EFA507009F5076 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EF48226EFA507009F5076 /* ContentView.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4503970626FF3C4200BD59C1 /* reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = reminder.swift; sourceTree = "<group>"; };
 		4529633826F3BF9B00AE93C9 /* settings_show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settings_show.swift; sourceTree = "<group>"; };
 		452EF47D26EFA507009F5076 /* WenigZeit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenigZeit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		452EF48026EFA507009F5076 /* WenigZeitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WenigZeitApp.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			children = (
 				452EF49626EFC872009F5076 /* event.swift */,
 				455CE59426F79C4D006B0933 /* routine.swift */,
+				4503970626FF3C4200BD59C1 /* reminder.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				4529633926F3BF9B00AE93C9 /* settings_show.swift in Sources */,
 				455CE59026F74F52006B0933 /* about_show.swift in Sources */,
 				452EF49726EFC872009F5076 /* event.swift in Sources */,
+				4503970726FF3C4200BD59C1 /* reminder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,7 +329,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -380,7 +384,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -402,17 +406,18 @@
 				DEVELOPMENT_TEAM = 8QB9R6NWL4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = WenigZeit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.miry.samples.motion.hello;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miry.wenigzeit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,6";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -428,17 +433,18 @@
 				DEVELOPMENT_TEAM = 8QB9R6NWL4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = WenigZeit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.miry.samples.motion.hello;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miry.wenigzeit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,6";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
