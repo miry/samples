@@ -10,8 +10,9 @@ import EventKit
 import UserNotifications
 
 final class Context: ObservableObject {
-  private let event_store = EKEventStore()
-  private let notification_center = UNUserNotificationCenter.current()
+  let event_store = EKEventStore()
+  let notification_center = UNUserNotificationCenter.current()
+
   private var start_working_date: Date
   private var end_working_date: Date
 
@@ -115,16 +116,16 @@ final class Context: ObservableObject {
     let now = Date()
     //    Identify the start of the events today at 10 hours or tomorrow at 10 hours
     //    If it is already late, then show plan for tomorrow
-    var components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: now)
+    var components = Foundation.Calendar.current.dateComponents([.year, .month, .day, .hour], from: now)
     if components.hour! >= workingHoursRange.upperBound {
       components.day = components.day! + 1
     }
     components.hour = workingHoursRange.lowerBound
     components.minute = 0
-    start_working_date = Calendar.current.date(from: components)!
+    start_working_date = Foundation.Calendar.current.date(from: components)!
 
     components.hour = workingHoursRange.upperBound
-    end_working_date = Calendar.current.date(from: components)!
+    end_working_date = Foundation.Calendar.current.date(from: components)!
     //    end of calculating the day
 
     let predicate = event_store.predicateForEvents(
@@ -142,7 +143,7 @@ final class Context: ObservableObject {
       }
 
       print("> Checking working hours range")
-      let eventStartHour = Calendar.current.component(.hour, from: event.startDate)
+      let eventStartHour = Foundation.Calendar.current.component(.hour, from: event.startDate)
       if !workingHoursRange.contains(eventStartHour) {
         //        print("skipped event: ", String(event.title))
         continue
@@ -162,11 +163,11 @@ final class Context: ObservableObject {
       }
     }
 
-    if result.count == 0 || workingHoursRange.contains(Calendar.current.component(.hour, from: result[0].startDate)) {
+    if result.count == 0 || workingHoursRange.contains(Foundation.Calendar.current.component(.hour, from: result[0].startDate)) {
       result.insert(create_event("Start of the day", start_working_date, start_working_date), at: 0)
     }
 
-    if result.count == 1 || workingHoursRange.contains(Calendar.current.component(.hour, from: result[result.count-1].startDate)) {
+    if result.count == 1 || workingHoursRange.contains(Foundation.Calendar.current.component(.hour, from: result[result.count-1].startDate)) {
       result.append(create_event("End of the day", end_working_date, end_working_date))
     }
 
@@ -175,7 +176,7 @@ final class Context: ObservableObject {
 
   // Build a timetable for routines
   func plan_routines_reminders() -> [Reminder] {
-    let working_duration = DateComponents(calendar: Calendar.current, minute: working_mins)
+    let working_duration = DateComponents(calendar: Foundation.Calendar.current, minute: working_mins)
 
     if events.count == 0 {
       return []
@@ -202,7 +203,7 @@ final class Context: ObservableObject {
           var event_ended_at = event_started_at
           while duration_min > 0 {
             if duration_min > working_mins {
-              event_ended_at = Calendar.current.date(byAdding: working_duration, to: event_started_at)!
+              event_ended_at = Foundation.Calendar.current.date(byAdding: working_duration, to: event_started_at)!
               //              NOTE: It is good for visualiation debug on the  device
               //              add_event("Work \(working_mins) min", event_started_at, event_ended_at)
               duration_min = duration_min - working_mins
@@ -219,12 +220,12 @@ final class Context: ObservableObject {
 
             let routine = next_routine()
             let relaxing_mins = routine.duration_min
-            let relaxing_duration = DateComponents(calendar: Calendar.current, minute: relaxing_mins)
+            let relaxing_duration = DateComponents(calendar: Foundation.Calendar.current, minute: relaxing_mins)
 
-            var reminder = Reminder(id: UUID().uuidString, title: "", date: Calendar.current.dateComponents([.hour, .minute], from: event_started_at))
+            var reminder = Reminder(id: UUID().uuidString, title: "", date: Foundation.Calendar.current.dateComponents([.hour, .minute], from: event_started_at))
 
             if duration_min > relaxing_mins {
-              event_ended_at = Calendar.current.date(byAdding: relaxing_duration, to: event_started_at)!
+              event_ended_at = Foundation.Calendar.current.date(byAdding: relaxing_duration, to: event_started_at)!
               let e = create_event(routine.description, event_started_at, event_ended_at)
               events.append(e)
               reminder.id = "reminder\(event_started_at.timeIntervalSinceReferenceDate)"

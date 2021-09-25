@@ -12,14 +12,14 @@ struct CalendarsList: View {
 
   @EnvironmentObject var context: Context
 
+  @State private var multiSelection = Set<UUID>()
+
   var body: some View {
-    List {
-      ForEach(context.calendars, id: \.self) { calendar in
-        HStack {
-          Text(calendar.title)
-            .foregroundColor(Color.init(calendar.cgColor))
-          Spacer()
-        }
+    List(Calendar.calendars(context.event_store)) { calendar in
+      HStack {
+        Text(calendar.calendar.title)
+          .foregroundColor(Color.init(calendar.calendar.cgColor))
+        Spacer()
       }
     }
     .navigationTitle("Calendars")
