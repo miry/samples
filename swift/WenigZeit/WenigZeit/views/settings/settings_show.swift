@@ -28,7 +28,7 @@ struct SettingsShow: View {
     NavigationView {
       VStack(alignment: .leading) {
         Form {
-          Toggle("Notifications", isOn: $context.enableReminders)
+          Toggle("Notifications", isOn: $context.enable_reminders)
         }
 
         List {

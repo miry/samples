@@ -18,7 +18,11 @@ final class Context: ObservableObject {
 
   @Published var calendars: [EKCalendar] = []
   @Published var available_calendars: [Calendar] = []
-  @Published var selected_calendars: Set<String> = Set<String>()
+  @Published var selected_calendars: Set<String> = Set<String>() {
+    didSet {
+      UserDefaults.standard.set(Array(selected_calendars), forKey: "selected_calendars")
+    }
+  }
 
   @Published var events: [EKEvent] = []
   @Published var workingHoursRange = 10..<22
@@ -34,24 +38,33 @@ final class Context: ObservableObject {
     Routine(title: "Running", duration_min: 15),
   ]
 
-  @Published var enableReminders = UserDefaults.standard.bool(forKey: "enableReminders") {
+  @Published var enable_reminders = UserDefaults.standard.bool(forKey: "enable_reminders") {
     didSet {
-      UserDefaults.standard.setValue(enableReminders, forKey: "enableReminders")
+      UserDefaults.standard.setValue(enable_reminders, forKey: "enable_reminders")
     }
   }
 
   init() {
     start_working_date = Date()
     end_working_date = Date()
+
     request_access()
+    update_selected_calendars()
+    calendars = fetch_calendars()
+
+    refresh(true)
+  }
+
+  func update_selected_calendars() {
+    let selected_calendars_stored: [String] = UserDefaults.standard.stringArray(forKey: "selected_calendars") ?? []
 
     available_calendars = Calendar.calendars(event_store)
     selected_calendars = Set<String>()
-    for c in available_calendars {
-      selected_calendars.insert(c.id)
+    for calendar in available_calendars {
+      if selected_calendars_stored.contains(calendar.id) {
+        selected_calendars.insert(calendar.id)
+      }
     }
-    calendars = fetch_calendars()
-    refresh(true)
   }
 
   func refresh(_ create_reminders: Bool) {
@@ -78,7 +91,7 @@ final class Context: ObservableObject {
     }
 
     notification_center.removeAllPendingNotificationRequests()
-    let schedule_reminders = enableReminders && create_reminders
+    let schedule_reminders = enable_reminders && create_reminders
     if schedule_reminders {
       print("Schedule reminders")
       for reminder in reminders {
