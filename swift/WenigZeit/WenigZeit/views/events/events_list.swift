@@ -31,6 +31,9 @@ struct EventsList: View {
             }
           }
         }
+        .refreshable {
+          context.refresh(true)
+        }
 
         if prossecing {
           ProgressView()
