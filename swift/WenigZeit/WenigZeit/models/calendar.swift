@@ -6,11 +6,19 @@
 //
 
 import EventKit
+import SwiftUI
 
 struct Calendar: Identifiable, Hashable {
   let calendar: EKCalendar
-  var id: String {
-    calendar.calendarIdentifier
+  var id: String
+  var title: String
+  var color: Color
+
+  init(calendar: EKCalendar) {
+    self.calendar = calendar
+    self.id = calendar.calendarIdentifier
+    self.title = calendar.title
+    self.color = Color.init(calendar.cgColor)
   }
 
   static func calendars(_ event_store:EKEventStore) -> [Calendar] {

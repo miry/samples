@@ -74,9 +74,13 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 - [Triggering events repeatedly using a timer](https://www.hackingwithswift.com/books/ios-swiftui/triggering-events-repeatedly-using-a-timer)
 - [Pull-to-Refresh in SwiftUI](https://swiftwithmajid.com/2021/07/14/pull-to-refresh-in-swiftui/)
 - [SwiftUI: List](https://developer.apple.com/documentation/swiftui/list)
+- [Xcode Keyboard Shortcuts and Gestures](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/xcode_help-command_shortcuts/MenuCommands/MenuCommands014.html)
 - [14 Xcode Keyboard Shortcuts - To Make You More a Productive iOS
    Developer](https://supereasyapps.com/blog/2014/9/15/14-xcode-time-saving-shortcuts-memorize-and-improve-your-productivity)
     Command + Shift + O: Open quick
     Command + Shift + J: reveals the file you currently have open in the project navigator
     Command + Shift + F: Search
     Control + 6: File Jump Ba
+- [Initializers & init() Explained in Swift](https://learnappmaking.com/initializers-init-swift-how-to/)
+- [Relative date time formatting in SwiftUI](https://noahgilmore.com/blog/swiftui-relativedatetimeformatter/)
+- [How to format text inside text views](https://www.hackingwithswift.com/quick-start/swiftui/how-to-format-text-inside-text-views)

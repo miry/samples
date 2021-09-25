@@ -36,7 +36,7 @@ struct EventsList: View {
           ProgressView()
         }
       }
-      .navigationTitle("Schedule")
+      .navigationTitle("\(context.start_working_date, formatter: DateFormatter)")
       .navigationBarItems(
         trailing: Button("Refresh") {
           refresh()

@@ -13,10 +13,13 @@ final class Context: ObservableObject {
   let event_store = EKEventStore()
   let notification_center = UNUserNotificationCenter.current()
 
-  private var start_working_date: Date
-  private var end_working_date: Date
+  @Published var start_working_date: Date
+  @Published var end_working_date: Date
 
   @Published var calendars: [EKCalendar] = []
+  @Published var available_calendars: [Calendar] = []
+  @Published var selected_calendars: Set<String> = Set<String>()
+
   @Published var events: [EKEvent] = []
   @Published var workingHoursRange = 10..<22
   @Published var working_mins : Int = 30
@@ -41,10 +44,18 @@ final class Context: ObservableObject {
     start_working_date = Date()
     end_working_date = Date()
     request_access()
+
+    available_calendars = Calendar.calendars(event_store)
+    selected_calendars = Set<String>()
+    for c in available_calendars {
+      selected_calendars.insert(c.id)
+    }
+    calendars = fetch_calendars()
     refresh(true)
   }
 
   func refresh(_ create_reminders: Bool) {
+    print("refresh")
     let accessCalendar = EKEventStore.authorizationStatus(for: .event)
     guard  accessCalendar == .authorized else {
       print("WARNING: No access to calendar events!")
@@ -52,6 +63,10 @@ final class Context: ObservableObject {
     }
 
     calendars = fetch_calendars()
+    print("calendars:")
+    for calendar in calendars {
+      print(calendar.title)
+    }
     events = fetch_events()
 
     let original_routines = routines
@@ -100,11 +115,12 @@ final class Context: ObservableObject {
   func fetch_calendars() -> [EKCalendar] {
     var result: [EKCalendar] = []
 
-    for calendar in event_store.calendars(for: EKEntityType.event) {
-      if calendar.allowsContentModifications {
-        result.append(calendar)
+    for calendar in available_calendars {
+      if selected_calendars.contains(calendar.id) {
+        result.append(calendar.calendar)
       }
     }
+
     return result
   }
 
