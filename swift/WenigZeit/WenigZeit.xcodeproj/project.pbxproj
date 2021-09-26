@@ -23,6 +23,7 @@
 		455CE59826F7CCBA006B0933 /* routines_list.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455CE59726F7CCBA006B0933 /* routines_list.swift */; };
 		455CE59A26F7CE7A006B0933 /* routine_create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455CE59926F7CE7A006B0933 /* routine_create.swift */; };
 		45C0DC3326FFD4A000FEFB15 /* date_formmater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C0DC3226FFD4A000FEFB15 /* date_formmater.swift */; };
+		45E43F092700B6F500198529 /* routine_edit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E43F082700B6F500198529 /* routine_edit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		455CE59726F7CCBA006B0933 /* routines_list.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = routines_list.swift; sourceTree = "<group>"; };
 		455CE59926F7CE7A006B0933 /* routine_create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = routine_create.swift; sourceTree = "<group>"; };
 		45C0DC3226FFD4A000FEFB15 /* date_formmater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = date_formmater.swift; sourceTree = "<group>"; };
+		45E43F082700B6F500198529 /* routine_edit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = routine_edit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				455CE59726F7CCBA006B0933 /* routines_list.swift */,
+				45E43F082700B6F500198529 /* routine_edit.swift */,
 				455CE59926F7CE7A006B0933 /* routine_create.swift */,
 			);
 			path = routines;
@@ -270,6 +273,7 @@
 				45C0DC3326FFD4A000FEFB15 /* date_formmater.swift in Sources */,
 				452EF49A26EFC8CE009F5076 /* events_list.swift in Sources */,
 				455CE59826F7CCBA006B0933 /* routines_list.swift in Sources */,
+				45E43F092700B6F500198529 /* routine_edit.swift in Sources */,
 				452EF49F26EFDBB4009F5076 /* context.swift in Sources */,
 				452EF49D26EFDA45009F5076 /* calendars_list.swift in Sources */,
 				452EF48326EFA507009F5076 /* ContentView.swift in Sources */,

@@ -67,6 +67,7 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 - [Swift: Statements](https://docs.swift.org/swift-book/ReferenceManual/Statements.html)
 - [Guard Statement Explained in Swift](https://learnappmaking.com/swift-guard-let-statement-how-to/)
 - [Swift: Concurrency](https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html)
+- [async/await in SwiftUI](https://www.raywenderlich.com/25013447-async-await-in-swiftui)
 - [SwiftUI for iOS 15: How to Add Swipe Actions and Hide Line Separators in List View](https://www.appcoda.com/swiftui-swipe-actions/)
 - [The Complete Guide to NavigationView in SwiftUI](https://www.youtube.com/watch?v=nA6Jo6YnL9g)
 - [Fun with print() in Swift ](https://learnappmaking.com/print-swift-how-to/)
@@ -84,3 +85,5 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 - [Initializers & init() Explained in Swift](https://learnappmaking.com/initializers-init-swift-how-to/)
 - [Relative date time formatting in SwiftUI](https://noahgilmore.com/blog/swiftui-relativedatetimeformatter/)
 - [How to format text inside text views](https://www.hackingwithswift.com/quick-start/swiftui/how-to-format-text-inside-text-views)
+- [Drag and Drop Editable Lists: Tutorial for SwiftUI](https://www.raywenderlich.com/22408716-drag-and-drop-editable-lists-tutorial-for-swiftui#toc-anchor-005)
+- [How to make SwiftUI NavigationLink work in edit mode?](https://stackoverflow.com/questions/58236010/how-to-make-swiftui-navigationlink-work-in-edit-mode)

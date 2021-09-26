@@ -10,6 +10,7 @@ import SwiftUI
 struct RoutinesList: View {
 
   @EnvironmentObject var context:Context
+  @State var selected_routine: String? = nil
 
   private func delete(atOffsets offsets: IndexSet) {
     context.routines.remove(atOffsets: offsets)
@@ -22,7 +23,14 @@ struct RoutinesList: View {
   var body: some View {
     List {
       ForEach(context.routines) { routine in
-        Text(routine.description)
+        NavigationLink(
+          destination: Text("Clicked \(routine.title)"),
+          tag: routine.id,
+          selection: self.$selected_routine
+        ) {
+          Text(routine.description)
+        }
+        .onTapGesture(perform: { self.selected_routine = routine.id })
       }
       .onDelete(perform: delete)
       .onMove(perform: move(fromOffsets:toOffset:))
