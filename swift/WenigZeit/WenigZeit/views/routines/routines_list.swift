@@ -8,16 +8,25 @@
 import SwiftUI
 
 struct RoutinesList: View {
+
   @EnvironmentObject var context:Context
+
+  private func delete(atOffsets offsets: IndexSet) {
+    print("offsets:", offsets)
+    context.routines.remove(atOffsets: offsets)
+  }
+
   var body: some View {
-    List(context.routines) { routine in
-      Text(routine.description)
+    List {
+      ForEach(context.routines) { routine in
+        Text(routine.description)
+      }
+      .onDelete(perform: delete)
     }
+    .environment(\.editMode, .constant(EditMode.active))
     .navigationTitle("Routines")
     .navigationBarItems(
-      trailing: Button(action: {
-
-      }) {
+      trailing: Button(action: {} ) {
         Image(systemName: "plus")
       }
     )
