@@ -12,8 +12,11 @@ struct RoutinesList: View {
   @EnvironmentObject var context:Context
 
   private func delete(atOffsets offsets: IndexSet) {
-    print("offsets:", offsets)
     context.routines.remove(atOffsets: offsets)
+  }
+
+  private func move(fromOffsets from: IndexSet, toOffset to: Int) {
+    context.routines.move(fromOffsets: from, toOffset: to)
   }
 
   var body: some View {
@@ -22,6 +25,7 @@ struct RoutinesList: View {
         Text(routine.description)
       }
       .onDelete(perform: delete)
+      .onMove(perform: move(fromOffsets:toOffset:))
     }
     .environment(\.editMode, .constant(EditMode.active))
     .navigationTitle("Routines")
