@@ -82,6 +82,11 @@ final class Context: ObservableObject {
     }
     events = fetch_events()
 
+    notification_center.removeAllPendingNotificationRequests()
+    
+    if routines.isEmpty {
+      return
+    }
     let original_routines = routines
     let reminders = plan_routines_reminders()
     routines = original_routines
