@@ -68,6 +68,7 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 - [Guard Statement Explained in Swift](https://learnappmaking.com/swift-guard-let-statement-how-to/)
 - [Swift: Concurrency](https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html)
 - [async/await in SwiftUI](https://www.raywenderlich.com/25013447-async-await-in-swiftui)
+- [iOS Design : Human interface guidelines : Modality](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/modality/)
 - [SwiftUI for iOS 15: How to Add Swipe Actions and Hide Line Separators in List View](https://www.appcoda.com/swiftui-swipe-actions/)
 - [The Complete Guide to NavigationView in SwiftUI](https://www.youtube.com/watch?v=nA6Jo6YnL9g)
 - [Fun with print() in Swift ](https://learnappmaking.com/print-swift-how-to/)
@@ -87,3 +88,4 @@ Idea of my planner to find a slot and it could be work with any of apps to pick 
 - [How to format text inside text views](https://www.hackingwithswift.com/quick-start/swiftui/how-to-format-text-inside-text-views)
 - [Drag and Drop Editable Lists: Tutorial for SwiftUI](https://www.raywenderlich.com/22408716-drag-and-drop-editable-lists-tutorial-for-swiftui#toc-anchor-005)
 - [How to make SwiftUI NavigationLink work in edit mode?](https://stackoverflow.com/questions/58236010/how-to-make-swiftui-navigationlink-work-in-edit-mode)
+- [Presenting Sheets in SwiftUI](https://serialcoder.dev/text-tutorials/swiftui/presenting-sheets-in-swiftui/)

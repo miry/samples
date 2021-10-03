@@ -24,7 +24,7 @@ struct RoutinesList: View {
     List {
       ForEach(context.routines) { routine in
         NavigationLink(
-          destination: Text("Clicked \(routine.title)"),
+          destination: RoutineEdit(routine: routine),
           tag: routine.id,
           selection: self.$selected_routine
         ) {
