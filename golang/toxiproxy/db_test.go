@@ -1,7 +1,9 @@
 package main
 
 import (
+	"net"
 	"testing"
+	"time"
 
 	toxiServer "github.com/Shopify/toxiproxy/v2"
 	toxiproxy "github.com/Shopify/toxiproxy/v2/client"
@@ -48,21 +50,45 @@ func runToxiproxyServer() {
 	go func() {
 		server.Listen("localhost", "8474")
 	}()
+
+	var err error
+	timeout := 5 * time.Second
+	for i := 0; i < 10; i += 1 {
+		conn, err := net.DialTimeout("tcp", "localhost:8474", timeout)
+		if err == nil {
+			conn.Close()
+			return
+		}
+	}
+	panic(err)
 }
 
-func TestPingWithConnection(t *testing.T) {
+func TestSlowDBConnection(t *testing.T) {
 	db := DB()
-	err := process(db)
-	if err != nil {
-		t.Fatalf("got error %v, wanted no errors", err)
-	}
 
 	// Add 1s latency to 100% of downstream connections
 	proxies["postgresql"].AddToxic("latency_down", "latency", "downstream", 1.0, toxiproxy.Attributes{
 		"latency": 10000,
 	})
-	err = process(db)
+	defer proxies["postgresql"].RemoveToxic("latency_down")
+
+	err := process(db)
 	if err != nil {
 		t.Fatalf("got error %v, wanted no errors", err)
+	}
+}
+
+func TestOutageResetPeer(t *testing.T) {
+	db := DB()
+
+	// Add broken TCP connection
+	proxies["postgresql"].AddToxic("reset_peer_down", "reset_peer", "downstream", 1.0, toxiproxy.Attributes{
+		"timeout": 10,
+	})
+	defer proxies["postgresql"].RemoveToxic("reset_peer_down")
+
+	err := process(db)
+	if err == nil {
+		t.Fatalf("expect error")
 	}
 }

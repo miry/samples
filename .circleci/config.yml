@@ -29,11 +29,17 @@ jobs:
     # working_directory: /go/src/github.com/miry/samples/
     docker:
       - image: circleci/golang:latest
+      - image: circleci/postgres
+        environment:
+          POSTGRES_DB: sample_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: Welcome
+          POSTGRES_HOST_AUTH_METHOD: trust
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
       - checkout
-      - run: mkdir -p $TEST_RESULTS/{algorithms,btree,codinggame,gohttproxy,justforfunc}
+      - run: mkdir -p $TEST_RESULTS/{algorithms,btree,codinggame,gohttproxy,toxiproxy,justforfunc}
       - run: go get -u github.com/jstemmer/go-junit-report
       - run: |-
           cd algorithms
@@ -45,7 +51,7 @@ jobs:
           cd justforfunc
           go test ./... -v |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
       - run: |-
-          go test ./golang/toxiproxy/... -v --race |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
+          go test ./golang/toxiproxy/... -v --race |& go-junit-report > $TEST_RESULTS/toxiproxy/report.xml
       - run: |-
           cd benchmarks
           go test -bench=. ./... -v
