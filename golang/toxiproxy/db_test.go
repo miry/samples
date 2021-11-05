@@ -3,8 +3,8 @@ package main
 import (
 	"testing"
 
-	toxiServer "github.com/Shopify/toxiproxy"
-	toxiproxy "github.com/Shopify/toxiproxy/client"
+	toxiServer "github.com/Shopify/toxiproxy/v2"
+	toxiproxy "github.com/Shopify/toxiproxy/v2/client"
 	pg "github.com/go-pg/pg/v10"
 )
 

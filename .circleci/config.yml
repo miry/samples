@@ -45,6 +45,8 @@ jobs:
           cd justforfunc
           go test ./... -v |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
       - run: |-
+          go test ./golang/toxiproxy/... -v --race |& go-junit-report > $TEST_RESULTS/justforfunc/report.xml
+      - run: |-
           cd benchmarks
           go test -bench=. ./... -v
       - store_test_results:
