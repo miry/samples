@@ -79,22 +79,22 @@ def run
 
     answer = increased_moving_window(entries, 3)
   when 2.1
-    puts "--- Day 2: Sonar Sweep ---"
+    puts "--- Day 2: Dive ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What do you get if you multiply your final horizontal position by your final depth?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem2(entries)
   when 2.2
-    puts "--- Day 2: Sonar Sweep ---"
+    puts "--- Day 2: Dive ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What do you get if you multiply your final horizontal position by your final depth?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem2_part_two(entries)
