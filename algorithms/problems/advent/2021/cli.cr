@@ -119,22 +119,22 @@ def run
 
     answer = problem3_part_two(entries)
   when 4.1
-    puts "--- Day 4: Sonar Sweep ---"
+    puts "--- Day 4: Giant Squid ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What will your final score be if you choose that board?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem4(entries)
   when 4.2
-    puts "--- Day 4: Sonar Sweep ---"
+    puts "--- Day 4: Giant Squid ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "Once it wins, what would its final score be?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem4_part_two(entries)
