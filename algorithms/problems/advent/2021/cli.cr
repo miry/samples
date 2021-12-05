@@ -1,6 +1,8 @@
 require "option_parser"
 require "big"
 
+require "./utils"
+
 require "./day1"
 require "./day2"
 require "./day3"

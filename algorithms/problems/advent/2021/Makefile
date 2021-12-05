@@ -2,7 +2,7 @@ PART?=1
 
 .PHONY: test
 test: fmt
-	crystal run *_spec.cr
+	crystal spec *_spec.cr
 
 .PHONY: fmt
 fmt:
