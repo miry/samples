@@ -139,22 +139,22 @@ def run
 
     answer = problem4_part_two(entries)
   when 5.1
-    puts "--- Day 5: Sonar Sweep ---"
+    puts "--- Day 5: Hydrothermal Venture ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "At how many points do at least two lines overlap?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem5(entries)
   when 5.2
-    puts "--- Day 5: Sonar Sweep ---"
+    puts "--- Day 5: Hydrothermal Venture ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "At how many points do at least two lines overlap?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem5_part_two(entries)
