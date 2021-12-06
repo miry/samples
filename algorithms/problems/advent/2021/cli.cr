@@ -161,25 +161,17 @@ def run
 
     answer = problem5_part_two(entries)
   when 6.1
-    puts "--- Day 6: Sonar Sweep ---"
+    puts "--- Day 6: Lanternfish ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
-    STDIN.each_line do |line|
-      entries << line.to_i64
-    end
-
-    answer = problem6(entries)
+    puts "How many lanternfish would there be after 80 days?"
+    entries = STDIN.gets || ""
+    answer = problem6(entries, 80)
   when 6.2
-    puts "--- Day 6: Sonar Sweep ---"
+    puts "--- Day 6: Lanternfish ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
-    STDIN.each_line do |line|
-      entries << line.to_i64
-    end
-
-    answer = problem6_part_two(entries)
+    puts "How many lanternfish would there be after 256 days?"
+    entries = STDIN.gets || ""
+    answer = problem6(entries, 256)
   when 7.1
     puts "--- Day 7: Sonar Sweep ---"
     puts "--- Part One ---"
