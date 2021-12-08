@@ -176,20 +176,14 @@ def run
     puts "--- Day 7: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
-    STDIN.each_line do |line|
-      entries << line.to_i64
-    end
+    entries = STDIN.gets || ""
 
     answer = problem7(entries)
   when 7.2
     puts "--- Day 7: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
-    STDIN.each_line do |line|
-      entries << line.to_i64
-    end
+    entries = STDIN.gets || ""
 
     answer = problem7_part_two(entries)
   when 8.1
