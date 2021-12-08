@@ -173,36 +173,36 @@ def run
     entries = STDIN.gets || ""
     answer = problem6(entries, 256)
   when 7.1
-    puts "--- Day 7: Sonar Sweep ---"
+    puts "--- Day 7: The Treachery of Whales ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "How much fuel must they spend to align to that position?"
     entries = STDIN.gets || ""
 
     answer = problem7(entries)
   when 7.2
-    puts "--- Day 7: Sonar Sweep ---"
+    puts "--- Day 7: The Treachery of Whales ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "How much fuel must they spend to align to that position?"
     entries = STDIN.gets || ""
 
     answer = problem7_part_two(entries)
   when 8.1
-    puts "--- Day 8: Sonar Sweep ---"
+    puts "--- Day 8: Seven Segment Search ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "In the output values, how many times do digits 1, 4, 7, or 8 appear?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem8(entries)
   when 8.2
-    puts "--- Day 8: Sonar Sweep ---"
+    puts "--- Day 8: Seven Segment Search ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What do you get if you add up all of the output values?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem8_part_two(entries)
