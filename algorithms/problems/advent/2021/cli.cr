@@ -207,22 +207,22 @@ def run
 
     answer = problem8_part_two(entries)
   when 9.1
-    puts "--- Day 9: Sonar Sweep ---"
+    puts "--- Day 9: Smoke Basin ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What is the sum of the risk levels of all low points on your heightmap?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem9(entries)
   when 9.2
-    puts "--- Day 9: Sonar Sweep ---"
+    puts "--- Day 9: Smoke Basin ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What do you get if you multiply together the sizes of the three largest basins?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem9_part_two(entries)
