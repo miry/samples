@@ -27,27 +27,26 @@ describe "Day 6" do
       26,
     ]
     expected.each_with_index do |result, day|
-      puts "Days: #{day}"
-      actual = problem6(fishes, day)
+      actual = problem6(fishes, day.to_i64)
       actual.should eq(result)
     end
   end
 
   it "after 18 days" do
     fishes = "3,4,3,1,2"
-    actual = problem6(fishes, 18)
+    actual = problem6(fishes, 18_i64)
     actual.should eq(26)
   end
 
   it "after 80 days" do
     fishes = "3,4,3,1,2"
-    actual = problem6(fishes, 80)
+    actual = problem6(fishes, 80_i64)
     actual.should eq(5934)
   end
 
   it "after 256 days" do
     fishes = "3,4,3,1,2"
-    actual = problem6(fishes, 256)
+    actual = problem6(fishes, 256_i64)
     actual.should eq(26984457539)
   end
 end

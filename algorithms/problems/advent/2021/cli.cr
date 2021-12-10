@@ -165,13 +165,13 @@ def run
     puts "--- Part One ---"
     puts "How many lanternfish would there be after 80 days?"
     entries = STDIN.gets || ""
-    answer = problem6(entries, 80)
+    answer = problem6(entries, 80_i64)
   when 6.2
     puts "--- Day 6: Lanternfish ---"
     puts "--- Part Two ---"
     puts "How many lanternfish would there be after 256 days?"
     entries = STDIN.gets || ""
-    answer = problem6(entries, 256)
+    answer = problem6(entries, 256_i64)
   when 7.1
     puts "--- Day 7: The Treachery of Whales ---"
     puts "--- Part One ---"
@@ -227,22 +227,22 @@ def run
 
     answer = problem9_part_two(entries)
   when 10.1
-    puts "--- Day 10: Sonar Sweep ---"
+    puts "--- Day 10: Syntax Scoring ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What is the total syntax error score for those errors?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem10(entries)
   when 10.2
-    puts "--- Day 10: Sonar Sweep ---"
+    puts "--- Day 10: Syntax Scoring ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What is the middle score?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem10_part_two(entries)
