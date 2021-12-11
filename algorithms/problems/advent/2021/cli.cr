@@ -247,22 +247,22 @@ def run
 
     answer = problem10_part_two(entries)
   when 11.1
-    puts "--- Day 11: Sonar Sweep ---"
+    puts "--- Day 11: Dumbo Octopus ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "How many total flashes are there after 100 steps?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem11(entries)
   when 11.2
-    puts "--- Day 11: Sonar Sweep ---"
+    puts "--- Day 11: Dumbo Octopus ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What is the first step during which all octopuses flash?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem11_part_two(entries)
