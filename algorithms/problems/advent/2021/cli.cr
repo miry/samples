@@ -267,22 +267,22 @@ def run
 
     answer = problem11_part_two(entries)
   when 12.1
-    puts "--- Day 12: Sonar Sweep ---"
+    puts "--- Day 12: Passage Pathing ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "How many paths through this cave system are there that visit small caves at most once?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem12(entries)
   when 12.2
-    puts "--- Day 12: Sonar Sweep ---"
+    puts "--- Day 12: Passage Pathing ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "How many paths through this cave system are there?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem12_part_two(entries)
