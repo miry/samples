@@ -287,22 +287,22 @@ def run
 
     answer = problem12_part_two(entries)
   when 13.1
-    puts "--- Day 13: Sonar Sweep ---"
+    puts "--- Day 13: Transparent Origami ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "How many dots are visible after completing just the first fold instruction on your transparent paper?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem13(entries)
   when 13.2
-    puts "--- Day 13: Sonar Sweep ---"
+    puts "--- Day 13: Transparent Origami ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What code do you use to activate the infrared thermal imaging camera system?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem13_part_two(entries)
@@ -310,9 +310,9 @@ def run
     puts "--- Day 14: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem14(entries)
@@ -320,9 +320,9 @@ def run
     puts "--- Day 14: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem14_part_two(entries)
