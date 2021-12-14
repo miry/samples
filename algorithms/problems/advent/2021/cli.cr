@@ -307,32 +307,32 @@ def run
 
     answer = problem13_part_two(entries)
   when 14.1
-    puts "--- Day 14: Sonar Sweep ---"
+    puts "--- Day 14: Extended Polymerization ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "What do you get if you take the quantity of the most common element and subtract the quantity of the least common element?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
     end
 
-    answer = problem14(entries)
+    answer = problem14(entries, 10)
   when 14.2
-    puts "--- Day 14: Sonar Sweep ---"
+    puts "--- Day 14: Extended Polymerization ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "What do you get if you take the quantity of the most common element and subtract the quantity of the least common element?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
     end
 
-    answer = problem14_part_two(entries)
+    answer = problem14(entries, 40)
   when 15.1
     puts "--- Day 15: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem15(entries)
@@ -340,9 +340,9 @@ def run
     puts "--- Day 15: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem15_part_two(entries)

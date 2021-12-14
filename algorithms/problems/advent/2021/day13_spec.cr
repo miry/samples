@@ -59,9 +59,9 @@ describe "Day 13" do
     io = IO::Memory.new
     actual = problem13_part_two(arr, io)
     expected = {
-      {4, 4} => true, 
-      {0, 0} => true, 
-      {1, 4} => true, 
+      {4, 4} => true,
+      {0, 0} => true,
+      {1, 4} => true,
       {0, 3} => true,
       {0, 4} => true,
       {4, 3} => true,
@@ -74,7 +74,7 @@ describe "Day 13" do
       {3, 0} => true,
       {2, 4} => true,
       {2, 0} => true,
-      {1, 0} => true
+      {1, 0} => true,
     }
     actual.should eq(expected)
     io.to_s.rchop.should eq(<<-EOS)
