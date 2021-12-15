@@ -327,9 +327,9 @@ def run
 
     answer = problem14(entries, 40)
   when 15.1
-    puts "--- Day 15: Sonar Sweep ---"
+    puts "--- Day 15: Chiton ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "What is the lowest total risk of any path from the top left to the bottom right?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
@@ -337,9 +337,9 @@ def run
 
     answer = problem15(entries)
   when 15.2
-    puts "--- Day 15: Sonar Sweep ---"
+    puts "--- Day 15: Chiton ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "What is the lowest total risk of any path from the top left to the bottom right?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
@@ -350,9 +350,9 @@ def run
     puts "--- Day 16: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem16(entries)
@@ -360,9 +360,9 @@ def run
     puts "--- Day 16: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem16_part_two(entries)
