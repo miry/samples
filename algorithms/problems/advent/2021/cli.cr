@@ -347,25 +347,25 @@ def run
 
     answer = problem15_part_two(entries)
   when 16.1
-    puts "--- Day 16: Sonar Sweep ---"
+    puts "--- Day 16: Packet Decoder ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "What do you get if you add up the version numbers in all packets?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
     end
 
-    answer = problem16(entries)
+    answer = problem16(entries.first)
   when 16.2
-    puts "--- Day 16: Sonar Sweep ---"
+    puts "--- Day 16: Packet Decoder ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "What do you get if you evaluate the expression represented by your hexadecimal-encoded BITS transmission?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
     end
 
-    answer = problem16_part_two(entries)
+    answer = problem16_part_two(entries.first)
   when 17.1
     puts "--- Day 17: Sonar Sweep ---"
     puts "--- Part One ---"
