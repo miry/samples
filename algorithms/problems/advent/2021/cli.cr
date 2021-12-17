@@ -367,25 +367,25 @@ def run
 
     answer = problem16_part_two(entries.first)
   when 17.1
-    puts "--- Day 17: Sonar Sweep ---"
+    puts "--- Day 17: Trick Shot ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What is the highest y position it reaches on this trajectory?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
-    answer = problem17(entries)
+    answer = problem17(entries.first)
   when 17.2
-    puts "--- Day 17: Sonar Sweep ---"
+    puts "--- Day 17: Trick Shot ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "How many distinct initial velocity values cause the probe to be within the target area after any step?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
-    answer = problem17_part_two(entries)
+    answer = problem17_part_two(entries.first)
   when 18.1
     puts "--- Day 18: Sonar Sweep ---"
     puts "--- Part One ---"
