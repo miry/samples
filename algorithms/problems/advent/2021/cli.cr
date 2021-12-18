@@ -387,22 +387,22 @@ def run
 
     answer = problem17_part_two(entries.first)
   when 18.1
-    puts "--- Day 18: Sonar Sweep ---"
+    puts "--- Day 18: Snailfish ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What is the magnitude of the final sum?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem18(entries)
   when 18.2
-    puts "--- Day 18: Sonar Sweep ---"
+    puts "--- Day 18: Snailfish ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What is the largest magnitude of any sum of two different snailfish numbers from the homework assignment?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem18_part_two(entries)
