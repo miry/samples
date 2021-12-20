@@ -61,7 +61,7 @@ describe "Day 18" do
     end
   end
 
-  describe "problem18_part_two", focus: true do
+  describe "problem18_part_two" do
     it "check" do
       input = [
         "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]",
@@ -181,7 +181,7 @@ describe "Day 18" do
         actual.to_s.should eq("[[[[7,7],[7,7]],[[8,7],[8,7]]],[[[7,0],[7,7]],9]]")
       end
 
-      it "sample six", focus: true do
+      it "sample six" do
         a1 = SnailfishNumber.parse("[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]")
         a2 = SnailfishNumber.parse("[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]")
         actual = a1 + a2
@@ -336,7 +336,7 @@ describe "Day 18" do
         actual.magnitude.should eq(4140)
       end
 
-      it "sample two", focus: true do
+      it "sample two" do
         actual = SnailfishNumber.parse("[[[[7,8],[6,6]],[[6,0],[7,7]]],[[[7,8],[8,8]],[[7,9],[0,6]]]]")
         actual.magnitude.should eq(3993)
       end
