@@ -410,9 +410,9 @@ def run
     puts "--- Day 19: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem19(entries)
@@ -420,9 +420,9 @@ def run
     puts "--- Day 19: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem19_part_two(entries)
@@ -430,9 +430,9 @@ def run
     puts "--- Day 20: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem20(entries)
@@ -440,29 +440,29 @@ def run
     puts "--- Day 20: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem20_part_two(entries)
   when 21.1
-    puts "--- Day 21: Sonar Sweep ---"
+    puts "--- Day 21: Dirac Dice ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What do you get if you multiply the score of the losing player by the number of times the die was rolled during the game?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem21(entries)
   when 21.2
-    puts "--- Day 21: Sonar Sweep ---"
+    puts "--- Day 21: Dirac Dice ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "Find the player that wins in more universes; in how many universes does that player win?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem21_part_two(entries)
