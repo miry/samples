@@ -470,9 +470,9 @@ def run
     puts "--- Day 22: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem22(entries)
@@ -480,9 +480,9 @@ def run
     puts "--- Day 22: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem22_part_two(entries)
@@ -510,9 +510,9 @@ def run
     puts "--- Day 24: Sonar Sweep ---"
     puts "--- Part One ---"
     puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem24(entries)
@@ -520,32 +520,22 @@ def run
     puts "--- Day 24: Sonar Sweep ---"
     puts "--- Part Two ---"
     puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem24_part_two(entries)
   when 25.1
-    puts "--- Day 25: Sonar Sweep ---"
+    puts "--- Day 25: Sea Cucumber ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What is the first step on which no sea cucumbers move?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem25(entries)
-  when 25.2
-    puts "--- Day 25: Sonar Sweep ---"
-    puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
-    STDIN.each_line do |line|
-      entries << line.to_i64
-    end
-
-    answer = problem25_part_two(entries)
   else
     raise "Day is not implemented"
   end
