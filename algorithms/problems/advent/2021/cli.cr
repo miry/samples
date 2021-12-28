@@ -407,9 +407,9 @@ def run
 
     answer = problem18_part_two(entries)
   when 19.1
-    puts "--- Day 19: Sonar Sweep ---"
+    puts "--- Day 19: Beacon Scanner ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "How many beacons are there?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
@@ -417,9 +417,9 @@ def run
 
     answer = problem19(entries)
   when 19.2
-    puts "--- Day 19: Sonar Sweep ---"
+    puts "--- Day 19: Beacon Scanner ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "What is the largest Manhattan distance between any two scanners?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
