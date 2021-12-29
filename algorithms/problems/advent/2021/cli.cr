@@ -427,9 +427,9 @@ def run
 
     answer = problem19_part_two(entries)
   when 20.1
-    puts "--- Day 20: Sonar Sweep ---"
+    puts "--- Day 20: Trench Map ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "How many pixels are lit in the resulting image?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
@@ -437,9 +437,9 @@ def run
 
     answer = problem20(entries)
   when 20.2
-    puts "--- Day 20: Sonar Sweep ---"
+    puts "--- Day 20: Trench Map ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "How many pixels are lit in the resulting image?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
