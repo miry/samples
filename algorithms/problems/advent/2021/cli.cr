@@ -487,22 +487,22 @@ def run
 
     answer = problem22_part_two(entries)
   when 23.1
-    puts "--- Day 23: Sonar Sweep ---"
+    puts "--- Day 23: Amphipod ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of Int64
+    puts "What is the least energy required to organize the amphipods?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem23(entries)
   when 23.2
-    puts "--- Day 23: Sonar Sweep ---"
+    puts "--- Day 23: Amphipod ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of Int64
+    puts "What is the least energy required to organize the amphipods?"
+    entries = [] of String
     STDIN.each_line do |line|
-      entries << line.to_i64
+      entries << line
     end
 
     answer = problem23_part_two(entries)
