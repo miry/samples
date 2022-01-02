@@ -467,9 +467,9 @@ def run
 
     answer = problem21_part_two(entries)
   when 22.1
-    puts "--- Day 22: Sonar Sweep ---"
+    puts "--- Day 22: Reactor Reboot ---"
     puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
+    puts "How many cubes are on?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
@@ -477,9 +477,9 @@ def run
 
     answer = problem22(entries)
   when 22.2
-    puts "--- Day 22: Sonar Sweep ---"
+    puts "--- Day 22: Reactor Reboot ---"
     puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
+    puts "How many cubes are on?"
     entries = [] of String
     STDIN.each_line do |line|
       entries << line
