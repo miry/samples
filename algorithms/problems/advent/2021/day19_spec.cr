@@ -569,7 +569,7 @@ describe "Day 19" do
           {-635, -1737, 486},
         ].sort)
 
-        puts beacons.join("\n")
+        # puts beacons.join("\n")
       end
 
       it "four scanners" do

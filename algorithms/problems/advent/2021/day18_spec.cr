@@ -34,7 +34,7 @@ describe "Day 18" do
         "[[[[4,2],2],6],[8,7]]",
       ]
       actual = problem18(input)
-      actual.should eq(4140)
+      actual.should eq(3488)
     end
 
     it "check small" do
@@ -45,7 +45,7 @@ describe "Day 18" do
         "[4,4]",
       ]
       actual = problem18(input)
-      actual.should eq(4140)
+      actual.should eq(445)
     end
 
     it "check small two" do
@@ -57,7 +57,7 @@ describe "Day 18" do
         "[5,5]",
       ]
       actual = problem18(input)
-      actual.should eq(4140)
+      actual.should eq(791)
     end
   end
 
@@ -379,7 +379,7 @@ describe "Day 18" do
           "[[[[7,9],[12,0]],[[7,20],[10,0]]],[[[18,0],11],1]]",
         ]
 
-        puts actual.join("\n")
+        # puts actual.join("\n")
         expected.each_with_index do |r, i|
           r.should eq(actual[i])
         end

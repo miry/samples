@@ -158,7 +158,7 @@ def problem8_part_two(records : Array(String))
     values = numbers.split(" ").map { |v| v.chars.sort.join }
     n = values.size - 1
 
-    puts "values: #{values}"
+    # puts "values: #{values}"
     number = 0
     values.each_with_index do |digit, i|
       number += pattern[digit.chars.sort.join] * (10**(n - i))

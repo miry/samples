@@ -50,7 +50,7 @@ describe "Day 24" do
         subject.run([1_i64, 3_i64])
         subject.memory.should eq([0, 3, 0, 1])
 
-        puts "===="
+        # puts "===="
 
         subject.run([1_i64, 3_i64])
         subject.memory.should eq([0, 3, 0, 1])

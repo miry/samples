@@ -81,13 +81,6 @@ class ALU
     @error = msg
   end
 
-  def optimize
-    puts "> optimize"
-    puts "size: #{@instructions.size}"
-    @instructions.reject! { |ins| cmd, a, b = ins; cmd == "div" && b == "1" }
-    puts "size: #{@instructions.size}"
-  end
-
   def formula
     puts "> formula"
     @memory_calc = {
@@ -200,10 +193,10 @@ class ALU
 
   def process(input : Array(Int64))
     instruction = @instructions[@instruction_pointer]
-    puts "-"*100
-    puts "ip: #{@instruction_pointer}"
-    puts "instruction: #{instruction}"
-    puts "memory: #{@memory}"
+    # puts "-"*100
+    # puts "ip: #{@instruction_pointer}"
+    # puts "instruction: #{instruction}"
+    # puts "memory: #{@memory}"
 
     i = input.size - 1
     while i > @input_point
@@ -253,11 +246,6 @@ class ALU
     end
     @instruction_pointer += 1
 
-    if instruction == {"add", "z", "y"}
-      puts "input: #{input}"
-      puts "input point: #{@input_point}"
-      puts "z: #{@memory.last.to_s(26)}"
-    end
     cache_key = input[...@input_point].to_s
     @cache[cache_key] = {@instruction_pointer, @input_point, @memory.dup}
     # puts "after memory: #{@memory}"
@@ -315,7 +303,7 @@ class ALU
   end
 
   def validate_formula(num : Array(Int64) = [] of Int64)
-    puts "> validate_formula"
+    # puts "> validate_formula"
     raise "num.size: #{num.size} != 14" if num.size != 14
     stack = Array(Int64).new
     max_input_pointer = 0
