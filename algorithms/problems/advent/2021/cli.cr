@@ -506,26 +506,6 @@ def run
     end
 
     answer = problem23_part_two(entries)
-  when 24.1
-    puts "--- Day 24: Sonar Sweep ---"
-    puts "--- Part One ---"
-    puts "How many measurements are larger than the previous measurement?"
-    entries = [] of String
-    STDIN.each_line do |line|
-      entries << line
-    end
-
-    answer = problem24(entries)
-  when 24.2
-    puts "--- Day 24: Sonar Sweep ---"
-    puts "--- Part Two ---"
-    puts "Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?"
-    entries = [] of String
-    STDIN.each_line do |line|
-      entries << line
-    end
-
-    answer = problem24_part_two(entries)
   when 25.1
     puts "--- Day 25: Sea Cucumber ---"
     puts "--- Part One ---"
